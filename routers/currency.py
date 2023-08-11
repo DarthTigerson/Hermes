@@ -40,8 +40,6 @@ async def return_currency_by_id(currency_id: int, db: db_dependency):
 async def create_new_currency(currency: Currency_Class, db: db_dependency):
     new_currency = Currency(**currency.model_dump())
 
-    new_currency.name = currency.name
-    new_currency.symbol = currency.symbol
     db.add(new_currency)
     db.commit()
 

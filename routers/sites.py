@@ -40,8 +40,6 @@ async def return_site_by_id(site_id: int, db: db_dependency):
 async def create_new_site(site: Site, db: db_dependency):
     new_site = Sites(**site.model_dump())
 
-    new_site.name = site.name
-    new_site.description = site.description
     db.add(new_site)
     db.commit()
 

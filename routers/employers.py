@@ -40,8 +40,6 @@ async def return_employer_by_id(employer_id: int, db: db_dependency):
 async def create_new_employer(employer: Employer, db: db_dependency):
     new_employer = Employers(**employer.model_dump())
 
-    new_employer.name = employer.name
-    new_employer.description = employer.description
     db.add(new_employer)
     db.commit()
 

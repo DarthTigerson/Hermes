@@ -39,8 +39,6 @@ async def return_status_by_id(status_id: int, db: db_dependency):
 async def create_new_status(status: Status_Class, db: db_dependency):
     new_status = Status(**status.model_dump())
 
-    new_status.name = status.name
-    new_status.description = status.description
     db.add(new_status)
     db.commit()
 

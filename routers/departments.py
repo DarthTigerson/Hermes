@@ -40,8 +40,6 @@ async def return_department_by_id(department_id: int, db: db_dependency):
 async def create_new_department(department: Department, db: db_dependency):
     new_department = Departments(**department.model_dump())
 
-    new_department.name = department.name
-    new_department.description = department.description
     db.add(new_department)
     db.commit()
 

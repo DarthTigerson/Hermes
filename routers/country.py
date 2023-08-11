@@ -48,8 +48,6 @@ async def return_country_by_name(country_name: str, db: db_dependency):
 async def create_new_country(country: Country_Class, db: db_dependency):
     new_country = Country(**country.model_dump())
 
-    new_country.name = country.name
-    new_country.short_name = country.short_name
     db.add(new_country)
     db.commit()
 

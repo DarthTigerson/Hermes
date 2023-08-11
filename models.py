@@ -78,7 +78,7 @@ class Country(Base):
     name = Column(String(50))
     short_name = Column(String(2))
 
-class Department(Base):
+class Departments(Base):
     __tablename__ = 'department'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
@@ -88,7 +88,7 @@ class Currency(Base):
     __tablename__ = 'currency'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
-    symbol = Column(String(1))
+    symbol = Column(String(5))
 
 class Contract(Base):
     __tablename__ = 'contract'

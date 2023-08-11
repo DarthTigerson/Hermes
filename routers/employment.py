@@ -39,7 +39,6 @@ async def return_employment_by_id(employment_id: int, db: db_dependency):
 async def create_new_employment(employment: Employment_Class, db: db_dependency):
     new_employment = Employment(**employment.model_dump())
 
-    new_employment.id = employment.id
     new_employment.name = employment.name
     new_employment.description = employment.description
     db.add(new_employment)

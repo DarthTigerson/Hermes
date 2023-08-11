@@ -40,7 +40,6 @@ async def return_contract_by_id(contract_id: int, db: db_dependency):
 async def create_new_contract(contract: Contract, db: db_dependency):
     new_contract = Contracts(**contract.model_dump())
 
-    new_contract.id = contract.id
     new_contract.name = contract.name
     new_contract.description = contract.description
     db.add(new_contract)

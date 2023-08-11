@@ -9,7 +9,7 @@ class Users(Base):
     email = Column(String(50), unique=True, index=True)
     password = Column(String(50))
     role_id = Column(Integer, ForeignKey('roles.id'))
-    team_id = Column(Integer, ForeignKey('team.id'))
+    team_id = Column(Integer, ForeignKey('teams.id'))
     active = Column(Boolean, default=True)
 
 class Roles(Base):
@@ -17,14 +17,14 @@ class Roles(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
 
-class Team(Base):
-    __tablename__ = 'team'
+class Teams(Base):
+    __tablename__ = 'teams'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
     description = Column(String(200))
 
-class Employee(Base):
-    __tablename__ = 'employee'
+class Employees(Base):
+    __tablename__ = 'employees'
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(50), unique=True, index=True)
     first_name = Column(String(50))
@@ -35,12 +35,12 @@ class Employee(Base):
     nationality = Column(String(50))
     supplier = Column(String(50))
     entity_to_be_billed = Column(String(50))
-    employer_id = Column(Integer, ForeignKey('employer.id'))
+    employer_id = Column(Integer, ForeignKey('employers.id'))
     company_email = Column(String(50))
     job_title = Column(String(50))
-    direct_manager_id = Column(Integer, ForeignKey('employee.id'))
-    second_level_manager_id = Column(Integer, ForeignKey('employee.id'))
-    third_level_manager_id = Column(Integer, ForeignKey('employee.id'))
+    direct_manager_id = Column(Integer, ForeignKey('employees.id'))
+    second_level_manager_id = Column(Integer, ForeignKey('employees.id'))
+    third_level_manager_id = Column(Integer, ForeignKey('employees.id'))
     start_date = Column(DateTime)
     end_date = Column(DateTime)
     site_id = Column(Integer, ForeignKey('site.id'))
@@ -54,14 +54,14 @@ class Employee(Base):
     salary_currency_id = Column(Integer, ForeignKey('currency.id'))
     salary = Column(Integer)
     salary_period = Column(String(50))
-    hr_team_id = Column(Integer, ForeignKey('team.id'))
+    hr_team_id = Column(Integer, ForeignKey('teams.id'))
     working_hours = Column(Integer)
     employment_contract_id = Column(Integer, ForeignKey('contract.id'))
     employment_type_id = Column(Integer, ForeignKey('employment.id'))
     employment_status_id = Column(Integer, ForeignKey('status.id'))
 
-class Employer(Base):
-    __tablename__ = 'employer'
+class Employers(Base):
+    __tablename__ = 'employers'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
     description = Column(String(200))

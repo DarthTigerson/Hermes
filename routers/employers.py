@@ -30,7 +30,11 @@ async def return_all_employers(db: db_dependency):
 
 @router.get("/{employer_id}", status_code=status.HTTP_200_OK)
 async def return_employer_by_id(employer_id: int, db: db_dependency):
-    return db.query(Employers).filter(Employers.id == employer_id).first()
+    employers_data = db.query(Employers).filter(Employers.id == employer_id).first()
+
+    if employers_data is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employer not found")
+    return employers_data
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_new_employer(employer: Employer, db: db_dependency):

@@ -30,7 +30,11 @@ async def return_all_sites(db: db_dependency):
 
 @router.get("/{site_id}", status_code=status.HTTP_200_OK)
 async def return_site_by_id(site_id: int, db: db_dependency):
-    return db.query(Sites).filter(Sites.id == site_id).first()
+    site_data = db.query(Sites).filter(Sites.id == site_id).first()
+
+    if site_data is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Site not found")
+    return site_data
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_new_site(site: Site, db: db_dependency):

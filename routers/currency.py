@@ -22,7 +22,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 class Currency_Class(BaseModel):
     id: int
     name: str
-    short_name: str
+    symbol: str
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def return_all_currency(db: db_dependency):
@@ -41,7 +41,7 @@ async def create_new_currency(currency: Currency_Class, db: db_dependency):
     new_currency = Currency(**currency.model_dump())
 
     new_currency.name = currency.name
-    new_currency.short_name = currency.short_name
+    new_currency.symbol = currency.symbol
     db.add(new_currency)
     db.commit()
 
@@ -53,7 +53,7 @@ async def update_currency_by_id(currency_id: int, currency: Currency_Class, db: 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Currency not found")
     
     currency_to_update.name = currency.name
-    currency_to_update.short_name = currency.short_name
+    currency_to_update.symbol = currency.symbol
     db.add(currency_to_update)
     db.commit()
 

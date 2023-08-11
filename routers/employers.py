@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from typing import Annotated
 from database import SessionLocal
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from models import Employers
 
 router = APIRouter(
-    prefix="/employer",
-    tags=["employer"],
+    prefix="/employers",
+    tags=["employers"],
 )
 
 def get_db():

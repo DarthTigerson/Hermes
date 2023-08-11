@@ -38,7 +38,7 @@ async def return_employer_by_id(employer_id: int, db: db_dependency):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_new_employer(employer: Employer, db: db_dependency):
-    new_employer = Employers(name=employer.name, description=employer.description)
+    new_employer = Employers(**employer.model_dump())
 
     new_employer.id = employer.id
     new_employer.name = employer.name

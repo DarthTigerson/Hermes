@@ -46,9 +46,8 @@ async def return_country_by_name(country_name: str, db: db_dependency):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_new_country(country: Country_Class, db: db_dependency):
-    new_country = Country(name=country.name, description=country.description)
+    new_country = Country(**country.model_dump())
 
-    new_country.id = country.id
     new_country.name = country.name
     new_country.short_name = country.short_name
     db.add(new_country)

@@ -38,9 +38,8 @@ async def return_department_by_id(department_id: int, db: db_dependency):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_new_department(department: Department, db: db_dependency):
-    new_department = Departments(name=department.name, description=department.description)
+    new_department = Departments(**department.model_dump())
 
-    new_department.id = department.id
     new_department.name = department.name
     new_department.description = department.description
     db.add(new_department)

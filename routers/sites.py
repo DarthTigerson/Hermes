@@ -38,7 +38,7 @@ async def return_site_by_id(site_id: int, db: db_dependency):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_new_site(site: Site, db: db_dependency):
-    new_site = Sites(name=site.name, description=site.description)
+    new_site = Sites(**site.model_dump())
 
     new_site.id = site.id
     new_site.name = site.name

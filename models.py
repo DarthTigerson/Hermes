@@ -43,7 +43,7 @@ class Employees(Base):
     third_level_manager_id = Column(Integer, ForeignKey('employees.id'))
     start_date = Column(DateTime)
     end_date = Column(DateTime)
-    site_id = Column(Integer, ForeignKey('site.id'))
+    site_id = Column(Integer, ForeignKey('sites.id'))
     country_of_origin_id = Column(Integer, ForeignKey('country.id'))
     working_country_id = Column(Integer, ForeignKey('country.id'))
     department_id = Column(Integer, ForeignKey('department.id'))
@@ -66,8 +66,8 @@ class Employers(Base):
     name = Column(String(50))
     description = Column(String(200))
 
-class Site(Base):
-    __tablename__ = 'site'
+class Sites(Base):
+    __tablename__ = 'sites'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
     description = Column(String(200))

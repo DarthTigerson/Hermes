@@ -1,2 +1,2 @@
 # MissesTalos
-A FastAPI powered employee tracking WebApp
+A FastAPI powered employee managment WebApp

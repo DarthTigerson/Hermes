@@ -20,7 +20,6 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 class Employee_Class(BaseModel):
-    id: int
     email: str
     first_name: str
     last_name: str
@@ -68,4 +67,27 @@ async def create_employee(employee: Employee_Class, db: db_dependency):
     new_employee.full_name = employee.first_name + " " + employee.last_name
     
     db.add(new_employee)
+    db.commit()
+
+@router.put("/update/{id}", status_code=status.HTTP_202_ACCEPTED)
+async def update_employee(id: int, employee: Employee_Class, db: db_dependency):
+    employee_to_update = db.query(Employees).filter(Employees.id == id).first()
+
+    if employee_to_update is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employee not found")
+    
+    employee_to_update = Employees(**employee.model_dump())
+    employee_to_update.full_name = employee.first_name + " " + employee.last_name
+
+    db.add(employee_to_update)
+    db.commit()
+
+@router.delete("/delete/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_employee(id: int, db: db_dependency):
+    employee_to_delete = db.query(Employees).filter(Employees.id == id).first()
+
+    if employee_to_delete is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employee not found")
+    
+    db.delete(employee_to_delete)
     db.commit()

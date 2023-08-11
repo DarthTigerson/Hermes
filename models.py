@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
 
 class Users(Base):
     __tablename__ = 'users'
@@ -52,7 +52,7 @@ class Employees(Base):
     business_unit = Column(String(50))
     business_vertical = Column(String(50))
     salary_currency_id = Column(Integer, ForeignKey('currency.id'))
-    salary = Column(Integer)
+    salary = Column(Float)
     salary_period = Column(String(50))
     hr_team_id = Column(Integer, ForeignKey('teams.id'))
     working_hours = Column(Integer)
@@ -79,7 +79,7 @@ class Country(Base):
     short_name = Column(String(2))
 
 class Departments(Base):
-    __tablename__ = 'department'
+    __tablename__ = 'departments'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
     description = Column(String(200))
@@ -90,8 +90,8 @@ class Currency(Base):
     name = Column(String(50))
     symbol = Column(String(5))
 
-class Contract(Base):
-    __tablename__ = 'contract'
+class Contracts(Base):
+    __tablename__ = 'contracts'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
     description = Column(String(200))

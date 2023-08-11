@@ -22,7 +22,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 class Country_Class(BaseModel):
     id: int
     name: str
-    description: str
+    short_name: str
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def return_all_country(db: db_dependency):
@@ -50,7 +50,7 @@ async def create_new_country(country: Country_Class, db: db_dependency):
 
     new_country.id = country.id
     new_country.name = country.name
-    new_country.description = country.description
+    new_country.short_name = country.short_name
     db.add(new_country)
     db.commit()
 
@@ -62,7 +62,7 @@ async def update_country_by_id(country_id: int, country: Country_Class, db: db_d
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Country not found")
     
     country_to_update.name = country.name
-    country_to_update.description = country.description
+    country_to_update.short_name = country.short_name
     db.add(country_to_update)
     db.commit()
 

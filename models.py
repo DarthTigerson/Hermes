@@ -16,6 +16,7 @@ class Roles(Base):
     __tablename__ = 'roles'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
+    description = Column(String(200))
 
 class Teams(Base):
     __tablename__ = 'teams'

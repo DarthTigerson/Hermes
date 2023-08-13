@@ -27,3 +27,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @router.get("/")
 async def test(request: Request):
     return templates.TemplateResponse("users.html", {"request": request})
+
+@router.get("/add_user")
+async def add_user(request: Request):
+    return templates.TemplateResponse("add-user.html", {"request": request})

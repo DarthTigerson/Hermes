@@ -9,8 +9,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter(
-    prefix="/admin",
-    tags=["admin"],
+    prefix="",
+    tags=["home"],
 )
 
 templates = Jinja2Templates(directory='templates')
@@ -26,4 +26,4 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
 async def test(request: Request):
-    return templates.TemplateResponse("admin.html", {"request": request})
+    return templates.TemplateResponse("home.html", {"request": request})

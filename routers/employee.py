@@ -9,8 +9,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter(
-    prefix="/users",
-    tags=["users"],
+    prefix="/employee",
+    tags=["employee"],
 )
 
 templates = Jinja2Templates(directory='templates')
@@ -26,8 +26,8 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
 async def test(request: Request):
-    return templates.TemplateResponse("users.html", {"request": request})
+    return templates.TemplateResponse("employee.html", {"request": request})
 
-@router.get("/add_user")
-async def add_user(request: Request):
-    return templates.TemplateResponse("add-user.html", {"request": request})
+@router.get("/add_employee")
+async def add_employee(request: Request):
+    return templates.TemplateResponse("add-employee.html", {"request": request})

@@ -47,7 +47,7 @@ class Employees(Base):
     site_id = Column(Integer, ForeignKey('sites.id'))
     country_of_origin_id = Column(Integer, ForeignKey('country.id'))
     working_country_id = Column(Integer, ForeignKey('country.id'))
-    department_id = Column(Integer, ForeignKey('department.id'))
+    department_id = Column(Integer, ForeignKey('departments.id'))
     product_code = Column(String(50))
     brand_code = Column(String(50))
     business_unit = Column(String(50))
@@ -57,7 +57,7 @@ class Employees(Base):
     salary_period = Column(String(50))
     hr_team_id = Column(Integer, ForeignKey('teams.id'))
     working_hours = Column(Integer)
-    employment_contract_id = Column(Integer, ForeignKey('contract.id'))
+    employment_contract_id = Column(Integer, ForeignKey('contracts.id'))
     employment_type_id = Column(Integer, ForeignKey('employment.id'))
     employment_status_id = Column(Integer, ForeignKey('status.id'))
 

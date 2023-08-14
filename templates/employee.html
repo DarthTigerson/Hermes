@@ -12,6 +12,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th scope="col">ID</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Name</th>
                     <th scope="col">Surname</th>
@@ -25,39 +26,18 @@
                 </thead>
                 <tbody>
 
-                {% for todo in todos %}
-                {% if todo.complete == False %}
+                {% for employee in employees %}
                 <tr class="pointer">
-
-                    <td>{{loop.index}}</td>
-                    <td>{{todo.title}}</td>
-                    <td>
-                        <button onclick="window.location.href='complete/{{todo.id}}'"
-                                type="button" class="btn btn-success">Complete</button>
-                        <button onclick="window.location.href='edit-todo/{{todo.id}}'"
-                                type="button" class="btn btn-info">
-                            Edit
-                        </button>
-                    </td>
+                    <td>{{employee.id}}</td>
+                    <td>{{employee.email}}</td>
+                    <td>{{employee.first_name}}</td>
+                    <td>{{employee.last_name}}</td>
+                    <td>{{employee.job_title}}</td>
+                    <td>{{employee.direct_manager_id}}</td>
+                    <td>{{employee.department_id}}</td>
+                    <td>{{employee.site_id}}</td>
+                    <td>{{employee.employment_type_id}}</td>
                 </tr>
-
-                {% else %}
-                <tr class="pointer alert alert-success">
-
-                    <td>{{loop.index}}</td>
-                    <td class="strike-through-td">{{todo.title}}</td>
-                    <td>
-                        <button onclick="window.location.href='complete/{{todo.id}}'"
-                                type="button" class="btn btn-success">Undo
-                        </button>
-                        <button onclick="window.location.href='edit-todo/{{todo.id}}'"
-                                type="button" class="btn btn-info">
-                            Edit
-                        </button>
-                    </td>
-                </tr>
-
-                {% endif %}
                 {% endfor %}
 
                 </tbody>

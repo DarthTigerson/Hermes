@@ -79,3 +79,7 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     db.commit()
 
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_employee/{employee_id}")
+async def edit_employee(request: Request, employee_id: int, db: Session = Depends(get_db)):
+    return templates.TemplateResponse("edit-employee.html", {"request": request})

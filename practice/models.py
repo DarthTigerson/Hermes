@@ -51,7 +51,7 @@ class Employees(Base):
     product_code = Column(String(50))
     brand_code = Column(String(50))
     business_unit = Column(String(50))
-    business_vertical = Column(String(50))
+    business_verticle = Column(String(50))
     salary_currency_id = Column(Integer, ForeignKey('currency.id'))
     salary = Column(Float)
     salary_period = Column(String(50))

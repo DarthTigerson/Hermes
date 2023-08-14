@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
-from models import Users, Roles
+import models
 
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -25,5 +25,6 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
-async def test(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+async def test(request: Request, db: Session = Depends(get_db)):
+    total_employees = db.query(models.Employees).count()
+    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees})

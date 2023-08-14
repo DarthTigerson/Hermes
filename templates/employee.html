@@ -12,15 +12,15 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Surname</th>
                     <th scope="col">Role</th>
                     <th scope="col">Manager</th>
                     <th scope="col">Department</th>
                     <th scope="col">Site</th>
                     <th scope="col">Contract</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Offboard</th>
 
                 </tr>
                 </thead>
@@ -28,15 +28,15 @@
 
                 {% for employee in employees %}
                 <tr class="pointer">
-                    <td>{{employee.id}}</td>
                     <td>{{employee.email}}</td>
-                    <td>{{employee.first_name}}</td>
-                    <td>{{employee.last_name}}</td>
+                    <td>{{employee.full_name}}</td>
                     <td>{{employee.job_title}}</td>
                     <td>{{employee.direct_manager_id}}</td>
                     <td>{{employee.department_id}}</td>
                     <td>{{employee.site_id}}</td>
                     <td>{{employee.employment_type_id}}</td>
+                    <td><button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                    <td><button type="button" class="btn btn-danger">Offboard</button></td>
                 </tr>
                 {% endfor %}
 

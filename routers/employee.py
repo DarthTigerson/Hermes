@@ -28,8 +28,10 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
-async def get_employee(request: Request):
-    return templates.TemplateResponse("employee.html", {"request": request})
+async def get_employee(request: Request, db: Session = Depends(get_db)):
+    employees = db.query(models.Employees).all()
+
+    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees})
 
 @router.get("/add_employee")
 async def add_employee(request: Request):

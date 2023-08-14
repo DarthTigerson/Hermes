@@ -43,7 +43,7 @@ class Employee_Class(BaseModel):
     product_code: str
     brand_code: str
     business_unit: str
-    business_vertical: str
+    business_verticle: str
     salary_currency_id: int
     salary: float
     salary_period: str

@@ -36,7 +36,7 @@
                     <td>{{employee.site_id}}</td>
                     <td>{{employee.employment_type_id}}</td>
                     <td><button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-info">Edit</button></td>
-                    <td><button type="button" class="btn btn-danger">Offboard</button></td>
+                    <td><button onclick="window.location.href='delete_employee/{{employee.id}}'" type="button" class="btn btn-danger">Offboard</button></td>
                 </tr>
                 {% endfor %}
 

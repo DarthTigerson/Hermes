@@ -38,7 +38,7 @@ async def add_employee(request: Request):
     return templates.TemplateResponse("add-employee.html", {"request": request})
 
 @router.post("/add_employee", response_class=HTMLResponse)
-async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager_id:int = Form(...), start_date: str = Form(...), end_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), db: Session = Depends(get_db)):
+async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), db: Session = Depends(get_db)):
     employee_model = models.Employees()
 
     employee_model.email = email
@@ -53,9 +53,7 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     employee_model.employer_id = employer_id
     employee_model.company_email = company_email
     employee_model.job_title = job_title
-    employee_model.direct_manager_id = direct_manager_id
-    employee_model.second_level_manager_id = None
-    employee_model.third_level_manager_id = None
+    employee_model.direct_manager = direct_manager
     employee_model.start_date = start_date
     employee_model.end_date = end_date
     employee_model.site_id = site_id
@@ -87,7 +85,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
-async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager_id:int = Form(...), start_date: str = Form(...), end_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), db: Session = Depends(get_db)):
+async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), db: Session = Depends(get_db)):
 
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
 
@@ -103,7 +101,7 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.employer_id = employer_id
     employee_model.company_email = company_email
     employee_model.job_title = job_title
-    employee_model.direct_manager_id = direct_manager_id
+    employee_model.direct_manager = direct_manager
     employee_model.second_level_manager_id = None
     employee_model.third_level_manager_id = None
     employee_model.start_date = start_date

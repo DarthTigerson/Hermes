@@ -49,11 +49,11 @@
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Country of Origin</label>
-                    <input type="text" class="form-control" name="country_of_origin_id" value="{{employee_data.country_of_origin_id}}">
+                    <input type="number" class="form-control" name="country_of_origin_id" value="{{employee_data.country_of_origin_id}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Working Country</label>
-                    <input type="text" class="form-control" name="working_country_id" value="{{employee_data.working_country_id}}">
+                    <input type="number" class="form-control" name="working_country_id" value="{{employee_data.working_country_id}}">
                 </div>
             </div>
         </div>
@@ -68,8 +68,8 @@
                     <input type="text" class="form-control" name="job_title" value="{{employee_data.job_title}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
-                    <label>Direct Manager ID</label>
-                    <input type="text" class="form-control" name="direct_manager_id" value="{{employee_data.direct_manager_id}}">
+                    <label>Direct Manager E-mail</label>
+                    <input type="text" class="form-control" name="direct_manager" value="{{employee_data.direct_manager}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Start Date</label>
@@ -81,11 +81,11 @@
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Site ID</label>
-                    <input type="text" class="form-control" name="site_id" value="{{employee_data.site_id}}">
+                    <input type="number" class="form-control" name="site_id" value="{{employee_data.site_id}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Department ID</label>
-                    <input type="text" class="form-control" name="department_id" value="{{employee_data.department_id}}">
+                    <input type="number" class="form-control" name="department_id" value="{{employee_data.department_id}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Product Code</label>
@@ -113,7 +113,7 @@
             <div class="card-body">
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Salary Currency ID</label>
-                    <input type="text" class="form-control" name="salary_currency_id" value="{{employee_data.salary_currency_id}}">
+                    <input type="number" class="form-control" name="salary_currency_id" value="{{employee_data.salary_currency_id}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Salary</label>
@@ -125,7 +125,7 @@
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>HR Team ID in Charge</label>
-                    <input type="text" class="form-control" name="hr_team_id" value="{{employee_data.hr_team_id}}">
+                    <input type="number" class="form-control" name="hr_team_id" value="{{employee_data.hr_team_id}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Working Hours</label>
@@ -133,11 +133,18 @@
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Employment Contract ID</label>
-                    <input type="text" class="form-control" name="employment_contract_id" value="{{employee_data.employment_contract_id}}">
+                    <input type="number" class="form-control" name="employment_contract_id" value="{{employee_data.employment_contract_id}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Employment Type ID</label>
-                    <input type="text" class="form-control" name="employment_type_id" value="{{employee_data.employment_type_id}}">
+                    <input type="number" class="form-control" name="employment_type_id" value="{{employee_data.employment_type_id}}">
+                </div>
+                <div style="width: 33%; display: inline-block;" class="form-group">
+                    <label>Employment Status</label>
+                    <select class="form-control" name="employment_type_id">
+                        <option {%if employee_data.employment_type_id == 1%} selected="selected" {%endif%} value="1">Employed</option>
+                        <option {%if employee_data.employment_type_id == 2%} selected="selected" {%endif%} value="2">Offboarded</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -157,7 +164,7 @@
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Employer ID</label>
-                    <input type="text" class="form-control" name="employer_id" value="{{employee_data.employer_id}}">
+                    <input type="number" class="form-control" name="employer_id" value="{{employee_data.employer_id}}">
                 </div>
                 <div style="width: 33%; display: inline-block;" class="form-group">
                     <label>Company E-mail</label>

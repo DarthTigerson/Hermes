@@ -31,7 +31,7 @@ class Employees(Base):
     first_name = Column(String(50))
     last_name = Column(String(50))
     full_name = Column(String(100))
-    gender = Column(String(10))
+    gender = Column(Integer)
     date_of_birth = Column(String(50))
     nationality = Column(String(50))
     supplier = Column(String(50))

@@ -129,3 +129,15 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     db.commit()
 
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
+@router.get("/delete_employee/{employee_id}")
+async def delete_employee(request: Request, employee_id: int, db: Session = Depends(get_db)):
+    employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
+
+    if employee_model is None:
+        raise RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
+    db.query(models.Employees).filter(models.Employees.id == employee_id).delete()
+    db.commit()
+
+    return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)

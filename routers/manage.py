@@ -177,3 +177,49 @@ async def delete_contract(request: Request, contract_id: int, db: Session = Depe
     db.commit()
 
     return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/add_employer")
+async def add_employer(request: Request):
+    return templates.TemplateResponse("add-employer.html", {"request": request})
+
+@router.post("/add_employer", response_class=HTMLResponse)
+async def create_employer(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+    employer_model = Employers()
+
+    employer_model.name = name
+    employer_model.description = description
+
+    db.add(employer_model)
+    db.commit()
+    
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_employer/{employer_id}")
+async def edit_employer(request: Request, employer_id: int, db: Session = Depends(get_db)):
+    employer = db.query(Employers).filter(Employers.id == employer_id).first()
+
+    return templates.TemplateResponse("edit-employer.html", {"request": request, "employer": employer})
+
+@router.post("/edit_employer/{employer_id}", response_class=HTMLResponse)
+async def update_employer(request: Request, employer_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+    employer_model = db.query(Employers).filter(Employers.id == employer_id).first()
+
+    employer_model.name = name
+    employer_model.description = description
+
+    db.add(employer_model)
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/delete_employer/{employer_id}")
+async def delete_employer(request: Request, employer_id: int, db: Session = Depends(get_db)):
+    employer = db.query(Employers).filter(Employers.id == employer_id).first()
+
+    if employer is None:
+        raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    db.query(Employers).filter(Employers.id == employer_id).delete()
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)

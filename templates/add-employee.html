@@ -49,28 +49,28 @@
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Country of Origin</label>
-                    <select class="form-control" name="country_of_origin">
+                    <select class="form-control" name="country_of_origin_id">
                         {% if countries == [] %}
                             <option value="">No Countries Available</option>
                         {% endif %}
                         {% if countries != [] %}
                             <option value="">Select Country</option>
                             {% for country in countries %}
-                                <option value="{{ country.id }}">{{ country.name }}</option>
+                                <option value="{{country.id}}">{{ country.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Working Country</label>
-                    <select class="form-control" name="working_country">
+                    <select class="form-control" name="working_country_id">
                         {% if countries == [] %}
                             <option value="">No Countries Available</option>
                         {% endif %}
                         {% if countries != [] %}
                             <option value="">Select Country</option>
                             {% for country in countries %}
-                                <option value="{{ country.id }}">{{ country.name }}</option>
+                                <option value="{{country.id}}">{{ country.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -101,7 +101,17 @@
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Site ID</label>
-                    <input type="number" class="form-control" name="site_id">
+                    <select class="form-control" name="site_id">
+                        {% if sites == [] %}
+                            <option value="">No Sites Available</option>
+                        {% endif %}
+                        {% if sites != [] %}
+                            <option value="">Select Site</option>
+                            {% for site in sites %}
+                                <option value="{{site.id}}">{{ site.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Department</label>
@@ -112,7 +122,7 @@
                         {% if departments != [] %}
                             <option value="">Select Department</option>
                             {% for department in departments %}
-                                <option value="{{ department.id }}">{{ department.name }}</option>
+                                <option value="{{department.id}}">{{ department.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -142,8 +152,18 @@
             </div>
             <div class="card-body">
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Salary Currency ID</label>
-                    <input type="number" class="form-control" name="salary_currency_id">
+                    <label>Salary Currency</label>
+                    <select class="form-control" name="salary_currency_id">
+                        {% if currencies == [] %}
+                            <option value="">No Currency is Available</option>
+                        {% endif %}
+                        {% if currencies != [] %}
+                            <option value="">Select Currency</option>
+                            {% for currency in currencies %}
+                                <option value="{{currency.id}}">{{currency.symbol}} {{currency.name}}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Salary</label>

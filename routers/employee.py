@@ -29,13 +29,16 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
 async def get_employee(request: Request, db: Session = Depends(get_db)):
-    employees = db.query(models.Employees).order_by(models.Employees.email).all()
 
-    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees})
+    return templates.TemplateResponse("employee.html", {"request": request})
 
 @router.get("/add_employee")
-async def add_employee(request: Request):
-    return templates.TemplateResponse("add-employee.html", {"request": request})
+async def add_employee(request: Request, db: Session = Depends(get_db)):
+    countries = db.query(models.Country).order_by(models.Country.name).all()
+    departments = db.query(models.Departments).order_by(models.Departments.name).all()
+
+
+    return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "countries": countries})
 
 @router.post("/add_employee", response_class=HTMLResponse)
 async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), db: Session = Depends(get_db)):

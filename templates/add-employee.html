@@ -49,11 +49,31 @@
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Country of Origin</label>
-                    <input type="number" class="form-control" name="country_of_origin_id">
+                    <select class="form-control" name="country_of_origin">
+                        {% if countries == [] %}
+                            <option value="">No Countries Available</option>
+                        {% endif %}
+                        {% if countries != [] %}
+                            <option value="">Select Country</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}">{{ country.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Working Country</label>
-                    <input type="number" class="form-control" name="working_country_id">
+                    <select class="form-control" name="working_country">
+                        {% if countries == [] %}
+                            <option value="">No Countries Available</option>
+                        {% endif %}
+                        {% if countries != [] %}
+                            <option value="">Select Country</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}">{{ country.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
             </div>
         </div>
@@ -68,7 +88,7 @@
                     <input type="text" class="form-control" name="job_title">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Direct Manager</label>
+                    <label>Direct Managers E-mail</label>
                     <input type="text" class="form-control" name="direct_manager">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
@@ -84,8 +104,18 @@
                     <input type="number" class="form-control" name="site_id">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Department ID</label>
-                    <input type="number" class="form-control" name="department_id">
+                    <label>Department</label>
+                    <select class="form-control" name="department_id">
+                        {% if departments == [] %}
+                            <option value="">No Departments Available</option>
+                        {% endif %}
+                        {% if departments != [] %}
+                            <option value="">Select Department</option>
+                            {% for department in departments %}
+                                <option value="{{ department.id }}">{{ department.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Product Code</label>

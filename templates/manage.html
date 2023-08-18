@@ -162,7 +162,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Currency List</h5>
-                    <a href="#" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    <a href="/manage/add_currency/" class="btn btn-primary btn-sm" style="float: right;">+</a>
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -174,9 +174,9 @@
                             {% endif %}
                             {% for currency in currencies %}
                             <tr>
+                                <td>{{currency.symbol}}</td>
                                 <td>{{currency.name}}</td>
-                                <td>{{currency.short_name}}</td>
-                                <td class="text-right"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                                <td class="text-right"><button onclick="window.location.href='/manage/edit_currency/{{currency.id}}'" type="button" class="btn btn-info">Edit</button></td>
                             </tr>
                             {% endfor %}
                         </table>

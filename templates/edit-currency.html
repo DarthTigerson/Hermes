@@ -1,0 +1,25 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Edit Currency
+            </div>
+            <div class="card-body">
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Currency Name</label>
+                    <input type="text" class="form-control" name="name" value="{{currency.name}}" required>
+                </div>
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" rows="4">{{currency.description}}</textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" style="width: 170px;">Update</button>
+                    <button type="button" onclick="window.location.href='/manage/delete_currency/{{currency.id}}'" class="btn btn-danger" style="width: 170px;">Delete</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

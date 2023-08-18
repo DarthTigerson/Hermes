@@ -315,3 +315,49 @@ async def delete_country(request: Request, country_id: int, db: Session = Depend
     db.commit()
 
     return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/add_currency")
+async def add_currency(request: Request):
+    return templates.TemplateResponse("add-currency.html", {"request": request})
+
+@router.post("/add_currency", response_class=HTMLResponse)
+async def create_currency(request: Request, name: str = Form(...), symbol: str = Form(...), db: Session = Depends(get_db)):
+    currency_model = Currency()
+
+    currency_model.name = name
+    currency_model.symbol = symbol
+
+    db.add(currency_model)
+    db.commit()
+    
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_currency/{currency_id}")
+async def edit_currency(request: Request, currency_id: int, db: Session = Depends(get_db)):
+    currency = db.query(Currency).filter(Currency.id == currency_id).first()
+
+    return templates.TemplateResponse("edit-currency.html", {"request": request, "currency": currency})
+
+@router.post("/edit_currency/{currency_id}", response_class=HTMLResponse)
+async def update_currency(request: Request, currency_id: int, name: str = Form(...), symbol: str = Form(...), db: Session = Depends(get_db)):
+    currency_model = db.query(Currency).filter(Currency.id == currency_id).first()
+
+    currency_model.name = name
+    currency_model.symbol = symbol
+
+    db.add(currency_model)
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/delete_currency/{currency_id}")
+async def delete_currency(request: Request, currency_id: int, db: Session = Depends(get_db)):
+    currency = db.query(Currency).filter(Currency.id == currency_id).first()
+
+    if currency is None:
+        raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+    
+    db.query(Currency).filter(Currency.id == currency_id).delete()
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)

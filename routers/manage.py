@@ -223,3 +223,37 @@ async def delete_employer(request: Request, employer_id: int, db: Session = Depe
     db.commit()
 
     return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/add_employment")
+async def add_employment(request: Request):
+    return templates.TemplateResponse("add-employment.html", {"request": request})
+
+@router.post("/add_employment", response_class=HTMLResponse)
+async def create_employment(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+    employment_model = Employment()
+
+    employment_model.name = name
+    employment_model.description = description
+
+    db.add(employment_model)
+    db.commit()
+    
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_employment/{employment_id}")
+async def edit_employment(request: Request, employment_id: int, db: Session = Depends(get_db)):
+    employment = db.query(Employment).filter(Employment.id == employment_id).first()
+
+    return templates.TemplateResponse("edit-employment.html", {"request": request, "employment": employment})
+
+@router.get("/delete_employment/{employment_id}")
+async def delete_employment(request: Request, employment_id: int, db: Session = Depends(get_db)):
+    employment = db.query(Employment).filter(Employment.id == employment_id).first()
+
+    if employment is None:
+        raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    db.query(Employment).filter(Employment.id == employment_id).delete()
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)

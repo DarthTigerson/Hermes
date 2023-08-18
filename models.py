@@ -75,7 +75,7 @@ class Country(Base):
     __tablename__ = 'country'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
-    short_name = Column(String(2))
+    short_name = Column(String(5))
 
 class Departments(Base):
     __tablename__ = 'departments'

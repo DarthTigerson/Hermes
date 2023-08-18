@@ -121,7 +121,7 @@
                             {% for employ in employment %}
                             <tr>
                                 <td>{{employ.name}}</td>
-                                <td class="text-right"><button onclick="window.location.href='/manage/edit_empoyment/'" type="button" class="btn btn-info">Edit</button></td>
+                                <td class="text-right"><button onclick="window.location.href='/manage/edit_employment/{{employ.id}}'" type="button" class="btn btn-info">Edit</button></td>
                             </tr>
                             {% endfor %}
                         </table>
@@ -146,9 +146,9 @@
                             {% endif %}
                             {% for country in countries %}
                             <tr>
-                                <td>{{country.name}}</td>
                                 <td>{{country.short_name}}</td>
-                                <td class="text-right"><button onclick="window.location.href='/manage/edit_country'" type="button" class="btn btn-info">Edit</button></td>
+                                <td>{{country.name}}</td>
+                                <td class="text-right"><button onclick="window.location.href='/manage/edit_country/{{country.id}}'" type="button" class="btn btn-info">Edit</button></td>
                             </tr>
                             {% endfor %}
                         </table>

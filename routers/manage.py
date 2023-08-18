@@ -246,6 +246,18 @@ async def edit_employment(request: Request, employment_id: int, db: Session = De
 
     return templates.TemplateResponse("edit-employment.html", {"request": request, "employment": employment})
 
+@router.post("/edit_employment/{employment_id}", response_class=HTMLResponse)
+async def update_employment(request: Request, employment_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+    employment_model = db.query(Employment).filter(Employment.id == employment_id).first()
+
+    employment_model.name = name
+    employment_model.description = description
+
+    db.add(employment_model)
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
 @router.get("/delete_employment/{employment_id}")
 async def delete_employment(request: Request, employment_id: int, db: Session = Depends(get_db)):
     employment = db.query(Employment).filter(Employment.id == employment_id).first()
@@ -254,6 +266,52 @@ async def delete_employment(request: Request, employment_id: int, db: Session = 
         raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     db.query(Employment).filter(Employment.id == employment_id).delete()
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/add_country")
+async def add_country(request: Request):
+    return templates.TemplateResponse("add-country.html", {"request": request})
+
+@router.post("/add_country", response_class=HTMLResponse)
+async def create_country(request: Request, name: str = Form(...), short_name: str = Form(...), db: Session = Depends(get_db)):
+    country_model = Country()
+
+    country_model.name = name
+    country_model.short_name = short_name
+
+    db.add(country_model)
+    db.commit()
+    
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_country/{country_id}")
+async def edit_country(request: Request, country_id: int, db: Session = Depends(get_db)):
+    country = db.query(Country).filter(Country.id == country_id).first()
+
+    return templates.TemplateResponse("edit-country.html", {"request": request, "country": country})
+
+@router.post("/edit_country/{country_id}", response_class=HTMLResponse)
+async def update_country(request: Request, country_id: int, name: str = Form(...), short_name: str = Form(...), db: Session = Depends(get_db)):
+    country_model = db.query(Country).filter(Country.id == country_id).first()
+
+    country_model.name = name
+    country_model.short_name = short_name
+
+    db.add(country_model)
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/delete_country/{country_id}")
+async def delete_country(request: Request, country_id: int, db: Session = Depends(get_db)):
+    counrty = db.query(Country).filter(Country.id == country_id).first()
+
+    if counrty is None:
+        raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+    
+    db.query(Country).filter(Country.id == country_id).delete()
     db.commit()
 
     return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)

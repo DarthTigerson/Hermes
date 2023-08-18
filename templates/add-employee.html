@@ -92,6 +92,20 @@
                     <input type="text" class="form-control" name="direct_manager">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
+                    <label>HR Team in Charge</label>
+                    <select class="form-control" name="hr_team_id">
+                        {% if hr_teams == [] %}
+                            <option value=0>No HR Team is Available</option>
+                        {% endif %}
+                        {% if hr_teams != [] %}
+                            <option value="">Select Team</option>
+                            {% for teram in hr_teams %}
+                                <option value="{{site.id}}">{{ site.teram }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Start Date</label>
                     <input type="text" class="form-control" name="start_date">
                 </div>
@@ -174,20 +188,36 @@
                     <input type="text" class="form-control" name="salary_period">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>HR Team ID in Charge</label>
-                    <input type="number" class="form-control" name="hr_team_id">
-                </div>
-                <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Working Hours</label>
                     <input type="text" class="form-control" name="working_hours">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Employment Contract ID</label>
-                    <input type="number" class="form-control" name="employment_contract_id">
+                    <label>Contract</label>
+                    <select class="form-control" name="employment_contract_id">
+                        {% if employment_contracts == [] %}
+                            <option value="">No Contracts are Available</option>
+                        {% endif %}
+                        {% if employment_contracts != [] %}
+                            <option value="">Select Contract</option>
+                            {% for contract in employment_contracts %}
+                                <option value="{{contract.id}}">{{ contract.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Employment Type ID</label>
-                    <input type="number" class="form-control" name="employment_type_id">
+                    <label>Employment Type</label>
+                    <select class="form-control" name="employment_type_id">
+                        {% if employment_types == [] %}
+                            <option value="">No Contracts are Available</option>
+                        {% endif %}
+                        {% if employment_types != [] %}
+                            <option value="">Select Contract</option>
+                            {% for type in employment_types %}
+                                <option value="{{type.id}}">{{ type.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
             </div>
         </div>
@@ -206,8 +236,18 @@
                     <input type="text" class="form-control" name="entity_to_be_billed">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Employer ID</label>
-                    <input type="number" class="form-control" name="employer_id">
+                    <label>Employer</label>
+                    <select class="form-control" name="employer_id">
+                        {% if employers == [] %}
+                            <option value="">No Contracts are Available</option>
+                        {% endif %}
+                        {% if employers != [] %}
+                            <option value="">Select Contract</option>
+                            {% for employer in employers %}
+                                <option value="{{employer.id}}">{{ employer.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Company E-mail</label>

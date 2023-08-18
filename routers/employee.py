@@ -29,7 +29,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
 async def get_employee(request: Request, db: Session = Depends(get_db)):
-    employees = db.query(models.Employees).all()
+    employees = db.query(models.Employees).order_by(models.Employees.email).all()
 
     return templates.TemplateResponse("employee.html", {"request": request, "employees": employees})
 

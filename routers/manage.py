@@ -29,13 +29,13 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
 async def test(request: Request, db: Session = Depends(get_db)):
-    departments = db.query(Departments).all()
-    sites = db.query(Sites).all()
-    contracts = db.query(Contracts).all()
-    employers = db.query(Employers).all()
-    employment = db.query(Employment).all()
-    country = db.query(Country).all()
-    currency = db.query(Currency).all()
+    departments = db.query(Departments).order_by(Departments.name).all()
+    sites = db.query(Sites).order_by(Sites.name).all()
+    contracts = db.query(Contracts).order_by(Contracts.name).all()
+    employers = db.query(Employers).order_by(Employers.name).all()
+    employment = db.query(Employment).order_by(Employment.name).all()
+    country = db.query(Country).order_by(Country.name).all()
+    currency = db.query(Currency).order_by(Currency.name).all()
 
     return templates.TemplateResponse("manage.html", {"request": request, "departments": departments, "sites": sites, "contracts": contracts, "employers": employers, "employment": employment, "countries": country, "currencies": currency})
 
@@ -82,6 +82,52 @@ async def delete_department(request: Request, department_id: int, db: Session = 
         raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     db.query(Departments).filter(Departments.id == department_id).delete()
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/add_site")
+async def add_site(request: Request):
+    return templates.TemplateResponse("add-site.html", {"request": request})
+
+@router.post("/add_site", response_class=HTMLResponse)
+async def create_site(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+    site_model = Sites()
+
+    site_model.name = name
+    site_model.description = description
+
+    db.add(site_model)
+    db.commit()
+    
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_site/{site_id}")
+async def edit_site(request: Request, site_id: int, db: Session = Depends(get_db)):
+    site = db.query(Sites).filter(Sites.id == site_id).first()
+
+    return templates.TemplateResponse("edit-site.html", {"request": request, "site": site})
+
+@router.post("/edit_site/{site_id}", response_class=HTMLResponse)
+async def update_site(request: Request, site_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+    site_model = db.query(Sites).filter(Sites.id == site_id).first()
+
+    site_model.name = name
+    site_model.description = description
+
+    db.add(site_model)
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/delete_site/{site_id}")
+async def delete_site(request: Request, site_id: int, db: Session = Depends(get_db)):
+    site = db.query(Sites).filter(Sites.id == site_id).first()
+
+    if site is None:
+        raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    db.query(Sites).filter(Sites.id == site_id).delete()
     db.commit()
 
     return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)

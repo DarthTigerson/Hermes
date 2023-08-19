@@ -1,4 +1,35 @@
 {% include 'layout.html' %}
-<h1>Admin</h1>
 
-<p>This page is still under construction.</p>
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            <a href="#" class="btn btn-primary" style="float: right;">+</a>
+            <h5 class="card-title">Users</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">HR Team</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="pointer">
+                        <td>Mrs</td>
+                        <td>Talos</td>
+                        <td>talos</td>
+                        <td>Admin</td>
+                        <td>None</td>
+                        <td>Yes</td>
+                        <td><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

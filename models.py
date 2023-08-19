@@ -6,7 +6,7 @@ class Users(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String(50))
     last_name = Column(String(50))
-    email = Column(String(50), unique=True, index=True)
+    username = Column(String(50), unique=True, index=True)
     password = Column(String(50))
     role_id = Column(Integer, ForeignKey('roles.id'))
     team_id = Column(Integer, ForeignKey('teams.id'))
@@ -17,6 +17,10 @@ class Roles(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
     description = Column(String(200))
+    onboarding = Column(Boolean, default=False)
+    offboarding = Column(Boolean, default=False)
+    manage_modify = Column(Boolean, default=False)
+    admin = Column(Boolean, default=False)
 
 class Teams(Base):
     __tablename__ = 'teams'

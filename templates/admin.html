@@ -1,6 +1,73 @@
 {% include 'layout.html' %}
 
 <div class="container">
+    <div class="row" >
+        <div class="col-md-6" style="padding-bottom: 20px;">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">User Roles</h5>
+                    <a href="#" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 220px;">
+                    <div class="form-group">
+                        <table class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Onboarding</th>
+                                    <th scope="col">Offboarding</th>
+                                    <th scope="col">Manage Lists</th>
+                                    <th scope="col">Manage Users</th>
+                                    <th scope="col">Edit</th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Admin</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                    <td class="text-right"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="padding-bottom: 20px;">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">HR Team</h5>
+                    <a href="#" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                </div>
+                <div class="card-body" style="overflow-y: auto; height: 220px;">
+                    <div class="form-group">
+                        <table class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Users</th>
+                                    <th scope="col">Edit</th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>HR Platform</td>
+                                    <td>0</td>
+                                    <td class="text-right"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card text-center">
         <div class="card-header">
             <a href="#" class="btn btn-primary" style="float: right;">+</a>

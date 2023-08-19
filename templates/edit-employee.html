@@ -164,8 +164,8 @@
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Employment Status</label>
                     <select class="form-control" name="employment_type_id">
-                        <option {%if employee_data.employment_type_id == 1%} selected="selected" {%endif%} value="1">Employed</option>
-                        <option {%if employee_data.employment_type_id == 2%} selected="selected" {%endif%} value="2">Offboarded</option>
+                        <option {%if employee_data.employment_type_id == 0%} selected="selected" {%endif%} value="0">Employed</option>
+                        <option {%if employee_data.employment_type_id == 1%} selected="selected" {%endif%} value="1">Offboarded</option>
                     </select>
                 </div>
             </div>

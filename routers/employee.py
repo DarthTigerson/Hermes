@@ -85,7 +85,7 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     employee_model.working_hours = working_hours
     employee_model.employment_contract_id = employment_contract_id
     employee_model.employment_type_id = employment_type_id
-    employee_model.employment_status_id = 1
+    employee_model.employment_status_id = 0
 
     db.add(employee_model)
     db.commit()

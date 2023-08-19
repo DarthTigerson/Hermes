@@ -45,6 +45,7 @@ class Employees(Base):
     site_id = Column(Integer, ForeignKey('sites.id'))
     country_of_origin_id = Column(Integer, ForeignKey('country.id'))
     working_country_id = Column(Integer, ForeignKey('country.id'))
+    personal_email = Column(String(50))
     department_id = Column(Integer, ForeignKey('departments.id'))
     product_code = Column(String(50))
     brand_code = Column(String(50))

@@ -38,9 +38,9 @@
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Gender</label>
                     <select class="form-control" name="gender">
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
-                        <option value="3">Other</option>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
+                        <option value="2">Other</option>
                     </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
@@ -118,7 +118,7 @@
                     <input type="date" class="form-control" name="end_date" value="">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Site ID</label>
+                    <label>Site</label>
                     <select class="form-control" name="site_id">
                         {% if sites == [] %}
                             <option value="">No Sites Available</option>

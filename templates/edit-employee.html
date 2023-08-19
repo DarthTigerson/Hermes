@@ -38,9 +38,9 @@
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Gender</label>
                     <select class="form-control" name="gender">
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
-                        <option value="3">Other</option>
+                        <option {%if employee_data.gender == 0%} selected="selected" {%endif%} value="0">Male</option>
+                        <option {%if employee_data.gender == 1%} selected="selected" {%endif%} value="1">Female</option>
+                        <option {%if employee_data.gender == 2%} selected="selected" {%endif%} value="2">Other</option>
                     </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
@@ -56,7 +56,7 @@
                         {% if countries != [] %}
                             <option value="">Select Country</option>
                             {% for country in countries %}
-                                <option value="{{country.id}}">{{ country.name }}</option>
+                                <option {%if employee_data.country_of_origin_id == country.id%} selected="selected" {%endif%} value="{{country.id}}">{{ country.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -70,7 +70,7 @@
                         {% if countries != [] %}
                             <option value="">Select Country</option>
                             {% for country in countries %}
-                                <option value="{{country.id}}">{{ country.name }}</option>
+                                <option {%if employee_data.working_country_id == country.id%} selected="selected" {%endif%} value="{{country.id}}">{{ country.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -104,7 +104,7 @@
                         {% if hr_teams != [] %}
                             <option value="">Select Team</option>
                             {% for teram in hr_teams %}
-                                <option value="{{site.id}}">{{ site.teram }}</option>
+                                <option value="">{{ site.teram }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -118,7 +118,7 @@
                     <input type="date" class="form-control" name="end_date" value="{{employee_data.end_date}}">
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Site ID</label>
+                    <label>Site</label>
                     <select class="form-control" name="site_id">
                         {% if sites == [] %}
                             <option value="">No Sites Available</option>
@@ -126,7 +126,7 @@
                         {% if sites != [] %}
                             <option value="">Select Site</option>
                             {% for site in sites %}
-                                <option value="{{site.id}}">{{ site.name }}</option>
+                                <option {%if employee_data.site_id == site.id%} selected="selected" {%endif%} value="{{site.id}}">{{ site.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -140,7 +140,7 @@
                         {% if departments != [] %}
                             <option value="">Select Department</option>
                             {% for department in departments %}
-                                <option value="{{department.id}}">{{ department.name }}</option>
+                                <option {%if employee_data.department_id == department.id%} selected="selected" {%endif%} value="{{department.id}}">{{ department.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -185,7 +185,7 @@
                         {% if currencies != [] %}
                             <option value="">Select Currency</option>
                             {% for currency in currencies %}
-                                <option value="{{currency.id}}">{{currency.symbol}} {{currency.name}}</option>
+                                <option {%if employee_data.salary_currency_id == currency.id%} selected="selected" {%endif%} value="{{currency.id}}">{{currency.symbol}} {{currency.name}}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -211,7 +211,7 @@
                         {% if employment_contracts != [] %}
                             <option value="">Select Contract</option>
                             {% for contract in employment_contracts %}
-                                <option value="{{contract.id}}">{{ contract.name }}</option>
+                                <option {%if employee_data.employment_contract_id == contract.id%} selected="selected" {%endif%} value="{{contract.id}}">{{ contract.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -225,7 +225,7 @@
                         {% if employment_types != [] %}
                             <option value="">Select Contract</option>
                             {% for type in employment_types %}
-                                <option value="{{type.id}}">{{ type.name }}</option>
+                                <option {%if employee_data.employment_type_id == type.id%} selected="selected" {%endif%} value="{{type.id}}">{{ type.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -255,7 +255,7 @@
                         {% if employers != [] %}
                             <option value="">Select Contract</option>
                             {% for employer in employers %}
-                                <option value="{{employer.id}}">{{ employer.name }}</option>
+                                <option {%if employee_data.employer_id == employer.id%} selected="selected" {%endif%} value="{{employer.id}}">{{ employer.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>

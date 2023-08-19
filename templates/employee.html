@@ -32,9 +32,24 @@
                     <td>{{employee.full_name}}</td>
                     <td>{{employee.job_title}}</td>
                     <td>{{employee.direct_manager}}</td>
-                    <td>{{employee.department_id}}</td>
-                    <td>{{employee.site_id}}</td>
-                    <td>{{employee.employment_type_id}}</td>
+                    {% for department in departments %}
+                        {% if department.id == employee.department_id %}
+                            <td>{{department.name}}</td>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for site in sites %}
+                        {% if site.id == employee.site_id %}
+                            <td>{{site.name}}</td>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for employment in employments %}
+                        {% if employment.id == employee.employment_type_id %}
+                            <td>{{employment.name}}</td>
+                        {% endif %}
+                    {% endfor %}
+
                     <td><button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-info">Edit</button></td>
                     <td><button onclick="window.location.href='delete_employee/{{employee.id}}'" type="button" class="btn btn-danger">Offboard</button></td>
                 </tr>

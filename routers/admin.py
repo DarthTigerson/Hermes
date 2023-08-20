@@ -54,6 +54,22 @@ async def create_role(request: Request, name: str = Form(...), description: str 
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
+@router.get("/add_team")
+async def add_team(request: Request):
+    return templates.TemplateResponse("add-team.html", {"request": request})
+
+@router.post("/add_team", response_class=HTMLResponse)
+async def create_team(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
+    team_model = Teams()
+
+    team_model.name = name
+    team_model.description = description
+
+    db.add(team_model)
+    db.commit()
+
+    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+
 @router.get("/add_user")
 async def add_user(request: Request, db: Session = Depends(get_db)):
     roles = db.query(Roles).order_by(Roles.name).all()

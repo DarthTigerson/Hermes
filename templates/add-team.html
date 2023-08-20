@@ -1,0 +1,26 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Add a new HR Team
+            </div>
+            <div class="card-body">
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" rows="4"> </textarea>
+                </div>
+            </div>
+        </div>
+        <div style="padding-bottom: 60px;"></div>
+        <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            <button type="submit" class="btn btn-primary">Add Team</button>
+            <button type="reset" class="btn btn-secondary">Clear Team</button>
+        </div>
+    </form>
+</div>

@@ -38,7 +38,7 @@
                     <select class="form-control" name="team_id">
                         <option value="0">Not HR</option>
                         {% for team in teams %}
-                            <option value="{{role.id}}">{{ team.name }}</option>
+                            <option value="{{team.id}}">{{ team.name }}</option>
                         {% endfor %}
                     </select>
                 </div>

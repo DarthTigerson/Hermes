@@ -1,0 +1,58 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Add a new User
+            </div>
+            <div class="card-body">
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" name="username" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="first_name" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Surname</label>
+                    <input type="text" class="form-control" name="last_name" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Role</label>
+                    <input type="text" class="form-control" name="role_id" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Team</label>
+                    <input type="text" class="form-control" name="team_id" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Active</label>
+                    <input type="text" class="form-control" name="active" required>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Password
+            </div>
+            <div class="card-body">
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Enter Password</label>
+                    <input type="password" class="form-control" name="password1" required>
+                </div>
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Enter Password Again</label>
+                    <input type="password" class="form-control" name="password2" required>
+                </div>
+            </div>
+        </div>
+        <div style="padding-bottom: 60px;"></div>
+        <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            <button type="reset" class="btn btn-secondary">Clear User</button>
+            <button type="submit" class="btn btn-primary">Add User</button>
+        </div>
+    </form>
+</div>

@@ -30,7 +30,7 @@
                                     <td>{{role.offboarding}}</td>
                                     <td>{{role.manage_modify}}</td>
                                     <td>{{role.admin}}</td>
-                                    <td class="text-right"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                                    <td class="text-center"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -43,7 +43,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">HR Team</h5>
-                    <a href="#" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    <a href="/admin/add_team/" class="btn btn-primary btn-sm" style="float: right;">+</a>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 220px;">
                     <div class="form-group">
@@ -59,7 +59,7 @@
                                 {% for team in teams %}
                                 <tr>
                                     <td>{{team.name}}</td>
-                                    <td class="text-right"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                                    <td class="text-center"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -85,6 +85,7 @@
                         <th scope="col">Role</th>
                         <th scope="col">HR Team</th>
                         <th scope="col">Active</th>
+                        <th scope="col">Password</th>
                         <th scope="col">Edit</th>
                     </tr>
                 </thead>
@@ -97,6 +98,7 @@
                         <td>{{user.role_id}}</td>
                         <td>{{user.team_id}}</td>
                         <td>{{user.active}}</td>
+                        <td><button onclick="window.location.href='#'" type="button" class="btn btn-primary">Reset</button></td>
                         <td><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
                     </tr>
                     {% endfor %}

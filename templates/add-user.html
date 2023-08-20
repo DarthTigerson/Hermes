@@ -21,15 +21,26 @@
                 </div>
                 <div style="width: 30%; display: inline-block;" class="form-group">
                     <label>Role</label>
-                    <input type="text" class="form-control" name="role_id" required>
+                    <select class="form-control" name="role_id">
+                        {% if roles == [] %}
+                            <option value="">No Roles Available</option>
+                        {% endif %}
+                        {% if roles != [] %}
+                            <option value="">Select Role</option>
+                            {% for role in roles %}
+                                <option value="{{role.id}}">{{ role.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
                 </div>
                 <div style="width: 30%; display: inline-block;" class="form-group">
                     <label>Team</label>
-                    <input type="text" class="form-control" name="team_id" required>
-                </div>
-                <div style="width: 30%; display: inline-block;" class="form-group">
-                    <label>Active</label>
-                    <input type="text" class="form-control" name="active" required>
+                    <select class="form-control" name="team_id">
+                        <option value="0">Not HR</option>
+                        {% for team in teams %}
+                            <option value="{{role.id}}">{{ team.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
         </div>
@@ -39,13 +50,10 @@
                 Password
             </div>
             <div class="card-body">
+                <div id="password-error" style="color: red; text-align: center;"></div>
                 <div style="width: 100%; display: inline-block;" class="form-group">
                     <label>Enter Password</label>
-                    <input type="password" class="form-control" name="password1" required>
-                </div>
-                <div style="width: 100%; display: inline-block;" class="form-group">
-                    <label>Enter Password Again</label>
-                    <input type="password" class="form-control" name="password2" required>
+                    <input type="password" class="form-control" name="password" required>
                 </div>
             </div>
         </div>

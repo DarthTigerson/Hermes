@@ -103,8 +103,8 @@
                         {% endif %}
                         {% if hr_teams != [] %}
                             <option value="">Select Team</option>
-                            {% for teram in hr_teams %}
-                                <option value="">{{ site.teram }}</option>
+                            {% for team in hr_teams %}
+                                <option {%if employee_data.hr_team_id == team.id%} selected="selected" {%endif%} value="{{team.id}}">{{ team.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>

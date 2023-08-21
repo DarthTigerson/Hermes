@@ -5,32 +5,31 @@
         <div class="col-md-8" style="padding-bottom: 20px;">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">User Roles</h5>
-                    <a href="/admin/add_role/" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    <h5 class="mb-0">Users</h5>
+                    <a href="/admin/add_user" class="btn btn-primary btn-sm" style="float: right;">+</a>
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 220px;">
                     <div class="form-group">
                         <table class="table table-hover text-center">
                             <thead>
                                 <tr>
+                                    <th scope="col">Username</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Onboarding</th>
-                                    <th scope="col">Offboarding</th>
-                                    <th scope="col">Manage Lists</th>
-                                    <th scope="col">Manage Users</th>
+                                    <th scope="col">Surname</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">HR Team</th>
                                     <th scope="col">Edit</th>
-                                
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for role in roles %}
+                                {% for user in users %}
                                 <tr>
-                                    <td>{{role.name}}</td>
-                                    <td>{{role.onboarding}}</td>
-                                    <td>{{role.offboarding}}</td>
-                                    <td>{{role.manage_modify}}</td>
-                                    <td>{{role.admin}}</td>
-                                    <td class="text-center"><button onclick="window.location.href='/admin/edit_role/{{role.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                    <td>{{user.username}}</td>
+                                    <td>{{user.first_name}}</td>
+                                    <td>{{user.last_name}}</td>
+                                    <td>{{user.role_id}}</td>
+                                    <td>{{user.team_id}}</td>
+                                    <td><button onclick="window.location.href='/admin/edit_user/{{user.id}}'" type="button" class="btn btn-info">Edit</button></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -69,37 +68,33 @@
             </div>
         </div>
     </div>
-
     <div class="card text-center">
         <div class="card-header">
-            <a href="/admin/add_user" class="btn btn-primary" style="float: right;">+</a>
-            <h5 class="card-title">Users</h5>
+            <a href="/admin/add_role/" class="btn btn-primary" style="float: right;">+</a>
+            <h5 class="card-title">User Roles</h5>
         </div>
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Username</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Surname</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">HR Team</th>
-                        <th scope="col">Active</th>
-                        <th scope="col">Password</th>
+                        <th scope="col">Onboarding</th>
+                        <th scope="col">Offboarding</th>
+                        <th scope="col">Manage Lists</th>
+                        <th scope="col">Manage Users</th>
                         <th scope="col">Edit</th>
+                    
                     </tr>
                 </thead>
                 <tbody>
-                    {% for user in users %}
+                    {% for role in roles %}
                     <tr>
-                        <td>{{user.username}}</td>
-                        <td>{{user.first_name}}</td>
-                        <td>{{user.last_name}}</td>
-                        <td>{{user.role_id}}</td>
-                        <td>{{user.team_id}}</td>
-                        <td>{{user.active}}</td>
-                        <td><button onclick="window.location.href='#'" type="button" class="btn btn-primary">Reset</button></td>
-                        <td><button onclick="window.location.href='/admin/edit_user/{{user.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                        <td>{{role.name}}</td>
+                        <td>{{role.onboarding}}</td>
+                        <td>{{role.offboarding}}</td>
+                        <td>{{role.manage_modify}}</td>
+                        <td>{{role.admin}}</td>
+                        <td class="text-center"><button onclick="window.location.href='/admin/edit_role/{{role.id}}'" type="button" class="btn btn-info">Edit</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>

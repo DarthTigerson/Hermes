@@ -49,7 +49,7 @@
                     {% endfor %}
 
                     <td><button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-info">Edit</button></td>
-                    <td><button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='delete_employee/{{employee.id}}'; }" type="button" class="btn btn-danger">Offboard</button></td>
+                    <td><button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger">Offboard</button></td>
                 </tr>
                 {% endfor %}
 

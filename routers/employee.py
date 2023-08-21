@@ -29,7 +29,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
 async def get_employee(request: Request, db: Session = Depends(get_db)):
-    employees = db.query(models.Employees).order_by(models.Employees.first_name).all()
+    employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.status == 1).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
@@ -143,6 +143,20 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.employment_contract_id = employment_contract_id
     employee_model.employment_type_id = employment_type_id
     employee_model.employment_status_id = 1
+
+    db.add(employee_model)
+    db.commit()
+
+    return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
+@router.get("/offboard_employee/{employee_id}")
+async def offboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):
+    employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
+
+    if employee_model is None:
+        raise RedirectResponse(url="/employee", status_code=status.HTTP_404_NOT_FOUND)
+    
+    employee_model.status = 1
 
     db.add(employee_model)
     db.commit()

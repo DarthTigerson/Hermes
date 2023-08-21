@@ -44,7 +44,7 @@ async def add_department(request: Request):
     return templates.TemplateResponse("add-department.html", {"request": request})
 
 @router.post("/add_department", response_class=HTMLResponse)
-async def create_department(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def create_department(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     department_model = Departments()
 
     department_model.name = name
@@ -62,7 +62,7 @@ async def edit_department(request: Request, department_id: int, db: Session = De
     return templates.TemplateResponse("edit-department.html", {"request": request, "department": department})
 
 @router.post("/edit_department/{department_id}", response_class=HTMLResponse)
-async def update_department(request: Request, department_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def update_department(request: Request, department_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
 
     department_model = db.query(Departments).filter(Departments.id == department_id).first()
 
@@ -91,7 +91,7 @@ async def add_site(request: Request):
     return templates.TemplateResponse("add-site.html", {"request": request})
 
 @router.post("/add_site", response_class=HTMLResponse)
-async def create_site(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def create_site(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     site_model = Sites()
 
     site_model.name = name
@@ -109,7 +109,7 @@ async def edit_site(request: Request, site_id: int, db: Session = Depends(get_db
     return templates.TemplateResponse("edit-site.html", {"request": request, "site": site})
 
 @router.post("/edit_site/{site_id}", response_class=HTMLResponse)
-async def update_site(request: Request, site_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def update_site(request: Request, site_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     site_model = db.query(Sites).filter(Sites.id == site_id).first()
 
     site_model.name = name
@@ -137,7 +137,7 @@ async def add_contract(request: Request):
     return templates.TemplateResponse("add-contract.html", {"request": request})
 
 @router.post("/add_contract", response_class=HTMLResponse)
-async def create_contract(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def create_contract(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     contract_model = Contracts()
 
     contract_model.name = name
@@ -155,7 +155,7 @@ async def edit_contract(request: Request, contract_id: int, db: Session = Depend
     return templates.TemplateResponse("edit-contract.html", {"request": request, "contract": contract})
 
 @router.post("/edit_contract/{contract_id}", response_class=HTMLResponse)
-async def update_contract(request: Request, contract_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def update_contract(request: Request, contract_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     contract_model = db.query(Contracts).filter(Contracts.id == contract_id).first()
 
     contract_model.name = name
@@ -183,7 +183,7 @@ async def add_employer(request: Request):
     return templates.TemplateResponse("add-employer.html", {"request": request})
 
 @router.post("/add_employer", response_class=HTMLResponse)
-async def create_employer(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def create_employer(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     employer_model = Employers()
 
     employer_model.name = name
@@ -201,7 +201,7 @@ async def edit_employer(request: Request, employer_id: int, db: Session = Depend
     return templates.TemplateResponse("edit-employer.html", {"request": request, "employer": employer})
 
 @router.post("/edit_employer/{employer_id}", response_class=HTMLResponse)
-async def update_employer(request: Request, employer_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def update_employer(request: Request, employer_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     employer_model = db.query(Employers).filter(Employers.id == employer_id).first()
 
     employer_model.name = name
@@ -229,7 +229,7 @@ async def add_employment(request: Request):
     return templates.TemplateResponse("add-employment.html", {"request": request})
 
 @router.post("/add_employment", response_class=HTMLResponse)
-async def create_employment(request: Request, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def create_employment(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     employment_model = Employment()
 
     employment_model.name = name
@@ -247,7 +247,7 @@ async def edit_employment(request: Request, employment_id: int, db: Session = De
     return templates.TemplateResponse("edit-employment.html", {"request": request, "employment": employment})
 
 @router.post("/edit_employment/{employment_id}", response_class=HTMLResponse)
-async def update_employment(request: Request, employment_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
+async def update_employment(request: Request, employment_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
     employment_model = db.query(Employment).filter(Employment.id == employment_id).first()
 
     employment_model.name = name

@@ -1,0 +1,55 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Update Role
+            </div>
+            <div class="card-body">
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="name" value="{{role.name}}" required>
+                </div>
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" rows="3">{{role.description}}</textarea>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Accesses
+            </div>
+            <div class="card-body" style="overflow-y: auto;">
+                <table class="table text-center table-hover">
+                    <tr>
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="onboarding" {% if role.onboarding %}checked{% endif %}></td>
+                        <td style="text-align: left;">Onboarding</td>
+                        <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to add new employees.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="offboarding" {% if role.offboarding %}checked{% endif %}></td>
+                        <td style="text-align: left;">Offboarding</td>
+                        <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to offboard employees.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="manage_modify" {% if role.manage_modify %}checked{% endif %}></td>
+                        <td style="text-align: left;">Manage Lists</td>
+                        <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to Add, Edit and Remove Lists (Departments, Sites, Contracts, Employers, Employment, Countries, Currency).</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="admin" {% if role.admin %}checked{% endif %}></td>
+                        <td style="text-align: left;">Manage Admin</td>
+                        <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to Add, Edit and Remove Users, Roles and HR Teams.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="padding-bottom: 60px;"></div>
+        <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            <button type="submit" class="btn btn-primary">Update Role</button>
+        </div>
+    </form>
+</div>

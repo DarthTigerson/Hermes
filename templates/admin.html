@@ -59,7 +59,7 @@
                                 {% for team in teams %}
                                 <tr>
                                     <td>{{team.name}}</td>
-                                    <td class="text-center"><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                                    <td class="text-center"><button onclick="window.location.href='/admin/edit_team/{{team.id}}'" type="button" class="btn btn-info">Edit</button></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

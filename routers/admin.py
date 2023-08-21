@@ -70,6 +70,24 @@ async def create_team(request: Request, name: str = Form(...), description: str 
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
+@router.get("/edit_team/{team_id}")
+async def edit_team(request: Request, team_id: int, db: Session = Depends(get_db)):
+    team = db.query(Teams).filter(Teams.id == team_id).first()
+    
+    return templates.TemplateResponse("edit-team.html", {"request": request, "team": team})
+
+@router.post("/edit_team/{team_id}", response_class=HTMLResponse)
+async def update_team(request: Request, team_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
+    team = db.query(Teams).filter(Teams.id == team_id).first()
+
+    team.name = name
+    team.description = description
+
+    db.add(team)
+    db.commit()
+
+    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+
 @router.get("/add_user")
 async def add_user(request: Request, db: Session = Depends(get_db)):
     roles = db.query(Roles).order_by(Roles.name).all()

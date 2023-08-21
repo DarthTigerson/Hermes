@@ -39,15 +39,18 @@ async def add_role(request: Request):
     return templates.TemplateResponse("add-role.html", {"request": request})
 
 @router.post("/add_role", response_class=HTMLResponse)
-async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), db: Session = Depends(get_db)):
+async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
     role_model = Roles()
 
     role_model.name = name
     role_model.description = description
     role_model.onboarding = onboarding
+    role_model.employee_updates = employee_updates
     role_model.offboarding = offboarding
     role_model.manage_modify = manage_modify
     role_model.admin = admin
+    role_model.payroll = payroll
+    role_model.api_report = api_report
 
     db.add(role_model)
     db.commit()
@@ -61,15 +64,18 @@ async def edit_role(request: Request, role_id: int, db: Session = Depends(get_db
     return templates.TemplateResponse("edit-role.html", {"request": request, "role": role})
 
 @router.post("/edit_role/{role_id}", response_class=HTMLResponse)
-async def edit_role(request: Request, role_id: int, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), db: Session = Depends(get_db)):
+async def edit_role(request: Request, role_id: int, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_update: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
     role = db.query(Roles).filter(Roles.id == role_id).first()
 
     role.name = name
     role.description = description
     role.onboarding = onboarding
+    role.employee_update = employee_update
     role.offboarding = offboarding
     role.manage_modify = manage_modify
     role.admin = admin
+    role.payroll = payroll
+    role.api_report = api_report
 
     db.add(role)
     db.commit()

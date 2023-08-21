@@ -36,6 +36,15 @@ async def get_employee(request: Request, db: Session = Depends(get_db)):
 
     return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments})
 
+@router.get("/offboarded_employee")
+async def get_offboarded_employee(request: Request, db: Session = Depends(get_db)):
+    employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 1).all()
+    departments = db.query(models.Departments).order_by(models.Departments.name).all()
+    sites = db.query(models.Sites).order_by(models.Sites.name).all()
+    employments = db.query(models.Employment).order_by(models.Employment.name).all()
+
+    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments})
+
 @router.get("/add_employee")
 async def add_employee(request: Request, db: Session = Depends(get_db)):
     countries = db.query(models.Country).order_by(models.Country.name).all()

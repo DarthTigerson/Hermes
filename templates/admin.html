@@ -99,7 +99,7 @@
                         <td>{{user.team_id}}</td>
                         <td>{{user.active}}</td>
                         <td><button onclick="window.location.href='#'" type="button" class="btn btn-primary">Reset</button></td>
-                        <td><button onclick="window.location.href='#'" type="button" class="btn btn-info">Edit</button></td>
+                        <td><button onclick="window.location.href='/admin/edit_user/{{user.id}}'" type="button" class="btn btn-info">Edit</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>

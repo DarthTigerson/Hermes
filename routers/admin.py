@@ -132,3 +132,26 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     db.commit()
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_user/{user_id}")
+async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db)):
+    user = db.query(Users).filter(Users.id == user_id).first()
+    roles = db.query(Roles).order_by(Roles.name).all()
+    teams = db.query(Teams).order_by(Teams.name).all()
+    
+    return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams})
+
+@router.post("/edit_user/{user_id}", response_class=HTMLResponse)
+async def update_user(request: Request, user_id: int, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), db: Session = Depends(get_db)):
+    user = db.query(Users).filter(Users.id == user_id).first()
+
+    user.username = username
+    user.first_name = first_name
+    user.last_name = last_name
+    user.role_id = role_id
+    user.team_id = team_id
+
+    db.add(user)
+    db.commit()
+
+    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)

@@ -1,0 +1,54 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Update User
+            </div>
+            <div class="card-body">
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" name="username" value="{{user.username}}" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" name="first_name" value="{{user.first_name}}" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Surname</label>
+                    <input type="text" class="form-control" name="last_name" value="{{user.last_name}}" required>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Role</label>
+                    <select class="form-control" name="role_id">
+                        {% if roles == [] %}
+                            <option value="">No Roles Available</option>
+                        {% endif %}
+                        {% if roles != [] %}
+                            <option value="">Select Role</option>
+                            {% for role in roles %}
+                                <option {%if user.role_id == role.id%} selected="selected" {%endif%} value="{{role.id}}">{{ role.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Team</label>
+                    <select class="form-control" name="team_id">
+                        <option value="0">Not HR</option>
+                        {% for team in teams %}
+                            <option {%if user.team_id == team.id%} selected="selected" {%endif%} value="{{team.id}}">{{ team.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div style="padding-bottom: 60px;"></div>
+        <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            <button type="submit" class="btn btn-primary">Update User</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='#'">Reset Password</button>
+            <button type="button" class="btn btn-danger" onclick="window.location.href='#'">Deactivate</button>
+        </div>
+    </form>
+</div>

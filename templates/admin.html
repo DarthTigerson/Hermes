@@ -8,7 +8,7 @@
                     <h5 class="mb-0">Users</h5>
                     <a href="/admin/add_user" class="btn btn-primary btn-sm" style="float: right;">+</a>
                 </div>
-                <div class="card-body" style="overflow-y: auto; height: 220px;">
+                <div class="card-body" style="overflow-y: auto; height: 400px;">
                     <div class="form-group">
                         <table class="table table-hover text-center">
                             <thead>
@@ -27,8 +27,19 @@
                                     <td>{{user.username}}</td>
                                     <td>{{user.first_name}}</td>
                                     <td>{{user.last_name}}</td>
-                                    <td>{{user.role_id}}</td>
-                                    <td>{{user.team_id}}</td>
+                                    {% for role in roles %}
+                                        {% if role.id == user.role_id %}
+                                            <td>{{role.name}}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for team in teams %}
+                                        {% if team.id == user.team_id %}
+                                            <td>{{team.name}}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if user.team_id == 0 %}
+                                        <td>Not HR</td>
+                                    {% endif %}
                                     <td><button onclick="window.location.href='/admin/edit_user/{{user.id}}'" type="button" class="btn btn-info">Edit</button></td>
                                 </tr>
                                 {% endfor %}
@@ -44,7 +55,7 @@
                     <h5 class="mb-0">HR Team</h5>
                     <a href="/admin/add_team/" class="btn btn-primary btn-sm" style="float: right;">+</a>
                 </div>
-                <div class="card-body" style="overflow-y: auto; height: 220px;">
+                <div class="card-body" style="overflow-y: auto; height: 400px;">
                     <div class="form-group">
                         <table class="table table-hover text-center">
                             <thead>
@@ -73,27 +84,32 @@
             <a href="/admin/add_role/" class="btn btn-primary" style="float: right;">+</a>
             <h5 class="card-title">User Roles</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="overflow-y: auto; height: 250px;">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Onboarding</th>
+                        <th scope="col">Employee Update</th>
                         <th scope="col">Offboarding</th>
                         <th scope="col">Manage Lists</th>
                         <th scope="col">Manage Users</th>
+                        <th scope="col">View Payrol</th>
+                        <th scope="col">API Reporting</th>
                         <th scope="col">Edit</th>
-                    
                     </tr>
                 </thead>
                 <tbody>
                     {% for role in roles %}
                     <tr>
                         <td>{{role.name}}</td>
-                        <td>{{role.onboarding}}</td>
-                        <td>{{role.offboarding}}</td>
-                        <td>{{role.manage_modify}}</td>
-                        <td>{{role.admin}}</td>
+                        <td><input type="checkbox" style="color: darkcyan;" disabled {% if role.onboarding %}checked{% endif %}></td>
+                        <td><input type="checkbox" disabled {% if role.employee_updates %}checked{% endif %}></td>
+                        <td><input type="checkbox" disabled {% if role.offboarding %}checked{% endif %}></td>
+                        <td><input type="checkbox" disabled {% if role.manage_modify %}checked{% endif %}></td>
+                        <td><input type="checkbox" disabled {% if role.admin %}checked{% endif %}></td>
+                        <td><input type="checkbox" disabled {% if role.payroll %}checked{% endif %}></td>
+                        <td><input type="checkbox" disabled {% if role.api_report %}checked{% endif %}></td>
                         <td class="text-center"><button onclick="window.location.href='/admin/edit_role/{{role.id}}'" type="button" class="btn btn-info">Edit</button></td>
                     </tr>
                     {% endfor %}

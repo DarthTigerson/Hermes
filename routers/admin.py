@@ -64,13 +64,13 @@ async def edit_role(request: Request, role_id: int, db: Session = Depends(get_db
     return templates.TemplateResponse("edit-role.html", {"request": request, "role": role})
 
 @router.post("/edit_role/{role_id}", response_class=HTMLResponse)
-async def edit_role(request: Request, role_id: int, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_update: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
+async def edit_role(request: Request, role_id: int, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
     role = db.query(Roles).filter(Roles.id == role_id).first()
 
     role.name = name
     role.description = description
     role.onboarding = onboarding
-    role.employee_update = employee_update
+    role.employee_updates = employee_updates
     role.offboarding = offboarding
     role.manage_modify = manage_modify
     role.admin = admin

@@ -24,38 +24,38 @@
             </div>
             <div class="card-body" style="overflow-y: auto;">
                 <table class="table text-center table-hover">
-                    <tr>
+                    <tr onclick="document.querySelector('input[name=onboarding]').checked = !document.querySelector('input[name=onboarding]').checked;">
                         <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="onboarding" {% if role.onboarding %}checked{% endif %}></td>
                         <td style="text-align: left;">Onboarding</td>
                         <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to add new employees.</td>
                     </tr>
-                    <tr>
-                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="employee_update" {% if role.employee_update %}checked{% endif %}></td>
+                    <tr onclick="document.querySelector('input[name=employee_updates]').checked = !document.querySelector('input[name=employee_updates]').checked;">
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="employee_updates" {% if role.employee_updates %}checked{% endif %}></td>
                         <td style="text-align: left;">Employee Updates</td>
                         <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to change and update employee fields.</td>
                     </tr>
-                    <tr>
+                    <tr onclick="document.querySelector('input[name=offboarding]').checked = !document.querySelector('input[name=offboarding]').checked;">
                         <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="offboarding" {% if role.offboarding %}checked{% endif %}></td>
                         <td style="text-align: left;">Offboarding</td>
                         <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to offboard employees.</td>
                     </tr>
-                    <tr>
+                    <tr onclick="document.querySelector('input[name=manage_modify]').checked = !document.querySelector('input[name=manage_modify]').checked;">
                         <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="manage_modify" {% if role.manage_modify %}checked{% endif %}></td>
                         <td style="text-align: left;">Manage Lists</td>
                         <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to Add, Edit and Remove Lists (Departments, Sites, Contracts, Employers, Employment, Countries, Currency).</td>
                     </tr>
-                    <tr>
+                    <tr onclick="document.querySelector('input[name=payroll]').checked = !document.querySelector('input[name=payroll]').checked;">
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="payroll" {% if role.payroll %}checked{% endif %}></td>
+                        <td style="text-align: left;">View Payroll Details</td>
+                        <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to Employees Payroll details.</td>
+                    </tr>
+                    <tr onclick="document.querySelector('input[name=admin]').checked = !document.querySelector('input[name=admin]').checked;">
                         <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="admin" {% if role.admin %}checked{% endif %}></td>
                         <td style="text-align: left;">Manage Admin</td>
                         <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to Add, Edit and Remove Users, Roles and HR Teams.</td>
                     </tr>
-                    <tr>
-                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="payrol" {% if role.payroll %}checked{% endif %}></td>
-                        <td style="text-align: left;">View Payrol Details</td>
-                        <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to Employees Payroll details.</td>
-                    </tr>
-                    <tr>
-                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="api_reporting" {% if role.api_reporting %}checked{% endif %}></td>
+                    <tr onclick="document.querySelector('input[name=api_report]').checked = !document.querySelector('input[name=api_report]').checked;">
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="api_report" {% if role.api_reporting %}checked{% endif %}></td>
                         <td style="text-align: left;">API Reporting</td>
                         <td style="text-align: left; padding-left: 25px;">This role should be used for service accounts only. Users with this role assigned will be able to call an API request to Misses Talos to GET a report of all available users.</td>
                     </tr>

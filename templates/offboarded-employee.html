@@ -17,7 +17,7 @@
                     <th scope="col">Department</th>
                     <th scope="col">Site</th>
                     <th scope="col">Contract</th>
-                    <th scope="col">Offboard</th>
+                    <th scope="col">Re-Onboard</th>
 
                 </tr>
                 </thead>
@@ -47,7 +47,7 @@
                         {% endif %}
                     {% endfor %}
 
-                    <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='#'; }" type="button" class="btn btn-danger">Re-Onboard</button></td>
+                    <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='/employee/reboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger">Re-Onboard</button></td>
                 </tr>
                 {% endfor %}
 

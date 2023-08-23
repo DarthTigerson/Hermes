@@ -47,7 +47,7 @@
                             {% endfor %}
 
                             {% if employee.active == 1 %}
-                            <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='#'; }" type="button" class="btn btn-danger">Re-Onboard</button></td>
+                            <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='/employee/reboard_employee/' + '{{str(employee.id)}}'; }" type="button" class="btn btn-danger">Re-Onboard</button></td>
                             {% endif %}
                         </tr>
                     </div>

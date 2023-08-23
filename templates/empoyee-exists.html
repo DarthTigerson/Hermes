@@ -1,0 +1,64 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header" style="text-align: left;">
+            <button onclick="goBack()" class="btn btn-info">Back</button>
+        </div>
+        <div class="card-body">  
+            <br>
+            <h2>Employee already exists</h2>
+            <br>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Manager</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Site</th>
+                        <th scope="col">Contract</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div class="container text-center">
+                        <tr class="pointer">
+                            <td>{{employee.email}}</td>
+                            <td>{{employee.full_name}}</td>
+                            <td>{{employee.job_title}}</td>
+                            <td>{{employee.direct_manager}}</td>
+                            {% for department in departments %}
+                                {% if department.id == employee.department_id %}
+                                    <td>{{department.name}}</td>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for site in sites %}
+                                {% if site.id == employee.site_id %}
+                                    <td>{{site.name}}</td>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for employment in employments %}
+                                {% if employment.id == employee.employment_type_id %}
+                                    <td>{{employment.name}}</td>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if employee.active == 1 %}
+                            <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='#'; }" type="button" class="btn btn-danger">Re-Onboard</button></td>
+                            {% endif %}
+                        </tr>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>

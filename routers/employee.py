@@ -61,6 +61,11 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
 
 @router.post("/add_employee", response_class=HTMLResponse)
 async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(...), db: Session = Depends(get_db)):
+    employee = db.query(models.Employees).filter(models.Employees.email == email).first()
+
+    if employee:
+        return RedirectResponse(url="/employee/user_exists/" + str(employee.id), status_code=status.HTTP_302_FOUND)
+    
     employee_model = models.Employees()
 
     employee_model.email = email
@@ -117,7 +122,11 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
 async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), db: Session = Depends(get_db)):
+    employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
+    if employee:
+        return RedirectResponse(url="/employee/user_exists/" + str(employee.id), status_code=status.HTTP_302_FOUND)
+    
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
 
     employee_model.email = email
@@ -157,6 +166,15 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     db.commit()
 
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
+@router.get("/user_exists/{employee_id}")
+async def user_exists(request: Request, employee_id: str, db: Session = Depends(get_db)):
+    employee = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
+    departments = db.query(models.Departments).order_by(models.Departments.name).all()
+    sites = db.query(models.Sites).order_by(models.Sites.name).all()
+    employments = db.query(models.Employment).order_by(models.Employment.name).all()
+
+    return templates.TemplateResponse("empoyee-exists.html", {"request": request, "employee": employee, "departments": departments, "sites": sites, "employments": employments})
 
 @router.get("/offboard_employee/{employee_id}")
 async def offboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):

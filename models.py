@@ -1,6 +1,13 @@
 from database import Base
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
 
+class Logs(Base):
+    __tablename__ = 'logs'
+    id = Column(Integer, primary_key=True, index=True)
+    action = Column(String(50))
+    description = Column(String(200))
+    date = Column(DateTime)
+
 class Users(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)

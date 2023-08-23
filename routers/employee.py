@@ -124,7 +124,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
 async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), db: Session = Depends(get_db)):
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
-    if employee:
+    if employee == True and employee.id != employee_id:
         return RedirectResponse(url="/employee/user_exists/" + str(employee.id), status_code=status.HTTP_302_FOUND)
     
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()

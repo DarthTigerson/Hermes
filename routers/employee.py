@@ -121,7 +121,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
-async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), db: Session = Depends(get_db)):
+async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), employment_status_id: int = Form(...), db: Session = Depends(get_db)):
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
     if employee == True and employee.id != employee_id:
@@ -160,7 +160,7 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.working_hours = working_hours
     employee_model.employment_contract_id = employment_contract_id
     employee_model.employment_type_id = employment_type_id
-    employee_model.employment_status_id = 1
+    employee_model.employment_status_id = employment_status_id
 
     db.add(employee_model)
     db.commit()
@@ -189,3 +189,17 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
     db.commit()
 
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
+@router.get("/reboard_employee/{employee_id}")
+async def reboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):
+    employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
+
+    if employee_model is None:
+        raise RedirectResponse(url="/employee", status_code=status.HTTP_404_NOT_FOUND)
+    
+    employee_model.employment_status_id = 0
+
+    db.add(employee_model)
+    db.commit()
+
+    return RedirectResponse(url="/employee/offboarded_employee", status_code=status.HTTP_302_FOUND)

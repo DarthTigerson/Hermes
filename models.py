@@ -28,8 +28,9 @@ class Roles(Base):
     employee_updates = Column(Boolean, default=False)
     offboarding = Column(Boolean, default=False)
     manage_modify = Column(Boolean, default=False)
-    admin = Column(Boolean, default=False)
     payroll = Column(Boolean, default=False)
+    admin = Column(Boolean, default=False)
+    logs = Column(Boolean, default=False)
     api_report = Column(Boolean, default=False)
 
 class Teams(Base):

@@ -182,14 +182,64 @@
         </div>
         {% endif %}
     </div>
+</div>
+<div class="container">
     <br>
-    <div class="card text-center">
-        <div style="text-align: left;" class="card-header">
-            Onboarded Employees: {{total_employees}}
+    <div class="row">
+        <div class="col-md-6">
+            {% if todays_birthdays != [] %}
+            <div class="card text-center">
+            <div style="text-align: center;" class="card-header">
+                <h4><img src="/static/img/cake.png" alt="Hermes logo" height="40"> Today's Birthdays <img src="/static/img/cake.png" alt="Hermes logo" height="40"></h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Site</th>
+                    <th scope="col">End Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for todays_birthday in todays_birthdays %}
+                    <tr class="pointer">
+                    <td>{{todays_birthday.email}}</td>
+                    <td>{{todays_birthday.full_name}}</td>
+                    <td>{{todays_birthday.job_title}}</td>
+                    {% for department in departments %}
+                    {% if department.id == todays_birthday.department_id %}
+                    <td>{{department.name}}</td>
+                    {% endif %}
+                    {% endfor %}
+                    {% for site in sites %}
+                    {% if site.id == todays_birthday.site_id %}
+                    <td>{{site.name}}</td>
+                    {% endif %}
+                    {% endfor %}
+                    <td>{{todays_birthday.end_date}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+            </div>
+            {% endif %}
         </div>
-        <br>
-        <div style="text-align: left;" class="card-header">
-            Total Offboarded Employees: {{total_offboarded_employees}}
+        <div class="col-md-6">
+            <div class="card text-center">
+            <div style="text-align: left;" class="card-header">
+                Total Onboarded Employees: {{total_employees}}
+            </div>
+            <br>
+            <div style="text-align: left;" class="card-header">
+                Total Offboarded Employees: {{total_offboarded_employees}}
+            </div>
+            </div>
+        </div>
         </div>
     </div>
 </div>

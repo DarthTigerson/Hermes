@@ -184,7 +184,7 @@
                     </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Salary</label>
+                    <label>Base Salary</label>
                     <input type="text" class="form-control" name="salary" required>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
@@ -219,6 +219,32 @@
                             <option value="">Select Contract</option>
                             {% for type in employment_types %}
                                 <option value="{{type.id}}">{{ type.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div style="width: 350px; display: inline-block;" class="form-group">
+                    <label>Net Monthly Salary</label>
+                    <input type="text" class="form-control" name="net_monthly_salary" required>
+                </div>
+                <div style="width: 350px; display: inline-block;" class="form-group">
+                    <label>Change Reason</label>
+                    <input type="text" class="form-control" name="change_reason" required>
+                </div>
+                <div style="width: 350px; display: inline-block;" class="form-group">
+                    <label>Increase Percent</label>
+                    <input type="text" class="form-control" name="increase_percent" required>
+                </div>
+                <div style="width: 350px; display: inline-block;" class="form-group">
+                    <label>Salary Pay Frequency</label>
+                    <select class="form-control" name="salary_pay_frequency_id" required>
+                        {% if salary_pay_frequencies == [] %}
+                            <option value="">No Salary Pay Frequencies Available</option>
+                        {% endif %}
+                        {% if salary_pay_frequencies != [] %}
+                            <option value="">Select Salary Pay Frequency</option>
+                            {% for salary_pay_frequency in salary_pay_frequencies %}
+                                <option value="{{salary_pay_frequency.id}}">{{ salary_pay_frequency.name }}</option>
                             {% endfor %}
                         {% endif %}
                     </select>

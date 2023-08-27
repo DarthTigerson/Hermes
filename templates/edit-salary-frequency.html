@@ -1,0 +1,21 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Add a new Salary Pay Frequency
+            </div>
+            <div class="card-body">
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Salary Pay Frequency Name</label>
+                    <input type="text" class="form-control" name="name" value="{{salary_pay_frequency.name}}" required>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" style="width: 170px;">Update</button>
+                    <button type="button" onclick="window.location.href='/manage/delete_salary_pay_frequency/{{salary_pay_frequency.id}}'" class="btn btn-danger" style="width: 170px;">Delete</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

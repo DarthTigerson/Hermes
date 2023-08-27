@@ -1,0 +1,21 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Add a new Salary Pay Frequency
+            </div>
+            <div class="card-body">
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Salary Pay Frequency Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" style="width: 170px;">Add Pay Frequency</button>
+                    <button type="reset" class="btn btn-secondary" style="width: 170px;">Clear</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

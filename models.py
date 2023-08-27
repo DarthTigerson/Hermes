@@ -69,6 +69,10 @@ class Employees(Base):
     salary_currency_id = Column(Integer, ForeignKey('currency.id'))
     salary = Column(String(50))
     salary_period = Column(String(50))
+    net_monthly_salary = Column(String(50))
+    salary_pay_frequency_id = Column(Integer, ForeignKey('salary_pay_frequency.id'))
+    change_reason = Column(String(50))
+    increase_percentage = Column(String(50))
     hr_team_id = Column(Integer, ForeignKey('teams.id'))
     working_hours = Column(Integer)
     employment_contract_id = Column(Integer, ForeignKey('contracts.id'))
@@ -118,5 +122,10 @@ class Employment(Base):
 
 class Status(Base):
     __tablename__ = 'status'
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(50))
+
+class PayFrequency(Base):
+    __tablename__ = 'salary_pay_frequency'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
-from models import Departments, Sites, Contracts, Employers, Employment, Country, Currency
+from models import Departments, Sites, Contracts, Employers, Employment, Country, Currency, PayFrequency
 
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -36,8 +36,9 @@ async def test(request: Request, db: Session = Depends(get_db)):
     employment = db.query(Employment).order_by(Employment.name).all()
     country = db.query(Country).order_by(Country.name).all()
     currency = db.query(Currency).order_by(Currency.name).all()
+    salary_pay_frequency = db.query(PayFrequency).order_by(PayFrequency.name).all()
 
-    return templates.TemplateResponse("manage.html", {"request": request, "departments": departments, "sites": sites, "contracts": contracts, "employers": employers, "employment": employment, "countries": country, "currencies": currency})
+    return templates.TemplateResponse("manage.html", {"request": request, "departments": departments, "sites": sites, "contracts": contracts, "employers": employers, "employment": employment, "countries": country, "currencies": currency, "salary_pay_frequencies": salary_pay_frequency})
 
 @router.get("/add_department")
 async def add_department(request: Request):
@@ -358,6 +359,50 @@ async def delete_currency(request: Request, currency_id: int, db: Session = Depe
         raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     db.query(Currency).filter(Currency.id == currency_id).delete()
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/add_salary_pay_frequency")
+async def add_salary_pay_frequency(request: Request):
+    return templates.TemplateResponse("add-salary-frequency.html", {"request": request})
+
+@router.post("/add_salary_pay_frequency", response_class=HTMLResponse)
+async def create_salary_pay_frequency(request: Request, name: str = Form(...), db: Session = Depends(get_db)):
+    salary_pay_frequency = PayFrequency()
+
+    salary_pay_frequency.name = name
+
+    db.add(salary_pay_frequency)
+    db.commit()
+    
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/edit_salary_pay_frequency/{spf_id}")
+async def edit_salary_pay_frequency(request: Request, spf_id: int, db: Session = Depends(get_db)):
+    payFrequency = db.query(PayFrequency).filter(PayFrequency.id == spf_id).first()
+
+    return templates.TemplateResponse("edit-salary-frequency.html", {"request": request, "salary_pay_frequency": payFrequency})
+
+@router.post("/edit_salary_pay_frequency/{spf_id}", response_class=HTMLResponse)
+async def update_salary_pay_frequency(request: Request, spf_id: int, name: str = Form(...), db: Session = Depends(get_db)):
+    payFrequency = db.query(PayFrequency).filter(PayFrequency.id == spf_id).first()
+
+    payFrequency.name = name
+
+    db.add(payFrequency)
+    db.commit()
+
+    return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+@router.get("/delete_salary_pay_frequency/{spf_id}")
+async def delete_salary_pay_frequency(request: Request, spf_id: int, db: Session = Depends(get_db)):
+    payFrequency = db.query(PayFrequency).filter(PayFrequency.id == spf_id).first()
+
+    if payFrequency is None:
+        raise RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+    
+    db.query(PayFrequency).filter(PayFrequency.id == spf_id).delete()
     db.commit()
 
     return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)

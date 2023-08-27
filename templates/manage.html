@@ -182,5 +182,30 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3" style="padding-bottom: 20px;">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Salary Pay Frequency</h5>
+                    <a href="add_salary_pay_frequency" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                </div>
+                <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
+                    <div class="form-group">
+                        <table class="table table-hover">
+                            {% if salary_pay_frequencies == [] %}
+                            <div class="text-center">
+                                <p>No Pay Frequencies Entered</p>
+                            </div>
+                            {% endif %}
+                            {% for salary_pay_frequency in salary_pay_frequencies %}
+                            <tr>
+                                <td>{{salary_pay_frequency.name}}</td>
+                                <td class="text-right"><button onclick="window.location.href='/manage/edit_salary_pay_frequency/{{salary_pay_frequency.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

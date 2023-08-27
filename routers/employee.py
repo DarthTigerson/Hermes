@@ -55,12 +55,13 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     employment_types = db.query(models.Employment).order_by(models.Employment.name).all()
     employers = db.query(models.Employers).order_by(models.Employers.name).all()
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
+    salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
 
-    return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams})
+    return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency})
 
 @router.post("/add_employee", response_class=HTMLResponse)
-async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(...), db: Session = Depends(get_db)):
+async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), db: Session = Depends(get_db)):
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
     if employee:
@@ -95,6 +96,10 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     employee_model.salary_currency_id = salary_currency_id
     employee_model.salary = salary
     employee_model.salary_period = salary_period
+    employee_model.salary_pay_frequency_id = salary_pay_frequency_id
+    employee_model.net_monthly_salary = net_monthly_salary
+    employee_model.change_reason = change_reason
+    employee_model.increase_percentage = increase_percent
     employee_model.hr_team_id = hr_team_id
     employee_model.working_hours = working_hours
     employee_model.employment_contract_id = employment_contract_id
@@ -117,11 +122,12 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     employment_types = db.query(models.Employment).order_by(models.Employment.name).all()
     employers = db.query(models.Employers).order_by(models.Employers.name).all()
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
+    salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
-    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams})
+    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
-async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), employment_status_id: int = Form(...), db: Session = Depends(get_db)):
+async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), employment_status_id: int = Form(...), db: Session = Depends(get_db)):
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
     if employee == True and employee.id != employee_id:
@@ -156,6 +162,10 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.salary_currency_id = salary_currency_id
     employee_model.salary = salary
     employee_model.salary_period = salary_period
+    employee_model.salary_pay_frequency_id = salary_pay_frequency_id
+    employee_model.net_monthly_salary = net_monthly_salary
+    employee_model.change_reason = change_reason
+    employee_model.increase_percentage = increase_percent
     employee_model.hr_team_id = hr_team_id
     employee_model.working_hours = working_hours
     employee_model.employment_contract_id = employment_contract_id

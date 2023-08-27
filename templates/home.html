@@ -1,4 +1,73 @@
 {% include 'layout.html' %}
-<h1>Hermes</h1>
 
-<p> Onboarded Employees: {{total_employees}}</p>
+<div class="container">
+    <div class="card text-center">
+        <div style="text-align: left;" class="card-header">
+            Today's Offboarding
+        </div>
+        {% if todays_offboardings == [] %}
+        <div class="card-body">
+            <h5 class="card-title">No employees to offboard today.</h5>
+        </div>
+        {% endif %}
+        {% if todays_offboardings != [] %}
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Manager</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Site</th>
+                    <th scope="col">Contract</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Offboard</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for todays_offboarding in todays_offboardings %}
+                <tr class="pointer">
+                    <td>{{todays_offboarding.email}}</td>
+                    <td>{{todays_offboarding.full_name}}</td>
+                    <td>{{todays_offboarding.job_title}}</td>
+                    <td>{{todays_offboarding.direct_manager}}</td>
+                    {% for department in departments %}
+                        {% if department.id == todays_offboarding.department_id %}
+                            <td>{{department.name}}</td>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for site in sites %}
+                        {% if site.id == todays_offboarding.site_id %}
+                            <td>{{site.name}}</td>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for employment in employments %}
+                        {% if employment.id == todays_offboarding.employment_type_id %}
+                            <td>{{employment.name}}</td>
+                        {% endif %}
+                    {% endfor %}
+
+                    <td><button onclick="window.location.href='employee/edit_employee/{{todays_offboarding.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                    <td><button onclick="if (confirm('Are you sure you want to offboard {{todays_offboarding.full_name}}?')) { window.location.href='offboard_employee/{{todays_offboarding.id}}'; }" type="button" class="btn btn-danger">Offboard</button></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+    <br>
+    <div class="card text-center">
+        <div style="text-align: left;" class="card-header">
+            Onboarded Employees: {{total_employees}}
+        </div>
+        <br>
+        <div style="text-align: left;" class="card-header">
+            Total Offboarded Employees: {{total_offboarded_employees}}
+        </div>
+    </div>
+</div>

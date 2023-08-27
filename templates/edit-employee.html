@@ -296,7 +296,7 @@
         </div>
         <div style="padding-bottom: 60px;"></div>
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
-            <button type="submit" class="btn btn-primary">Update Employee</button>
+            <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to update this employee?')">Update Employee</button>
         </div>
     </form>
 </div>
@@ -305,18 +305,18 @@
     const firstNameInput = document.querySelector('input[name="first_name"]');
     const lastNameInput = document.querySelector('input[name="last_name"]');
     const fullNameInput = document.querySelector('input[name="full_name"]');
-  
+
     console.log(firstNameInput);
     console.log(lastNameInput);
     console.log(fullNameInput);
-  
+
     firstNameInput.addEventListener('input', () => {
-      console.log('First name changed');
-      fullNameInput.value = `${firstNameInput.value} ${lastNameInput.value}`;
+        console.log('First name changed');
+        fullNameInput.value = `${firstNameInput.value} ${lastNameInput.value}`;
     });
-  
+
     lastNameInput.addEventListener('input', () => {
-      console.log('Last name changed');
-      fullNameInput.value = `${firstNameInput.value} ${lastNameInput.value}`;
+        console.log('Last name changed');
+        fullNameInput.value = `${firstNameInput.value} ${lastNameInput.value}`;
     });
 </script>

@@ -22,6 +22,7 @@
                     <th scope="col">Department</th>
                     <th scope="col">Site</th>
                     <th scope="col">Contract</th>
+                    <th scope="col">End Date</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Offboard</th>
                 </tr>
@@ -52,6 +53,7 @@
                         {% endif %}
                     {% endfor %}
 
+                    <td>{{todays_offboarding.end_date}}</td>
                     <td><button onclick="window.location.href='employee/edit_employee/{{todays_offboarding.id}}'" type="button" class="btn btn-info">Edit</button></td>
                     <td><button onclick="if (confirm('Are you sure you want to offboard {{todays_offboarding.full_name}}?')) { window.location.href='offboard_employee/{{todays_offboarding.id}}'; }" type="button" class="btn btn-danger">Offboard</button></td>
                 </tr>

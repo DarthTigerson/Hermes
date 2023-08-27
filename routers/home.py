@@ -32,5 +32,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     total_employees = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).count()
     total_offboarded_employees = db.query(models.Employees).filter(models.Employees.employment_status_id == 1).count()
     todays_offboardings = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(models.Employees.end_date == datetime.date.today()).all()
+    missed_offboardings = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(models.Employees.end_date < datetime.date.today()).all()
+    upcoming_offboardings = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(models.Employees.end_date > datetime.date.today()).all()
 
-    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "employments": employments})
+    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "employments": employments, "missed_offboardings": missed_offboardings})

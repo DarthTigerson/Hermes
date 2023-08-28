@@ -69,10 +69,10 @@ def authenticate_user(username: str, password: str, db):
         return False
     return user
 
-def create_access_token(username: str, user_id: int,
+def create_access_token(username: str, role_id: int,
                         expires_delta: Optional[timedelta] = None):
 
-    encode = {"sub": username, "id": user_id}
+    encode = {"sub": username, "role_id": role_id}
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
@@ -80,18 +80,30 @@ def create_access_token(username: str, user_id: int,
     encode.update({"exp": expire})
     return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
+async def get_current_user(request: Request):
+    try:
+        token = request.cookies.get("access_token")
+        if token is None:
+            return None
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        role_id: int = payload.get("role_id")
+        if username is None or role_id is None:
+            return None
+        return {"username": username, "role_id": role_id}
+    except JWTError:
+        raise get_user_exception()
+
 @router.post("/token")
-async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(),
-                                 db: Session = Depends(get_db)):
+async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         return False
     token_expires = timedelta(minutes=60)
     token = create_access_token(user.username,
-                                user.id,
+                                user.role_id,
                                 expires_delta=token_expires)
     response.set_cookie(key="access_token", value=token, httponly=True)
-
     return True
 
 @router.get("/")

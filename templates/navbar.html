@@ -29,9 +29,15 @@
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
+                {% if logged_in_user %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><img src="/static/img/login.png" alt="Loging image" height="18" style="padding-right: 0px;"> Hello {{logged_in_user.username}} </a>
+                </li>
+                {% else %}
                 <li class="nav-item active">
                     <a class="nav-link" href="/admin/login"><img src="/static/img/login.png" alt="Loging image" height="18" style="padding-right: 0px;"> Login </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

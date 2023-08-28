@@ -3,8 +3,7 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header" style="text-align: right;">
-            <a href="/employee/" class="btn btn-info">Onboarded Employees</a>
-            <a href="/employee/add_employee" class="btn btn-primary">+</a>
+            <a href="/employee/" class="btn btn-info">Onboarded Employees List</a>
         </div>
         <div class="card-body">            
             <table class="table table-hover">
@@ -17,7 +16,9 @@
                     <th scope="col">Department</th>
                     <th scope="col">Site</th>
                     <th scope="col">Contract</th>
+                    {% if role_state.onboarding == 1 %}
                     <th scope="col">Re-Onboard</th>
+                    {% endif %}
 
                 </tr>
                 </thead>
@@ -47,7 +48,9 @@
                         {% endif %}
                     {% endfor %}
 
+                    {% if role_state.onboarding == 1 %}
                     <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='/employee/reboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger">Re-Onboard</button></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
 

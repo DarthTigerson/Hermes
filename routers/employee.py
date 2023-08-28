@@ -46,15 +46,27 @@ async def get_employee(request: Request, db: Session = Depends(get_db)):
 
 @router.get("/offboarded_employee")
 async def get_offboarded_employee(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 1).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
 
-    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments})
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state})
 
 @router.get("/add_employee")
 async def add_employee(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
@@ -65,8 +77,9 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
 
-    return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency})
+    return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_employee", response_class=HTMLResponse)
 async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), db: Session = Depends(get_db)):

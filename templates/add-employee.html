@@ -287,7 +287,9 @@
         </div>
         <div style="padding-bottom: 60px;"></div>
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            {% if role_state.onboarding == 1 %}
             <button type="submit" class="btn btn-primary">Add Employee</button>
+            {% endif %}
             <button type="reset" class="btn btn-secondary">Clear Employee</button>
         </div>
     </form>

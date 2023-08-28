@@ -6,7 +6,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Departments List</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="/manage/add_department" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -19,7 +21,9 @@
                             {% for department in departments %}
                             <tr>
                                 <td>{{department.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_department/{{department.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>
@@ -31,7 +35,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Sites List</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="/manage/add_site" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -44,7 +50,9 @@
                             {% for site in sites %}
                             <tr>
                                 <td>{{site.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_site/{{site.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>
@@ -56,7 +64,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Contract List</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="/manage/add_contract/" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -69,7 +79,9 @@
                             {% for contract in contracts %}
                             <tr>
                                 <td>{{contract.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_contract/{{contract.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>
@@ -81,7 +93,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Employers List</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="/manage/add_employer" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -94,7 +108,9 @@
                             {% for employer in employers %}
                             <tr>
                                 <td>{{employer.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_employer/{{employer.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>
@@ -108,7 +124,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Employment List</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="/manage/add_employment/" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -121,7 +139,9 @@
                             {% for employ in employment %}
                             <tr>
                                 <td>{{employ.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_employment/{{employ.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>
@@ -134,7 +154,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Countries List</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="/manage/add_country" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -148,7 +170,9 @@
                             <tr>
                                 <td>{{country.short_name}}</td>
                                 <td>{{country.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_country/{{country.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>
@@ -160,7 +184,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Currency List</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="/manage/add_currency/" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -174,7 +200,9 @@
                             <tr>
                                 <td>{{currency.symbol}}</td>
                                 <td>{{currency.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_currency/{{currency.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>
@@ -186,7 +214,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Salary Pay Frequency</h5>
+                    {% if role_state.manage_modify == 1 %}
                     <a href="add_salary_pay_frequency" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; width: 100%; height: 220px;">
                     <div class="form-group">
@@ -199,7 +229,9 @@
                             {% for salary_pay_frequency in salary_pay_frequencies %}
                             <tr>
                                 <td>{{salary_pay_frequency.name}}</td>
+                                {% if role_state.manage_modify == 1 %}
                                 <td class="text-right"><button onclick="window.location.href='/manage/edit_salary_pay_frequency/{{salary_pay_frequency.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </table>

@@ -16,7 +16,9 @@
                     <textarea class="form-control" name="description" rows="4">{{employer.description}}</textarea>
                 </div>
                 <div class="text-center">
+                    {% if role_state.manage_modify == 1 %}
                     <button type="submit" class="btn btn-primary" style="width: 170px;">Update</button>
+                    {% endif %}
                     <button type="button" onclick="window.location.href='/manage/delete_employer/{{employer.id}}'" class="btn btn-danger" style="width: 170px;">Delete</button>
                 </div>
             </div>

@@ -16,7 +16,9 @@
                     <textarea class="form-control" name="description" rows="4"> </textarea>
                 </div>
                 <div class="text-center">
+                    {% if role_state.manage_modify == 1 %}
                     <button type="submit" class="btn btn-primary" style="width: 170px;">Add Employer</button>
+                    {% endif %}
                     <button type="reset" class="btn btn-secondary" style="width: 170px;">Clear</button>
                 </div>
             </div>

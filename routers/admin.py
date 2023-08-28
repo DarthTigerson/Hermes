@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
+from fastapi import APIRouter, Depends, status, HTTPException, Request, Form, Response
 from sqlalchemy.orm import Session
 from typing import Annotated, Optional
 from database import SessionLocal, engine
@@ -30,6 +30,17 @@ router = APIRouter(
 
 templates = Jinja2Templates(directory='templates')
 
+class LoginForm:
+    def __init__(self, request: Request):
+        self.request: Request = request
+        self.username: Optional[str] = None
+        self.password: Optional[str] = None
+
+    async def create_oauth_form(self):
+        form = await self.request.form()
+        self.username = form.get("email")
+        self.password = form.get("password")
+
 def get_db():
     db = SessionLocal()
     try:
@@ -54,7 +65,7 @@ def authenticate_user(username: str, password: str, db):
 
     if not user:
         return False
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password):
         return False
     return user
 
@@ -69,6 +80,20 @@ def create_access_token(username: str, user_id: int,
     encode.update({"exp": expire})
     return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
+@router.post("/token")
+async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(),
+                                 db: Session = Depends(get_db)):
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if not user:
+        return False
+    token_expires = timedelta(minutes=60)
+    token = create_access_token(user.username,
+                                user.id,
+                                expires_delta=token_expires)
+    response.set_cookie(key="access_token", value=token, httponly=True)
+
+    return True
+
 @router.get("/")
 async def test(request: Request, db: Session = Depends(get_db)):
     users = db.query(Users).order_by(Users.username).all()
@@ -76,6 +101,26 @@ async def test(request: Request, db: Session = Depends(get_db)):
     teams = db.query(Teams).order_by(Teams.name).all()
 
     return templates.TemplateResponse("admin.html", {"request": request, "users": users, "roles": roles, "teams": teams})
+
+@router.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@router.post("/login", response_class=HTMLResponse)
+async def login(request: Request, db: Session = Depends(get_db)):
+    try:
+        form = LoginForm(request)
+        await form.create_oauth_form()
+        response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+        validate_user_cookie = await login_for_access_token(response, form_data=form, db=db)
+        if not validate_user_cookie:
+            msg = "Incorrect username or password"
+            return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+        return response
+    except HTTPException:
+        msg = "Unknown Error"
+        return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
 
 @router.get("/add_role")
 async def add_role(request: Request):
@@ -175,7 +220,7 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     user_model.last_name = last_name
     user_model.role_id = role_id
     user_model.team_id = team_id
-    user_model.password = password
+    user_model.password = get_password_hash(password)
 
     db.add(user_model)
     db.commit()

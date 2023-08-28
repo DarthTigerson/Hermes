@@ -32,6 +32,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
     total_employees = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).count()
     total_offboarded_employees = db.query(models.Employees).filter(models.Employees.employment_status_id == 1).count()
+    total_users = db.query(models.Users).count()
     todays_offboardings = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(models.Employees.end_date == datetime.date.today()).all()
     missed_offboardings = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(models.Employees.end_date < datetime.date.today()).all()
     todays_birthdays = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(func.extract('month', models.Employees.date_of_birth) == datetime.date.today().month).filter(func.extract('day', models.Employees.date_of_birth) == datetime.date.today().day).all()
@@ -39,4 +40,4 @@ async def test(request: Request, db: Session = Depends(get_db)):
     end_date = datetime.date.today() + datetime.timedelta(days=8)
     upcoming_offboardings = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(models.Employees.end_date > datetime.date.today()).filter(models.Employees.end_date <= end_date).all()
 
-    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "employments": employments, "missed_offboardings": missed_offboardings, "upcoming_offboardings": upcoming_offboardings, "todays_birthdays": todays_birthdays})
+    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "total_users": total_users, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "employments": employments, "missed_offboardings": missed_offboardings, "upcoming_offboardings": upcoming_offboardings, "todays_birthdays": todays_birthdays})

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
+from routers.admin import get_current_user
 import models
 
 from fastapi.responses import HTMLResponse
@@ -29,12 +30,19 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
 async def get_employee(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
     employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 0).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
 
-    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments})
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state})
 
 @router.get("/offboarded_employee")
 async def get_offboarded_employee(request: Request, db: Session = Depends(get_db)):

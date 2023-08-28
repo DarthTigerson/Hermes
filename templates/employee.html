@@ -3,8 +3,12 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header" style="text-align: right;">
+            {% if role_state.offboarding == 1 %}
             <a href="/employee/offboarded_employee/" class="btn btn-info">Offboarded Employees</a>
+            {% endif %}
+            {% if role_state.onboarding == 1 %}
             <a href="/employee/add_employee" class="btn btn-primary">+</a>
+            {% endif %}
         </div>
         <div class="card-body">            
             <table class="table table-hover">
@@ -17,8 +21,12 @@
                     <th scope="col">Department</th>
                     <th scope="col">Site</th>
                     <th scope="col">Contract</th>
+                    {% if role_state.employee_updates == 1 %}
                     <th scope="col">Edit</th>
+                    {% endif %}
+                    {% if role_state.offboarding == 1 %}
                     <th scope="col">Offboard</th>
+                    {% endif %}
 
                 </tr>
                 </thead>
@@ -47,9 +55,13 @@
                             <td>{{employment.name}}</td>
                         {% endif %}
                     {% endfor %}
-
+                    
+                    {% if role_state.employee_updates == 1 %}
                     <td><button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                    {% endif %}
+                    {% if role_state.offboarding == 1 %}
                     <td><button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger">Offboard</button></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
 

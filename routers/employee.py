@@ -83,6 +83,11 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
 
 @router.post("/add_employee", response_class=HTMLResponse)
 async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
     if employee:
@@ -134,6 +139,11 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
 
 @router.get("/edit_employee/{employee_id}")
 async def edit_employee(request: Request, employee_id: int, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     employee_data = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
@@ -145,10 +155,17 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
-    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency})
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
 async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), employment_status_id: int = Form(...), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
     if employee == True and employee.id != employee_id:
@@ -200,6 +217,11 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
 
 @router.get("/user_exists/{employee_id}")
 async def user_exists(request: Request, employee_id: str, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     employee = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
@@ -209,6 +231,11 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
 
 @router.get("/offboard_employee/{employee_id}")
 async def offboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
 
     if employee_model is None:
@@ -223,6 +250,11 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
 
 @router.get("/reboard_employee/{employee_id}")
 async def reboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
 
     if employee_model is None:

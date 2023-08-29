@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import func
 import models, datetime
 from routers.admin import get_current_user
+from routers.logging import create_log, Log
 from starlette.responses import RedirectResponse
 
 from fastapi.responses import HTMLResponse

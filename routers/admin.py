@@ -89,12 +89,10 @@ async def get_current_user(request: Request):
         username: str = payload.get("sub")
         role_id: int = payload.get("role_id")
         if username is None or role_id is None:
-            return None
+            logout(request)
         return {"username": username, "role_id": role_id}
     except JWTError:
-        token = request.cookies.get("access_token")
-        del token
-        RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+        raise HTTPException(status_code=404, detail="User not found")
 
 @router.post("/token")
 async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -411,21 +409,3 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
     db.commit()
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
-
-#Exceptions
-def get_user_exception():
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    return credentials_exception
-
-
-def token_exception():
-    token_exception_response = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Incorrect username or password",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    return token_exception_response

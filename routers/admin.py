@@ -165,7 +165,7 @@ async def add_role(request: Request, db: Session = Depends(get_db)):
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    return templates.TemplateResponse("add-role.html", {"request": request})
+    return templates.TemplateResponse("add-role.html", {"request": request, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_role", response_class=HTMLResponse)
 async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
@@ -212,7 +212,7 @@ async def edit_role(request: Request, role_id: int, db: Session = Depends(get_db
     
     role = db.query(Roles).filter(Roles.id == role_id).first()
     
-    return templates.TemplateResponse("edit-role.html", {"request": request, "role": role})
+    return templates.TemplateResponse("edit-role.html", {"request": request, "role": role, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/edit_role/{role_id}", response_class=HTMLResponse)
 async def edit_role(request: Request, role_id: int, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
@@ -257,7 +257,7 @@ async def add_team(request: Request, db: Session = Depends(get_db)):
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
-    return templates.TemplateResponse("add-team.html", {"request": request})
+    return templates.TemplateResponse("add-team.html", {"request": request, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_team", response_class=HTMLResponse)
 async def create_team(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -297,7 +297,7 @@ async def edit_team(request: Request, team_id: int, db: Session = Depends(get_db
     
     team = db.query(Teams).filter(Teams.id == team_id).first()
     
-    return templates.TemplateResponse("edit-team.html", {"request": request, "team": team})
+    return templates.TemplateResponse("edit-team.html", {"request": request, "team": team, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/edit_team/{team_id}", response_class=HTMLResponse)
 async def update_team(request: Request, team_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -338,7 +338,7 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
 
-    return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams})
+    return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_user", response_class=HTMLResponse)
 async def create_user(request: Request, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(None), password: str = Form(...), db: Session = Depends(get_db)):
@@ -384,7 +384,7 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
     
-    return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams})
+    return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/edit_user/{user_id}", response_class=HTMLResponse)
 async def update_user(request: Request, user_id: int, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), db: Session = Depends(get_db)):

@@ -1,7 +1,9 @@
 # Hermes v1.1.0_dev
 
 Hermes is a FastAPI powered employee management web application. It allows you to manage your employees, their roles, and their onboarding/offboarding status.
-![Screenshot of the application](/static/img/screenshot.png)
+![Screenshot of the Home page](/static/img/screenshot1.png)
+![Screenshot of the Manage list](/static/img/screenshot2.png)
+![Screenshot of the Admin page](/static/img/screenshot3.png)
 
 ## Features
 

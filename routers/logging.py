@@ -21,6 +21,7 @@ templates = Jinja2Templates(directory='templates')
 
 class Log(BaseModel):
     action: str = Field(...)
+    user: str = Field(...)
     description: str = Field(...)
 
 def get_db():
@@ -65,10 +66,11 @@ async def create_log(request: Request, log: Log, db: Session = Depends(get_db)):
     log_model = Logs()
 
     log_model.action = log.action
+    log_model.user = log.user
     log_model.description = log.description
     log_model.date = datetime.now()
 
     db.add(log_model)
     db.commit()
 
-    return RedirectResponse(url="/logging", status_code=status.HTTP_302_FOUND)
+    return

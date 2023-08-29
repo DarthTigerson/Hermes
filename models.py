@@ -5,6 +5,7 @@ class Logs(Base):
     __tablename__ = 'logs'
     id = Column(Integer, primary_key=True, index=True)
     action = Column(String(50))
+    user = Column(String(50))
     description = Column(String(200))
     date = Column(DateTime)
 

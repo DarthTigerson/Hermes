@@ -92,14 +92,16 @@ async def get_current_user(request: Request):
             return None
         return {"username": username, "role_id": role_id}
     except JWTError:
-        raise get_user_exception()
+        token = request.cookies.get("access_token")
+        del token
+        RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
 @router.post("/token")
 async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         return False
-    token_expires = timedelta(minutes=60)
+    token_expires = timedelta(minutes=300)
     token = create_access_token(user.username,
                                 user.role_id,
                                 expires_delta=token_expires)
@@ -113,6 +115,12 @@ async def test(request: Request, db: Session = Depends(get_db)):
     teams = db.query(Teams).order_by(Teams.name).all()
 
     return templates.TemplateResponse("admin.html", {"request": request, "users": users, "roles": roles, "teams": teams})
+
+@router.get("/logout")
+async def logout(request: Request):
+    response = RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
+    response.delete_cookie(key="access_token")
+    return response
 
 @router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):

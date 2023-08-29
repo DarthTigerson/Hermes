@@ -110,11 +110,22 @@ async def login_for_access_token(response: Response, form_data: OAuth2PasswordRe
 
 @router.get("/")
 async def test(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
     users = db.query(Users).order_by(Users.username).all()
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
 
-    return templates.TemplateResponse("admin.html", {"request": request, "users": users, "roles": roles, "teams": teams})
+    return templates.TemplateResponse("admin.html", {"request": request, "users": users, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state})
 
 @router.get("/logout")
 async def logout(request: Request):
@@ -143,11 +154,32 @@ async def login(request: Request, db: Session = Depends(get_db)):
         return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
 
 @router.get("/add_role")
-async def add_role(request: Request):
+async def add_role(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     return templates.TemplateResponse("add-role.html", {"request": request})
 
 @router.post("/add_role", response_class=HTMLResponse)
 async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     role_model = Roles()
 
     role_model.name = name
@@ -167,12 +199,34 @@ async def create_role(request: Request, name: str = Form(...), description: str 
 
 @router.get("/edit_role/{role_id}")
 async def edit_role(request: Request, role_id: int, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     role = db.query(Roles).filter(Roles.id == role_id).first()
     
     return templates.TemplateResponse("edit-role.html", {"request": request, "role": role})
 
 @router.post("/edit_role/{role_id}", response_class=HTMLResponse)
 async def edit_role(request: Request, role_id: int, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     role = db.query(Roles).filter(Roles.id == role_id).first()
 
     role.name = name
@@ -191,11 +245,33 @@ async def edit_role(request: Request, role_id: int, name: str = Form(...), descr
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/add_team")
-async def add_team(request: Request):
+async def add_team(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     return templates.TemplateResponse("add-team.html", {"request": request})
 
 @router.post("/add_team", response_class=HTMLResponse)
 async def create_team(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     team_model = Teams()
 
     team_model.name = name
@@ -208,12 +284,34 @@ async def create_team(request: Request, name: str = Form(...), description: str 
 
 @router.get("/edit_team/{team_id}")
 async def edit_team(request: Request, team_id: int, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     team = db.query(Teams).filter(Teams.id == team_id).first()
     
     return templates.TemplateResponse("edit-team.html", {"request": request, "team": team})
 
 @router.post("/edit_team/{team_id}", response_class=HTMLResponse)
 async def update_team(request: Request, team_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     team = db.query(Teams).filter(Teams.id == team_id).first()
 
     team.name = name
@@ -226,6 +324,17 @@ async def update_team(request: Request, team_id: int, name: str = Form(...), des
 
 @router.get("/add_user")
 async def add_user(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
 
@@ -233,6 +342,17 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
 
 @router.post("/add_user", response_class=HTMLResponse)
 async def create_user(request: Request, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(None), password: str = Form(...), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     user_model = Users()
 
     user_model.username = username
@@ -249,6 +369,17 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
 
 @router.get("/edit_user/{user_id}")
 async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     user = db.query(Users).filter(Users.id == user_id).first()
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
@@ -257,6 +388,17 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
 
 @router.post("/edit_user/{user_id}", response_class=HTMLResponse)
 async def update_user(request: Request, user_id: int, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
     user = db.query(Users).filter(Users.id == user_id).first()
 
     user.username = username

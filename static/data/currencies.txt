@@ -1,0 +1,41 @@
+Australian dollar,A$
+Brazilian real,R$
+Canadian dollar,C$
+Chilean peso,CLP$
+Chinese yuan,¥
+Colombian peso,COP$
+Czech koruna,Kč
+Danish krone,kr
+Egyptian pound,£
+Euro,€
+Hong Kong dollar,HK$
+Hungarian forint,Ft
+Indian rupee,₹
+Indonesian rupiah,Rp
+Israeli new shekel,₪
+Japanese yen,¥
+Kenyan shilling,KSh
+Malaysian ringgit,MYR
+Mexican peso,MX$
+New Taiwan dollar,NT$
+New Zealand dollar,NZ$
+Nigerian naira,₦
+Norwegian krone,kr
+Pakistani rupee,₨
+Peruvian sol,S/
+Philippine peso,₱
+Polish złoty,zł
+Pound sterling,£
+Romanian leu,lei
+Russian ruble,₽
+Saudi riyal,SAR
+Singapore dollar,S$
+South African rand,R
+South Korean won,₩
+Swedish krona,kr
+Swiss franc,Fr.
+Thai baht,฿
+Turkish lira,₺
+Ukrainian hryvnia,₴
+United Arab Emirates dirham,AED
+United States dollar,$

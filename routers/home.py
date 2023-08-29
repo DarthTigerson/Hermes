@@ -50,4 +50,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
 
+    log = Log(action="Info",user=user['username'],description="Viewed the home page.")
+    await create_log(request=request, log=log, db=db)
+
     return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "total_users": total_users, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "employments": employments, "missed_offboardings": missed_offboardings, "upcoming_offboardings": upcoming_offboardings, "todays_birthdays": todays_birthdays, "logged_in_user": user, "role_state": role_state})

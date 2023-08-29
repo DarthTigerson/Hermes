@@ -68,7 +68,7 @@ async def create_log(request: Request, log: Log, db: Session = Depends(get_db)):
     log_model.action = log.action
     log_model.user = log.user
     log_model.description = log.description
-    log_model.date = datetime.now()
+    log_model.date = datetime.datetime.now()
 
     db.add(log_model)
     db.commit()

@@ -232,7 +232,7 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams})
 
 @router.post("/add_user", response_class=HTMLResponse)
-async def create_user(request: Request, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+async def create_user(request: Request, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(None), password: str = Form(...), db: Session = Depends(get_db)):
     user_model = Users()
 
     user_model.username = username

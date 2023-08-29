@@ -31,6 +31,8 @@ Hermes is a FastAPI powered employee management web application. It allows you t
 6. To assign a role to an employee, go to the employee details page and select a role from the dropdown menu. Click "Save" to assign the role.
 7. To create a test admin account, click the "Create Test Admin" button and follow the prompts.
 
+**Note:** On the first run, you need to create an admin user by running the `startup.py` script. Uncomment the bottom lines of the file and run it with `python startup.py`. The default username and password for the admin user is `hermes` and `hermes`, respectively.
+
 ## Contributing
 
 Contributions are welcome! If you find a bug or have a feature request, please open an issue on GitHub. If you want to contribute code, please fork the repository and create a pull request.

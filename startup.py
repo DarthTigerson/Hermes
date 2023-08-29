@@ -85,7 +85,27 @@ def create_all_contracts():
     finally:
         db.close()
 
+def create_all_employment_types():
+    db = SessionLocal()
+    try:
+        # Delete all existing employment types
+        db.query(models.Employment).delete()
+
+        # Add all employment types in the world
+        with open('static/data/employment_types.txt', 'r') as f:
+            for line in f:
+                employment_type = models.Employment(name=line)
+                db.add(employment_type)
+        db.commit()
+
+        print("All employment types added successfully.")
+    except Exception as e:
+        print(f"Error adding employment types: {e}")
+    finally:
+        db.close()
+
 #create_default_user()
 #create_all_countries()
 #create_all_currencies()
 #create_all_contracts()
+create_all_employment_types()

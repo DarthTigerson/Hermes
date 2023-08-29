@@ -10,6 +10,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from passlib.context import CryptContext
+from routers.logging import create_log, Log
 
 from starlette import status
 from starlette.responses import RedirectResponse
@@ -123,6 +124,9 @@ async def test(request: Request, db: Session = Depends(get_db)):
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
 
+    log = Log(action="Info",user=user['username'],description=f"Viewed the admin page.")
+    await create_log(request=request, log=log, db=db)
+
     return templates.TemplateResponse("admin.html", {"request": request, "users": users, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state})
 
 @router.get("/logout")
@@ -163,6 +167,10 @@ async def add_role(request: Request, db: Session = Depends(get_db)):
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+    log = Log(action="Info",user=user['username'],description=f"Viewed the add role page.")
+    await create_log(request=request, log=log, db=db)
+
     return templates.TemplateResponse("add-role.html", {"request": request, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_role", response_class=HTMLResponse)
@@ -193,6 +201,9 @@ async def create_role(request: Request, name: str = Form(...), description: str 
     db.add(role_model)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Created the {name} role.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/edit_role/{role_id}")
@@ -209,6 +220,9 @@ async def edit_role(request: Request, role_id: int, db: Session = Depends(get_db
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
     role = db.query(Roles).filter(Roles.id == role_id).first()
+
+    log = Log(action="Info",user=user['username'],description=f"Viewed the edit role page for {role.name}.")
+    await create_log(request=request, log=log, db=db)
     
     return templates.TemplateResponse("edit-role.html", {"request": request, "role": role, "logged_in_user": user, "role_state": role_state})
 
@@ -240,6 +254,9 @@ async def edit_role(request: Request, role_id: int, name: str = Form(...), descr
     db.add(role)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Updated the {name} role.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/add_team")
@@ -254,6 +271,9 @@ async def add_team(request: Request, db: Session = Depends(get_db)):
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+    log = Log(action="Info",user=user['username'],description=f"Viewed the add team page.")
+    await create_log(request=request, log=log, db=db)
     
     return templates.TemplateResponse("add-team.html", {"request": request, "logged_in_user": user, "role_state": role_state})
 
@@ -278,6 +298,9 @@ async def create_team(request: Request, name: str = Form(...), description: str 
     db.add(team_model)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Created the {name} team.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/edit_team/{team_id}")
@@ -294,6 +317,9 @@ async def edit_team(request: Request, team_id: int, db: Session = Depends(get_db
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
     team = db.query(Teams).filter(Teams.id == team_id).first()
+
+    log = Log(action="Info",user=user['username'],description=f"Viewed the edit team page for {team.name}.")
+    await create_log(request=request, log=log, db=db)
     
     return templates.TemplateResponse("edit-team.html", {"request": request, "team": team, "logged_in_user": user, "role_state": role_state})
 
@@ -318,6 +344,9 @@ async def update_team(request: Request, team_id: int, name: str = Form(...), des
     db.add(team)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Updated the {name} team.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/add_user")
@@ -335,6 +364,9 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
     
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
+
+    log = Log(action="Info",user=user['username'],description=f"Viewed the add user page.")
+    await create_log(request=request, log=log, db=db)
 
     return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state})
 
@@ -363,6 +395,9 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     db.add(user_model)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Created the {username} user.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/edit_user/{user_id}")
@@ -381,6 +416,9 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
     user = db.query(Users).filter(Users.id == user_id).first()
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
+
+    log = Log(action="Info",user=user['username'],description=f"Viewed the edit user page for {user.username}.")
+    await create_log(request=request, log=log, db=db)
     
     return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state})
 
@@ -407,5 +445,8 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 
     db.add(user)
     db.commit()
+
+    log = Log(action="Info",user=user['username'],description=f"Updated the {username} user.")
+    await create_log(request=request, log=log, db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)

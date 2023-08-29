@@ -5,6 +5,7 @@ from database import SessionLocal
 from pydantic import BaseModel, Field
 from models import Roles
 from routers.admin import get_current_user
+from routers.logging import create_log, Log
 
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -40,5 +41,8 @@ async def test(request: Request, db: Session = Depends(get_db)):
 
     if role_state.logs == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
+    log = Log(action="Info",user=user['username'],description="Viewed the about page.")
+    await create_log(request=request, log=log, db=db)
 
     return templates.TemplateResponse("about.html", {"request": request, "logged_in_user": user, "role_state": role_state})

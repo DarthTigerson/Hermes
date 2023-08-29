@@ -4,6 +4,7 @@ from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
 from routers.admin import get_current_user
+from routers.logging import create_log, Log
 import models
 
 from fastapi.responses import HTMLResponse
@@ -42,6 +43,9 @@ async def get_employee(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
 
+    log = Log(action="Info",user=user['username'],description="Viewed the employee page.")
+    await create_log(request=request, log=log, db=db)
+
     return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state})
 
 @router.get("/offboarded_employee")
@@ -57,6 +61,9 @@ async def get_offboarded_employee(request: Request, db: Session = Depends(get_db
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    log = Log(action="Info",user=user['username'],description="Viewed the offboarded users page.")
+    await create_log(request=request, log=log, db=db)
 
     return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state})
 
@@ -78,6 +85,9 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    log = Log(action="Info",user=user['username'],description="Viewed the add employee page.")
+    await create_log(request=request, log=log, db=db)
 
     return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
@@ -135,6 +145,9 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     db.add(employee_model)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Added a new employee with the email {email}.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
 
 @router.get("/edit_employee/{employee_id}")
@@ -156,6 +169,9 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    log = Log(action="Info",user=user['username'],description=f"Viewed the edit employee page for the employee with the email {employee_data.email}")
+    await create_log(request=request, log=log, db=db)
 
     return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
@@ -213,6 +229,9 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     db.add(employee_model)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Updated the employee with the email {email}.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
 
 @router.get("/user_exists/{employee_id}")
@@ -226,6 +245,9 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
+
+    log = Log(action="Warn",user=user['username'],description=f"Attempted to create a new employee with the email {employee.email} but it already exists.")
+    await create_log(request=request, log=log, db=db)
 
     return templates.TemplateResponse("empoyee-exists.html", {"request": request, "employee": employee, "departments": departments, "sites": sites, "employments": employments})
 
@@ -246,6 +268,9 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
     db.add(employee_model)
     db.commit()
 
+    log = Log(action="Info",user=user['username'],description=f"Offboarded the employee with the email {employee_model.email}.")
+    await create_log(request=request, log=log, db=db)
+
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
 
 @router.get("/reboard_employee/{employee_id}")
@@ -264,5 +289,8 @@ async def reboard_employee(request: Request, employee_id: int, db: Session =Depe
 
     db.add(employee_model)
     db.commit()
+
+    log = Log(action="Info",user=user['username'],description=f"Reboarded the employee with the email {employee_model.email}.")
+    await create_log(request=request, log=log, db=db)
 
     return RedirectResponse(url="/employee/offboarded_employee", status_code=status.HTTP_302_FOUND)

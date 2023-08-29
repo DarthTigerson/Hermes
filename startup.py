@@ -65,6 +65,27 @@ def create_all_currencies():
     finally:
         db.close()
 
+def create_all_contracts():
+    db = SessionLocal()
+    try:
+        # Delete all existing contracts
+        db.query(models.Contracts).delete()
+
+        # Add all contracts in the world
+        with open('static/data/contracts.txt', 'r') as f:
+            for line in f:
+                name, description = line.strip().split(',')
+                contract = models.Contracts(name=name, description=description)
+                db.add(contract)
+        db.commit()
+
+        print("All contracts added successfully.")
+    except Exception as e:
+        print(f"Error adding contracts: {e}")
+    finally:
+        db.close()
+
 #create_default_user()
 #create_all_countries()
-create_all_currencies()
+#create_all_currencies()
+#create_all_contracts()

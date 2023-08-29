@@ -1,0 +1,10 @@
+Indefinite,This contract has no fixed end date.
+Quarterly,This contract is renewed every three months.
+Yearly,This contract is renewed every year.
+Fixed-term,This contract has a fixed end date.
+Part-time,This contract is for less than full-time work.
+Full-time,This contract is for full-time work.
+Freelance,This contract is for freelance work.
+Internship,This contract is for an internship.
+Apprenticeship,This contract is for an apprenticeship.
+Consulting,This contract is for consulting services.

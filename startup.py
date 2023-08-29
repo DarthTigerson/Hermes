@@ -104,8 +104,70 @@ def create_all_employment_types():
     finally:
         db.close()
 
-#create_default_user()
-#create_all_countries()
-#create_all_currencies()
-#create_all_contracts()
+def create_all_departments():
+    db = SessionLocal()
+    try:
+        # Delete all existing departments
+        db.query(models.Departments).delete()
+
+        # Add all departments in the world
+        with open('static/data/departments.txt', 'r') as f:
+            for line in f:
+                name, description = line.strip().split(',')
+                department = models.Departments(name=name, description=description)
+                db.add(department)
+        db.commit()
+
+        print("All departments added successfully.")
+    except Exception as e:
+        print(f"Error adding departments: {e}")
+    finally:
+        db.close()
+
+def create_all_employers():
+    db = SessionLocal()
+    try:
+        # Delete all existing employers
+        db.query(models.Employers).delete()
+
+        # Add all employers in the world
+        with open('static/data/employers.txt', 'r') as f:
+            for line in f:
+                name, description = line.strip().split(',')
+                employer = models.Employers(name=name, description=description)
+                db.add(employer)
+        db.commit()
+
+        print("All employers added successfully.")
+    except Exception as e:
+        print(f"Error adding employers: {e}")
+    finally:
+        db.close()
+
+def create_all_pay_frequencies():
+    db = SessionLocal()
+    try:
+        # Delete all existing pay frequencies
+        db.query(models.PayFrequency).delete()
+
+        # Add all pay frequencies in the world
+        with open('static/data/pay_frequencies.txt', 'r') as f:
+            for line in f:
+                pay_frequency = models.PayFrequency(name=line)
+                db.add(pay_frequency)
+        db.commit()
+
+        print("All pay frequencies added successfully.")
+    except Exception as e:
+        print(f"Error adding pay frequencies: {e}")
+    finally:
+        db.close()
+
+create_default_user()
+create_all_countries()
+create_all_currencies()
+create_all_contracts()
 create_all_employment_types()
+create_all_departments()
+create_all_employers()
+create_all_pay_frequencies()

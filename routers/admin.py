@@ -414,19 +414,58 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 @router.get("/delete_user/{user_id}")
 async def delete_user(request: Request, user_id: int, db: Session = Depends(get_db)):
         
-        user = await get_current_user(request)
-    
-        if user is None:
-            return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+    user = db.query(Users).filter(Users.id == user_id).first()
+
+    db.delete(user)
+    db.commit()
+
+    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+
+@router.get("/reset_password/{user_id}")
+async def reset_password_page(request: Request, user_id: int, db: Session = Depends(get_db)):
         
-        role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
     
-        if role_state.admin == False:
-            return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+    user = db.query(Users).filter(Users.id == user_id).first()
+
+    return templates.TemplateResponse("reset-password.html", {"request": request, "user": user, "logged_in_user": user, "role_state": role_state})
+
+@router.post("/reset_password/{user_id}", response_class=HTMLResponse)
+async def reset_password(request: Request, user_id: int, password: str = Form(...), db: Session = Depends(get_db)):
+            
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
     
-        user = db.query(Users).filter(Users.id == user_id).first()
-    
-        db.delete(user)
-        db.commit()
-    
-        return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.admin == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+    user = db.query(Users).filter(Users.id == user_id).first()
+
+    user.password = get_password_hash(password)
+
+    db.add(user)
+    db.commit()
+
+    return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)

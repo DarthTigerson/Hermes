@@ -48,7 +48,7 @@
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
             <button type="submit" class="btn btn-primary">Update User</button>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='#'">Reset Password</button>
-            <button type="button" class="btn btn-danger" onclick="window.location.href='#'">Deactivate</button>
+            <td><button onclick="if (confirm('Are you sure you want to delete {{user.username}}?')) { window.location.href='/admin/delete_user/{{user.id}}'; }" type="button" class="btn btn-danger">Delete User</button></td>
         </div>
     </form>
 </div>

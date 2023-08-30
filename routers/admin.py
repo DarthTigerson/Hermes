@@ -92,7 +92,7 @@ async def get_current_user(request: Request):
             logout(request)
         return {"username": username, "role_id": role_id}
     except JWTError:
-        raise HTTPException(status_code=404, detail="User not found")
+        logout(request)
 
 @router.post("/token")
 async def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -127,8 +127,8 @@ async def test(request: Request, db: Session = Depends(get_db)):
 
 @router.get("/logout")
 async def logout(request: Request):
-    response = RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
-    response.delete_cookie(key="access_token")
+    response = RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    response.delete_cookie("access_token")
     return response
 
 @router.get("/login", response_class=HTMLResponse)
@@ -410,3 +410,23 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
     db.commit()
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
+
+@router.get("/delete_user/{user_id}")
+async def delete_user(request: Request, user_id: int, db: Session = Depends(get_db)):
+        
+        user = await get_current_user(request)
+    
+        if user is None:
+            return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+        
+        role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+    
+        if role_state.admin == False:
+            return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
+        user = db.query(Users).filter(Users.id == user_id).first()
+    
+        db.delete(user)
+        db.commit()
+    
+        return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)

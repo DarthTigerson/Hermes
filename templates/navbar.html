@@ -22,7 +22,6 @@
                         Settings 
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Preferences</a>
                         <a class="dropdown-item" href="/admin">Admin</a>
                         <a class="dropdown-item" href="/logging/">Logs</a>
                         <a class="dropdown-item" href="/about">About</a>
@@ -33,8 +32,13 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
                 {% if logged_in_user %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="/admin/logout"><img src="/static/img/boy.png" alt="Loging image" height="18" style="padding-right: 0px;"> Hello {{logged_in_user.username}} </a>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="/static/img/boy.png" alt="Loging image" height="18" style="padding-right: 0px;"> Hello {{logged_in_user.username}}  
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/admin/logout">Logout</a>
+                    </div>
                 </li>
                 {% else %}
                 <li class="nav-item active">

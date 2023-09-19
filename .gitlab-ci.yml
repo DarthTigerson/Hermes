@@ -13,4 +13,4 @@ build:
 start:
   stage: start
   script:
-    - python uvicorn main:app --host
+    - uvicorn main:app --host

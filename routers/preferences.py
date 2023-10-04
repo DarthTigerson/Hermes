@@ -72,6 +72,8 @@ async def post_preferences(request: Request, db: Session = Depends(get_db), trig
     preferences_model.email_smtp_username = email_smtp_username
     if email_smtp_server != None:
         preferences_model.email_smtp_password = email_smtp_password
+    elif preferences == None:
+        preferences_model.email_smtp_password = None
     else:
         preferences_model.email_smtp_password = preferences.email_smtp_password
     preferences_model.slack_webhook_channel = slack_webhook

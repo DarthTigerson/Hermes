@@ -137,6 +137,7 @@ class PayFrequency(Base):
 class Preferences(Base):
     __tablename__ = 'preferences'
     id = Column(Integer, primary_key=True, index=True)
+    enable_email_notifications = Column(Boolean, default=False)
     email_new_employee = Column(Boolean, default=False)
     email_updated_employee = Column(Boolean, default=False)
     email_offboarded_employee = Column(Integer, default=5)

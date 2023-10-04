@@ -11,6 +11,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from passlib.context import CryptContext
 import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 from starlette import status
 from starlette.responses import RedirectResponse
@@ -51,3 +54,21 @@ async def slack_send_message(message: str, db: Session = Depends(get_db)):
         return response.text
     else:
         return "No Slack Webhook URL set"
+    
+@router.post("/send_email/{message}/{subject}")
+async def email_send_message(message: str, subject: str, db: Session = Depends(get_db)):
+    preferences = db.query(Preferences).order_by(Preferences.id.desc()).first()
+
+    if preferences.email_smtp_server is not None:
+        msg = MIMEMultipart()
+        msg['From'] = preferences.email_smtp_username
+        msg['To'] = preferences.email_list
+        msg['Subject'] = subject
+        msg.attach(MIMEText(message, 'plain'))
+
+        server = smtplib.SMTP(preferences.email_smtp_server, preferences.email_smtp_port)
+        server.starttls()
+        server.login(preferences.email_smtp_username, preferences.email_smtp_password)
+        text = msg.as_string()
+        server.sendmail(preferences.email_smtp_password, preferences.email_list, text)
+        server.quit()

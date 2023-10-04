@@ -140,5 +140,3 @@ class Preferences(Base):
     email_updated_employee = Column(Boolean, default=False)
     email_offboarded_employee = Column(Integer, default=5)
     email_list = Column(String(200))
-    daily_user_reports = Column(Boolean, default=False)
-    monthly_user_reports = Column(Boolean, default=False)

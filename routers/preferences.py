@@ -41,5 +41,35 @@ async def get_preferences(request: Request, db: Session = Depends(get_db)):
 
     if role_state.preferences == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
+    preferences = db.query(Preferences).order_by(Preferences.id.desc()).first()
 
-    return templates.TemplateResponse("preferences.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("preferences.html", {"request": request, "logged_in_user": user, "role_state": role_state, "preferences": preferences})
+
+@router.post("/", response_class=HTMLResponse)
+async def post_preferences(request: Request, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None)):
+    
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.preferences == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+    preferences_model = Preferences()
+
+    preferences_model.email_new_employee = trigger_onboarded_employee
+    preferences_model.email_updated_employee = trigger_updated_employee
+    preferences_model.email_offboarded_employee = trigger_offboarded_employee
+    preferences_model.email_list = email_list
+    preferences_model.slack_webhook_channel = slack_webhook
+    preferences_model.daily_user_reports = False
+    preferences_model.monthly_user_reports = False
+
+    db.add(preferences_model)
+    db.commit()
+
+    return RedirectResponse(url="/preferences", status_code=status.HTTP_302_FOUND)

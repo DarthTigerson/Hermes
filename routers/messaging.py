@@ -47,28 +47,33 @@ db_dependency = Annotated[Session, Depends(get_db)]
 async def slack_send_message(message: str, db: Session = Depends(get_db)):
     preferences = db.query(Preferences).order_by(Preferences.id.desc()).first()
 
-    if preferences.slack_webhook_channel is not None:
-        url = preferences.slack_webhook_channel
-        payload = {'text': message}
-        response = requests.post(url, json=payload)
-        return response.text
-    else:
-        return "No Slack Webhook URL set"
+    if preferences is not None:
+        breakpoint()
+        if preferences.slack_webhook_channel is not None:
+            url = preferences.slack_webhook_channel
+            payload = {'text': message}
+            response = requests.post(url, json=payload)
+            return response.text
+        else:
+            return "No Slack Webhook URL set"
     
 @router.post("/send_email/{message}/{subject}")
 async def email_send_message(message: str, subject: str, db: Session = Depends(get_db)):
     preferences = db.query(Preferences).order_by(Preferences.id.desc()).first()
 
-    if preferences.email_smtp_server is not None:
-        msg = MIMEMultipart()
-        msg['From'] = preferences.email_smtp_username
-        msg['To'] = preferences.email_list
-        msg['Subject'] = subject
-        msg.attach(MIMEText(message, 'plain'))
+    if preferences is not None:
+        if preferences.email_smtp_server is not None:
+            msg = MIMEMultipart()
+            msg['From'] = preferences.email_smtp_username
+            msg['To'] = preferences.email_list
+            msg['Subject'] = subject
+            msg.attach(MIMEText(message, 'plain'))
 
-        server = smtplib.SMTP(preferences.email_smtp_server, preferences.email_smtp_port)
-        server.starttls()
-        server.login(preferences.email_smtp_username, preferences.email_smtp_password)
-        text = msg.as_string()
-        server.sendmail(preferences.email_smtp_password, preferences.email_list, text)
-        server.quit()
+            server = smtplib.SMTP(preferences.email_smtp_server, preferences.email_smtp_port)
+            server.starttls()
+            server.login(preferences.email_smtp_username, preferences.email_smtp_password)
+            text = msg.as_string()
+            server.sendmail(preferences.email_smtp_password, preferences.email_list, text)
+            server.quit()
+        else:
+            return "No Email SMTP Server set"

@@ -198,7 +198,7 @@ async def create_role(request: Request, name: str = Form(...), description: str 
     db.commit()
 
     if payroll == True:
-        await slack_send_message(f"#channel Role {name} has been created by {user['username']} with Payroll Access", db=db)
+        await slack_send_message(f"<!channel> Role {name} has been created by {user['username']} with Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
@@ -248,7 +248,7 @@ async def edit_role(request: Request, role_id: int, name: str = Form(...), descr
     db.commit()
 
     if payroll == True:
-        await slack_send_message(f"#channel Role {name} has been modified by {user['username']} to have access to Payroll Access", db=db)
+        await slack_send_message(f"<!channel> Role {name} has been modified by {user['username']} to have access to Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
@@ -376,7 +376,7 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
     
     if payroll_data_access.payroll == True:
-        await slack_send_message(f"#channel User {username} has been created by {user['username']} with Payroll Access", db=db)
+        await slack_send_message(f"<!channel> User {username} has been created by {user['username']} with Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
@@ -426,7 +426,7 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
     payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
 
     if payroll_data_access.payroll == True:
-        await slack_send_message(f"#channel User {username} has been modified by {user['username']} to have access to Payroll Access", db=db)
+        await slack_send_message(f"<!channel> User {username} has been modified by {user['username']} to have access to Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 

@@ -5,6 +5,7 @@ from database import SessionLocal
 from pydantic import BaseModel, Field
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
+from datetime import datetime
 import models
 
 from fastapi.responses import HTMLResponse
@@ -141,6 +142,8 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     employee_model.employment_contract_id = employment_contract_id
     employee_model.employment_type_id = employment_type_id
     employee_model.employment_status_id = 0
+    employee_model.created_date = datetime.now()
+    employee_model.modified_date = datetime.now()
 
     db.add(employee_model)
     db.commit()
@@ -225,6 +228,7 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.employment_contract_id = employment_contract_id
     employee_model.employment_type_id = employment_type_id
     employee_model.employment_status_id = employment_status_id
+    employee_model.modified_date = datetime.now()
 
     db.add(employee_model)
     db.commit()

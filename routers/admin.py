@@ -133,7 +133,8 @@ async def logout(request: Request):
 
 @router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    role_state = {"admin": 0}
+    return templates.TemplateResponse("login.html", {"request": request, "role_state": role_state})
 
 @router.post("/login", response_class=HTMLResponse)
 async def login(request: Request, db: Session = Depends(get_db)):

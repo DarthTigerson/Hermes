@@ -6,7 +6,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Users</h5>
+                    {% if role_state.admin == 1 %}
                     <a href="/admin/add_user" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 400px;">
                     <div class="form-group">
@@ -18,7 +20,9 @@
                                     <th scope="col">Surname</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">HR Team</th>
+                                    {% if role_state.admin == 1 %}
                                     <th scope="col">Edit</th>
+                                    {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,7 +44,9 @@
                                     {% if user.team_id == 0 %}
                                         <td>Not HR</td>
                                     {% endif %}
+                                    {% if role_state.admin == 1 %}
                                     <td><button onclick="window.location.href='/admin/edit_user/{{user.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                    {% endif %}
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -53,7 +59,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">HR Team</h5>
+                    {% if role_state.admin == 1 %}
                     <a href="/admin/add_team/" class="btn btn-primary btn-sm" style="float: right;">+</a>
+                    {% endif %}
                 </div>
                 <div class="card-body" style="overflow-y: auto; height: 400px;">
                     <div class="form-group">
@@ -61,7 +69,9 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Name</th>
+                                    {% if role_state.admin == 1 %}
                                     <th scope="col">Edit</th>
+                                    {% endif %}
                                 
                                 </tr>
                             </thead>
@@ -69,7 +79,9 @@
                                 {% for team in teams %}
                                 <tr>
                                     <td>{{team.name}}</td>
+                                    {% if role_state.admin == 1 %}
                                     <td class="text-center"><button onclick="window.location.href='/admin/edit_team/{{team.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                                    {% endif %}
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -81,7 +93,9 @@
     </div>
     <div class="card text-center">
         <div class="card-header">
+            {% if role_state.admin == 1 %}
             <a href="/admin/add_role/" class="btn btn-primary" style="float: right;">+</a>
+            {% endif %}
             <h5 class="card-title">User Roles</h5>
         </div>
         <div class="card-body" style="overflow-y: auto; height: 250px;">
@@ -97,7 +111,9 @@
                         <th scope="col">Manage Users</th>
                         <th scope="col">Manage Preferences</th>
                         <th scope="col">API Reporting</th>
+                        {% if role_state.admin == 1 %}
                         <th scope="col">Edit</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -112,7 +128,9 @@
                         <td><input type="checkbox" {% if role.admin %}checked{% endif %} onclick="return false;"></td>
                         <td><input type="checkbox" {% if role.preferences %}checked{% endif %} onclick="return false;"></td>
                         <td><input type="checkbox" {% if role.api_report %}checked{% endif %} onclick="return false;"></td>
+                        {% if role_state.admin == 1 %}
                         <td class="text-center"><button onclick="window.location.href='/admin/edit_role/{{role.id}}'" type="button" class="btn btn-info">Edit</button></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

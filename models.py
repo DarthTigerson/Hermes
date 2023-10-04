@@ -79,6 +79,8 @@ class Employees(Base):
     employment_contract_id = Column(Integer, ForeignKey('contracts.id'))
     employment_type_id = Column(Integer, ForeignKey('employment.id'))
     employment_status_id = Column(Integer, ForeignKey('status.id'))
+    created_date = Column(DateTime)
+    modified_date = Column(DateTime)
 
 class Employers(Base):
     __tablename__ = 'employers'

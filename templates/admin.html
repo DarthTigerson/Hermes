@@ -95,6 +95,7 @@
                         <th scope="col">Manage Lists</th>
                         <th scope="col">View Payrol</th>
                         <th scope="col">Manage Users</th>
+                        <th scope="col">Manage Preferences</th>
                         <th scope="col">API Reporting</th>
                         <th scope="col">Edit</th>
                     </tr>
@@ -109,6 +110,7 @@
                         <td><input type="checkbox" {% if role.manage_modify %}checked{% endif %} onclick="return false;"></td>
                         <td><input type="checkbox" {% if role.payroll %}checked{% endif %} onclick="return false;"></td>
                         <td><input type="checkbox" {% if role.admin %}checked{% endif %} onclick="return false;"></td>
+                        <td><input type="checkbox" {% if role.preferences %}checked{% endif %} onclick="return false;"></td>
                         <td><input type="checkbox" {% if role.api_report %}checked{% endif %} onclick="return false;"></td>
                         <td class="text-center"><button onclick="window.location.href='/admin/edit_role/{{role.id}}'" type="button" class="btn btn-info">Edit</button></td>
                     </tr>

@@ -54,6 +54,11 @@
                         <td style="text-align: left;">Manage Admin</td>
                         <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to Add, Edit and Remove Users, Roles and HR Teams.</td>
                     </tr>
+                    <tr onclick="document.querySelector('input[name=preferences]').checked = !document.querySelector('input[name=preferences]').checked;">
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="preferences" {% if role.preferences %}checked{% endif %}></td>
+                        <td style="text-align: left;">Manage Preferences</td>
+                        <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to modify system wide preferences.</td>
+                    </tr>
                     <tr onclick="document.querySelector('input[name=api_report]').checked = !document.querySelector('input[name=api_report]').checked;">
                         <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="api_report" {% if role.api_reporting %}checked{% endif %}></td>
                         <td style="text-align: left;">API Reporting</td>

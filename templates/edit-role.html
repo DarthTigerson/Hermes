@@ -60,7 +60,7 @@
                         <td style="text-align: left; padding-left: 25px;">Users with this role assigned will be able to modify system wide preferences.</td>
                     </tr>
                     <tr onclick="document.querySelector('input[name=api_report]').checked = !document.querySelector('input[name=api_report]').checked;">
-                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="api_report" {% if role.api_reporting %}checked{% endif %}></td>
+                        <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="api_report" {% if role.api_report %}checked{% endif %}></td>
                         <td style="text-align: left;">API Reporting</td>
                         <td style="text-align: left; padding-left: 25px;">This role should be used for service accounts only. Users with this role assigned will be able to call an API request to Hermes to GET a report of all available users.</td>
                     </tr>

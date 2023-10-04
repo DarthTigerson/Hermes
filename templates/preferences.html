@@ -1,3 +1,52 @@
 {% include 'layout.html' %}
 
-<h1>Preferences</h1>
+<div class="container">
+    <div class="row" >
+        <div style="padding-bottom: 20px; width: 100%;">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Preferences</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto;">
+                    <table class="table text-center table-hover">
+                        <tr onclick="document.querySelector('input[name=enable_email_notifications]').checked = !document.querySelector('input[name=enable_email_notifications]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="enable_email_notifications"></td>
+                            <td style="text-align: left; width: 20%;">Enable Email Notifications</td>
+                            <td style="text-align: left; padding-left: 25px;">Tick the box to enable notifications depending on the options setup in the trigger points.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Trigger Points</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto;">
+                    <table class="table text-center table-hover">
+                        <tr onclick="document.querySelector('input[name=email_new_employee]').checked = !document.querySelector('input[name=email_new_employee]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="email_new_employee"></td>
+                            <td style="text-align: left; width: 20%;">Onboarding trigger</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an e-mail when a new employee is onboarded onto Hermes.</td>
+                        </tr>
+                        <tr onclick="document.querySelector('input[name=email_updated_employee]').checked = !document.querySelector('input[name=email_updated_employee]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="email_updated_employee"></td>
+                            <td style="text-align: left; width: 20%">Updated Employee trigger</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an e-mail when a employee is updated onto Hermes.</td>
+                        </tr>
+                        <tr onclick="document.querySelector('input[name=email_updated_employee]').checked = !document.querySelector('input[name=email_updated_employee]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="email_updated_employee"></td>
+                            <td style="text-align: left; width: 20%">Offboarded Employee trigger</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an e-mail when a employee is offboarded from Hermes.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Email List</h5>
+                </div>
+                <div class="card-body" style="overflow-y: auto;">
+                    <table class="table text-center table-hover">
+                        
+                    </table>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>

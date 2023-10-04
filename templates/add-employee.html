@@ -4,7 +4,7 @@
     <form method="POST">
         <div class="card">
             <div style="text-align: left;" class="card-header">
-                Baisc Information
+                Basic Information
             </div>
             <div class="card-body">
                 <div style="width: 350px; display: inline-block;" class="form-group">
@@ -178,7 +178,7 @@
                         {% if currencies != [] %}
                             <option value="">Select Currency</option>
                             {% for currency in currencies %}
-                                <option value="{{currency.id}}">{{currency.symbol}} {{currency.name}}</option>
+                                <option value="{{currency.id}}">{{currency.name}} - {{currency.symbol}}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -280,7 +280,7 @@
                     </select>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Company E-mail</label>
+                    <label>Supplier User E-mail</label>
                     <input type="text" class="form-control" name="company_email" value="">
                 </div>
             </div>

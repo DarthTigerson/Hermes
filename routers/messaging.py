@@ -48,7 +48,6 @@ async def slack_send_message(message: str, db: Session = Depends(get_db)):
     preferences = db.query(Preferences).order_by(Preferences.id.desc()).first()
 
     if preferences is not None:
-        breakpoint()
         if preferences.slack_webhook_channel is not None:
             url = preferences.slack_webhook_channel
             payload = {'text': message}

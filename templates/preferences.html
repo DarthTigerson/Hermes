@@ -28,7 +28,7 @@
                         </table>
                     </div>
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Slack</h5>
+                        <h5 class="mb-0">Slack Settings</h5>
                     </div>
                     <div class="card-body" style="overflow-y: auto;">
                         <table class="table text-center table-hover">
@@ -41,15 +41,40 @@
                         </table>
                     </div> 
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Email List</h5>
+                        <h5 class="mb-0">Email Settings</h5>
                     </div>
                     <div class="card-body" style="overflow-y: auto;">
                         <table class="table text-center table-hover">
                             <tr>
-                                <td style="text-align: right; width: 10%; vertical-align: middle;">E-mail</td>
+                                <td style="text-align: right; width: 10%; vertical-align: middle;">E-mail Send To</td>
                                 <td>
                                     <input type="text" class="form-control" name="email_list" value="{{preferences.email_list}}">
                                 </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Server</td>
+                                <td>
+                                    <input type="text" class="form-control" name="email_smtp_server" value="{{preferences.email_smtp_server}}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Port</td>
+                                <td>
+                                    <input type="text" class="form-control" name="email_smtp_port" value="{{preferences.email_smtp_port}}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Username</td>
+                                <td>
+                                    <input type="text" class="form-control" name="email_smtp_username" value="{{preferences.email_smtp_username}}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Password</td>
+                                <td>
+                                    <input type="password" class="form-control" name="email_smtp_password" value="{{preferences.email_smtp_password}}">
+                                </td>
+                            </tr>
                             </tr> 
                         </table>
                     </div> 

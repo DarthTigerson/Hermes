@@ -5,7 +5,7 @@ from database import SessionLocal
 from pydantic import BaseModel, Field
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
-from routers.messaging import slack_send_message
+from routers.messaging import slack_send_message, email_send_message
 from datetime import datetime
 import models
 
@@ -153,6 +153,8 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
 
     if preferences.slack_webhook_channel != None and preferences.email_new_employee == True:
         await slack_send_message(message=f"New employee added: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_new_employee == True:
+        await email_send_message(subject=f"New employee added: {employee_model.full_name}",message = f"Hermes has a newly onboarded employee.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nJob Title: {employee_model.job_title}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Added a new employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
@@ -254,6 +256,8 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
 
     if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
         await slack_send_message(message=f"Employee updated: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_updated_employee == True:
+        await email_send_message(subject=f"Employee updated: {employee_model.full_name}",message = f"Hermes has a freshly updated employee.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nStart Date: {employee_model.start_date}\nJob Title: {employee_model.job_title}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Updated the employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
@@ -298,6 +302,8 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
 
     if preferences.slack_webhook_channel != None and preferences.email_offboarded_employee == True:
         await slack_send_message(message=f"Employee offboarded: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_offboarded_employee == True:
+        await email_send_message(subject=f"Employee Offboarded: {employee_model.full_name}",message = f"Hermes has an Offboarding.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nJob Title: {employee_model.job_title}\nOffboarding Date: {employee_model.end_date}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Offboarded the employee with the email {employee_model.email}.")
     await create_log(request=request, log=log, db=db)
@@ -325,6 +331,9 @@ async def reboard_employee(request: Request, employee_id: int, db: Session =Depe
 
     if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
         await slack_send_message(message=f"Employee Re-Onboarded: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_offboarded_employee == True:
+        await email_send_message(subject=f"Employee Re-Onboarding: {employee_model.full_name}",message = f"Hermes has a Re-Onboarding.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nJob Title: {employee_model.job_title}\Start Date: {employee_model.start_date}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
+
 
     log = Log(action="Info",user=user['username'],description=f"Reboarded the employee with the email {employee_model.email}.")
     await create_log(request=request, log=log, db=db)

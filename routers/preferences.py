@@ -5,6 +5,7 @@ from database import SessionLocal
 from pydantic import BaseModel, Field
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
+from models import Roles, Preferences
 import models, datetime
 
 from fastapi.responses import HTMLResponse
@@ -29,3 +30,16 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
+@router.get("/")
+async def get_preferences(request: Request, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.preferences == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+
+    return templates.TemplateResponse("preferences.html", {"request": request, "logged_in_user": user, "role_state": role_state})

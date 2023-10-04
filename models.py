@@ -137,10 +137,10 @@ class PayFrequency(Base):
 class Preferences(Base):
     __tablename__ = 'preferences'
     id = Column(Integer, primary_key=True, index=True)
-    enable_email_notifications = Column(Boolean, default=False)
     email_new_employee = Column(Boolean, default=False)
     email_updated_employee = Column(Boolean, default=False)
     email_offboarded_employee = Column(Integer, default=5)
-    email_list = Column(String(200))
+    email_list = Column(String(200), default=None)
+    slack_webhook_channel = Column(String(200), default=None)
     daily_user_reports = Column(Boolean, default=False)
     monthly_user_reports = Column(Boolean, default=False)

@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from typing import Annotated, Optional
 from database import SessionLocal, engine
 from pydantic import BaseModel, Field
-from models import Users, Roles, Teams, Base
+from models import Users, Roles, Teams, Base, Preferences
+from routers.messaging import slack_send_message
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from fastapi.responses import HTMLResponse
@@ -196,6 +197,9 @@ async def create_role(request: Request, name: str = Form(...), description: str 
     db.add(role_model)
     db.commit()
 
+    if payroll == True:
+        await slack_send_message(f"#channel Role {name} has been created by {user['username']} with Payroll Access", db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/edit_role/{role_id}")
@@ -242,6 +246,9 @@ async def edit_role(request: Request, role_id: int, name: str = Form(...), descr
 
     db.add(role)
     db.commit()
+
+    if payroll == True:
+        await slack_send_message(f"#channel Role {name} has been modified by {user['username']} to have access to Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
@@ -366,6 +373,11 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     db.add(user_model)
     db.commit()
 
+    payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
+    
+    if payroll_data_access.payroll == True:
+        await slack_send_message(f"#channel User {username} has been created by {user['username']} with Payroll Access", db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/edit_user/{user_id}")
@@ -410,6 +422,11 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 
     db.add(user)
     db.commit()
+
+    payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
+
+    if payroll_data_access.payroll == True:
+        await slack_send_message(f"#channel User {username} has been modified by {user['username']} to have access to Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 

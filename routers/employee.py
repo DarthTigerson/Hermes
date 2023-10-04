@@ -5,6 +5,7 @@ from database import SessionLocal
 from pydantic import BaseModel, Field
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
+from routers.messaging import slack_send_message
 from datetime import datetime
 import models
 
@@ -148,6 +149,11 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     db.add(employee_model)
     db.commit()
 
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_new_employee == True:
+        await slack_send_message(message=f"New employee added: {employee_model.full_name} ({employee_model.email})", db=db)
+
     log = Log(action="Info",user=user['username'],description=f"Added a new employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
 
@@ -179,7 +185,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
-async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), employment_status_id: int = Form(...), db: Session = Depends(get_db)):
+async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(None), salary: str = Form(None), salary_period: str = Form(None), hr_team_id: int = Form(None),  working_hours: str = Form(None), employment_contract_id: int = Form(None), employment_type_id: int = Form(None), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), net_monthly_salary: str = Form(None), change_reason: str = Form(None), increase_percent: str = Form(None), salary_pay_frequency_id: int = Form(None), employment_status_id: int = Form(...), db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
@@ -216,22 +222,38 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.brand_code = brand_code
     employee_model.business_unit = business_unit
     employee_model.business_verticle = business_verticle
-    employee_model.salary_currency_id = salary_currency_id
-    employee_model.salary = salary
-    employee_model.salary_period = salary_period
-    employee_model.salary_pay_frequency_id = salary_pay_frequency_id
-    employee_model.net_monthly_salary = net_monthly_salary
-    employee_model.change_reason = change_reason
-    employee_model.increase_percentage = increase_percent
-    employee_model.hr_team_id = hr_team_id
-    employee_model.working_hours = working_hours
-    employee_model.employment_contract_id = employment_contract_id
-    employee_model.employment_type_id = employment_type_id
+    if salary_currency_id != None:
+        employee_model.salary_currency_id = salary_currency_id
+    if salary != None:
+        employee_model.salary = salary
+    if salary_period != None:
+        employee_model.salary_period = salary_period
+    if salary_pay_frequency_id != None:
+        employee_model.salary_pay_frequency_id = salary_pay_frequency_id
+    if net_monthly_salary != None:
+        employee_model.net_monthly_salary = net_monthly_salary
+    if change_reason != None:
+        employee_model.change_reason = change_reason
+    if increase_percent != None:
+        employee_model.increase_percentage = increase_percent
+    if hr_team_id != None:
+        employee_model.hr_team_id = hr_team_id
+    if working_hours != None:
+        employee_model.working_hours = working_hours
+    if employment_contract_id != None:
+        employee_model.employment_contract_id = employment_contract_id
+    if employment_type_id != None:
+        employee_model.employment_type_id = employment_type_id
     employee_model.employment_status_id = employment_status_id
     employee_model.modified_date = datetime.now()
 
     db.add(employee_model)
     db.commit()
+
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
+        await slack_send_message(message=f"Employee updated: {employee_model.full_name} ({employee_model.email})", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Updated the employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
@@ -272,6 +294,11 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
     db.add(employee_model)
     db.commit()
 
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_offboarded_employee == True:
+        await slack_send_message(message=f"Employee offboarded: {employee_model.full_name} ({employee_model.email})", db=db)
+
     log = Log(action="Info",user=user['username'],description=f"Offboarded the employee with the email {employee_model.email}.")
     await create_log(request=request, log=log, db=db)
 
@@ -293,6 +320,11 @@ async def reboard_employee(request: Request, employee_id: int, db: Session =Depe
 
     db.add(employee_model)
     db.commit()
+
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
+        await slack_send_message(message=f"Employee Re-Onboarded: {employee_model.full_name} ({employee_model.email})", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Reboarded the employee with the email {employee_model.email}.")
     await create_log(request=request, log=log, db=db)

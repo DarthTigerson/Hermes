@@ -10,7 +10,7 @@ def create_default_user():
         models.Base.metadata.create_all(bind=engine)
 
         # Create a default role
-        role = models.Roles(name="Admin", description="Administrator", onboarding=True, employee_updates=True, offboarding=True, manage_modify=True, payroll=True, admin=True, preferences=True, logs=True, api_report=True)
+        role = models.Roles(name="Admin", description="Administrator", onboarding=True, employee_updates=True, offboarding=True, manage_modify=True, payroll=False, admin=True, preferences=True, logs=True, api_report=True)
         db.add(role)
         db.commit()
 

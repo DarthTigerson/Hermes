@@ -256,7 +256,7 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
         employee_model.employment_contract_id = employment_contract_id
     if employment_type_id != 0:
         employee_model.employment_type_id = employment_type_id
-    employee_model.employment_status_id = 1
+    employee_model.employment_status_id = 0
     employee_model.modified_date = datetime.now()
 
     db.add(employee_model)

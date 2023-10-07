@@ -147,11 +147,11 @@ async def login(request: Request, db: Session = Depends(get_db)):
         validate_user_cookie = await login_for_access_token(response, form_data=form, db=db)
         if not validate_user_cookie:
             msg = "Incorrect username or password"
-            return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+            return templates.TemplateResponse("login.html", {"request": request, "msg": msg, "role_state": {"admin": 0}})
         return response
-    except HTTPException:
+    except:
         msg = "Unknown Error"
-        return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+        return templates.TemplateResponse("login.html", {"request": request, "msg": msg, "role_state": {"admin": 0}})
 
 @router.get("/add_role")
 async def add_role(request: Request, db: Session = Depends(get_db)):

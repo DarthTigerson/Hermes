@@ -150,11 +150,17 @@ async def create_employee(request: Request, email: str = Form(None), first_name:
     db.commit()
 
     preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == hr_team_id).first()
+    department = db.query(models.Departments).filter(models.Departments.id == department_id).first()
 
     if preferences.slack_webhook_channel != None and preferences.email_new_employee == True:
         await slack_send_message(message=f"New employee added: {employee_model.full_name} ({employee_model.email})", db=db)
     if preferences.email_list != None and preferences.email_new_employee == True:
-        await email_send_message(subject=f"New employee added: {employee_model.full_name}",message = f"Hermes has a newly onboarded employee.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nJob Title: {employee_model.job_title}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
+        await email_send_message(subject=f"New Employee: {employee_model.full_name}", message=f"Hermes\nNew Employee Onboarding: {employee_model.full_name}\n\nThis email is to notify you of the following new employee:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department.name}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nPlease contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Added a new employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
@@ -253,11 +259,17 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     db.commit()
 
     preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == hr_team_id).first()
+    department = db.query(models.Departments).filter(models.Departments.id == department_id).first()
 
     if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
         await slack_send_message(message=f"Employee updated: {employee_model.full_name} ({employee_model.email})", db=db)
     if preferences.email_list != None and preferences.email_updated_employee == True:
-        await email_send_message(subject=f"Employee updated: {employee_model.full_name}",message = f"Hermes has a freshly updated employee.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nStart Date: {employee_model.start_date}\nJob Title: {employee_model.job_title}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
+        await email_send_message(subject=f"Employee Update: {employee_model.full_name}", message=f"Hermes\nAn Employee update: {employee_model.full_name}\n\nThis email is to notify you of the following employee update:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department.name}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nPlease contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Updated the employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
@@ -299,11 +311,17 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
     db.commit()
 
     preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employee_model.employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employee_model.employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employee_model.employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == employee_model.site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == employee_model.hr_team_id).first()
+    department = db.query(models.Departments).filter(models.Departments.id == employee_model.department_id).first()
 
     if preferences.slack_webhook_channel != None and preferences.email_offboarded_employee == True:
         await slack_send_message(message=f"Employee offboarded: {employee_model.full_name} ({employee_model.email})", db=db)
     if preferences.email_list != None and preferences.email_offboarded_employee == True:
-        await email_send_message(subject=f"Employee Offboarded: {employee_model.full_name}",message = f"Hermes has an Offboarding.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nJob Title: {employee_model.job_title}\nOffboarding Date: {employee_model.end_date}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
+        await email_send_message(subject=f"Employee Offboarding: {employee_model.full_name}", message=f"Hermes\nOffboarding notification for: {employee_model.full_name}\n\nThis email is to notify you of the following employee leaving our organization:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department.name}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nlease disable all accesses provided on the specified above date (unless otherwise instructed) and contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Offboarded the employee with the email {employee_model.email}.")
     await create_log(request=request, log=log, db=db)
@@ -328,11 +346,17 @@ async def reboard_employee(request: Request, employee_id: int, db: Session =Depe
     db.commit()
 
     preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employee_model.employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employee_model.employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employee_model.employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == employee_model.site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == employee_model.hr_team_id).first()
+    department = db.query(models.Departments).filter(models.Departments.id == employee_model.department_id).first()
 
     if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
         await slack_send_message(message=f"Employee Re-Onboarded: {employee_model.full_name} ({employee_model.email})", db=db)
     if preferences.email_list != None and preferences.email_offboarded_employee == True:
-        await email_send_message(subject=f"Employee Re-Onboarding: {employee_model.full_name}",message = f"Hermes has a Re-Onboarding.\n\nName: {employee_model.full_name}\nEmail: {employee_model.email}\nJob Title: {employee_model.job_title}\Start Date: {employee_model.start_date}\nReports to: {employee_model.direct_manager}\n\nFor more details you can view them on the Hermes dashboard.",db=db)
+        await email_send_message(subject=f"New Employee: {employee_model.full_name}", message=f"Hermes\nEmployee Re-Onboarding: {employee_model.full_name}\n\nThis email is to notify you of the following Re-Onboarding:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department.name}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nPlease contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
 
 
     log = Log(action="Info",user=user['username'],description=f"Reboarded the employee with the email {employee_model.email}.")

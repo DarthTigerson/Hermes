@@ -161,13 +161,6 @@
                     <label>Business Vertical</label>
                     <input type="text" class="form-control" name="business_verticle" value="{{employee_data.business_verticle}}">
                 </div>
-                <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Employment Status</label>
-                    <select class="form-control" name="employment_status_id">
-                        <option {%if employee_data.employment_status_id == 0%} selected="selected" {%endif%} value="0">Employed</option>
-                        <option {%if employee_data.employment_status_id == 1%} selected="selected" {%endif%} value="1">Offboarded</option>
-                    </select>
-                </div>
             </div>
         </div>
         </br>

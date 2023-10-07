@@ -171,3 +171,4 @@ create_all_employment_types()
 create_all_departments()
 create_all_employers()
 create_all_pay_frequencies()
+#openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 730

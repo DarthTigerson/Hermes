@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import employee, home, manage, admin, logging, about
+from routers import employee, home, manage, preferences, admin, logging, about, messaging
 from database import engine
 import models
 from starlette.staticfiles import StaticFiles
@@ -14,6 +14,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(home.router)
 app.include_router(employee.router)
 app.include_router(manage.router)
+app.include_router(preferences.router)
 app.include_router(admin.router)
 app.include_router(logging.router)
 app.include_router(about.router)
+app.include_router(messaging.router)

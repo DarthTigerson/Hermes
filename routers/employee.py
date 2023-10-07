@@ -5,6 +5,7 @@ from database import SessionLocal
 from pydantic import BaseModel, Field
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
+from routers.messaging import slack_send_message, email_send_message
 from datetime import datetime
 import models
 
@@ -93,7 +94,7 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_employee", response_class=HTMLResponse)
-async def create_employee(request: Request, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), db: Session = Depends(get_db)):
+async def create_employee(request: Request, email: str = Form(None), first_name: str = Form(None), last_name: str = Form(None), full_name: str = Form(None), date_of_birth: str = Form(None), gender: int = Form(0), nationality: str = Form(None), country_of_origin_id: int = Form(0), working_country_id: int = Form(0), job_title: str = Form(None), direct_manager:str = Form(None), start_date: str = Form(None), site_id: int = Form(0), department_id: int = Form(0), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(0), salary: str = Form(None), salary_period: str = Form(None), hr_team_id: int = Form(0),  working_hours: str = Form(None), employment_contract_id: int = Form(0), employment_type_id: int = Form(0), supplier: str = Form(None), entity_to_be_billed: str = Form(None), employer_id: int = Form(0), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(None), net_monthly_salary: str = Form(None), change_reason: str = Form(None), increase_percent: str = Form(None), salary_pay_frequency_id: int = Form(0), db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
@@ -148,6 +149,23 @@ async def create_employee(request: Request, email: str = Form(...), first_name: 
     db.add(employee_model)
     db.commit()
 
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == hr_team_id).first()
+    if hr_department != None:
+        hr_department = hr_department.name
+    else:
+        hr_department = "N/A"
+    department = db.query(models.Departments).filter(models.Departments.id == department_id).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_new_employee == True:
+        await slack_send_message(message=f"New employee added: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_new_employee == True:
+        await email_send_message(subject=f"New Onboarding: {employee_model.full_name}", message=f"Hermes\nNew Employee Onboarding: {employee_model.full_name}\n\nThis email is to notify you of the following new employee:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nPlease contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
+
     log = Log(action="Info",user=user['username'],description=f"Added a new employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
 
@@ -179,7 +197,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
-async def update_employee(request: Request, employee_id: int, email: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), full_name: str = Form(...), date_of_birth: str = Form(...), gender: int = Form(...), nationality: str = Form(...), country_of_origin_id: int = Form(...), working_country_id: int = Form(...), job_title: str = Form(...), direct_manager:str = Form(...), start_date: str = Form(...), end_date: str = Form(None), site_id: int = Form(...), department_id: int = Form(...), product_code: str = Form(...), brand_code: str = Form(...),business_unit: str = Form(...), business_verticle: str = Form(...), salary_currency_id: int = Form(...), salary: str = Form(...), salary_period: str = Form(...), hr_team_id: int = Form(...),  working_hours: str = Form(...), employment_contract_id: int = Form(...), employment_type_id: int = Form(...), supplier: str = Form(...), entity_to_be_billed: str = Form(...), employer_id: int = Form(...), company_email: str = Form(...), personal_email: str = Form(...), net_monthly_salary: str = Form(...), change_reason: str = Form(...), increase_percent: str = Form(...), salary_pay_frequency_id: int = Form(...), employment_status_id: int = Form(...), db: Session = Depends(get_db)):
+async def update_employee(request: Request, employee_id: int, email: str = Form(None), first_name: str = Form(None), last_name: str = Form(None), full_name: str = Form(None), date_of_birth: str = Form(None), gender: int = Form(0), nationality: str = Form(None), country_of_origin_id: int = Form(0), working_country_id: int = Form(0), job_title: str = Form(None), direct_manager:str = Form(None), start_date: str = Form(None), end_date: str = Form(None), site_id: int = Form(0), department_id: int = Form(0), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(None), salary: str = Form(None), salary_period: str = Form(None), hr_team_id: int = Form(None),  working_hours: str = Form(None), employment_contract_id: int = Form(None), employment_type_id: int = Form(None), supplier: str = Form(None), entity_to_be_billed: str = Form(None), employer_id: int = Form(0), company_email: str = Form(None), personal_email: str = Form(None), net_monthly_salary: str = Form(None), change_reason: str = Form(None), increase_percent: str = Form(None), salary_pay_frequency_id: int = Form(None), employment_status_id: int = Form(0), db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
@@ -216,22 +234,50 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.brand_code = brand_code
     employee_model.business_unit = business_unit
     employee_model.business_verticle = business_verticle
-    employee_model.salary_currency_id = salary_currency_id
-    employee_model.salary = salary
-    employee_model.salary_period = salary_period
-    employee_model.salary_pay_frequency_id = salary_pay_frequency_id
-    employee_model.net_monthly_salary = net_monthly_salary
-    employee_model.change_reason = change_reason
-    employee_model.increase_percentage = increase_percent
-    employee_model.hr_team_id = hr_team_id
-    employee_model.working_hours = working_hours
-    employee_model.employment_contract_id = employment_contract_id
-    employee_model.employment_type_id = employment_type_id
+    if salary_currency_id != 0:
+        employee_model.salary_currency_id = salary_currency_id
+    if salary != None:
+        employee_model.salary = salary
+    if salary_period != None:
+        employee_model.salary_period = salary_period
+    if salary_pay_frequency_id != 0:
+        employee_model.salary_pay_frequency_id = salary_pay_frequency_id
+    if net_monthly_salary != None:
+        employee_model.net_monthly_salary = net_monthly_salary
+    if change_reason != None:
+        employee_model.change_reason = change_reason
+    if increase_percent != None:
+        employee_model.increase_percentage = increase_percent
+    if hr_team_id != 0:
+        employee_model.hr_team_id = hr_team_id
+    if working_hours != None:
+        employee_model.working_hours = working_hours
+    if employment_contract_id != 0:
+        employee_model.employment_contract_id = employment_contract_id
+    if employment_type_id != 0:
+        employee_model.employment_type_id = employment_type_id
     employee_model.employment_status_id = employment_status_id
     employee_model.modified_date = datetime.now()
 
     db.add(employee_model)
     db.commit()
+
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == hr_team_id).first()
+    if hr_department != None:
+        hr_department = hr_department.name
+    else:
+        hr_department = "N/A"
+    department = db.query(models.Departments).filter(models.Departments.id == department_id).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
+        await slack_send_message(message=f"Employee updated: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_updated_employee == True:
+        await email_send_message(subject=f"Employee Update: {employee_model.full_name}", message=f"Hermes\nEmployee update: {employee_model.full_name}\n\nThis email is to notify you of the following employee update:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nPlease contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Updated the employee with the email {email}.")
     await create_log(request=request, log=log, db=db)
@@ -250,10 +296,12 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
 
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
     log = Log(action="Warn",user=user['username'],description=f"Attempted to create a new employee with the email {employee.email} but it already exists.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("empoyee-exists.html", {"request": request, "employee": employee, "departments": departments, "sites": sites, "employments": employments})
+    return templates.TemplateResponse("empoyee-exists.html", {"request": request, "employee": employee, "departments": departments, "sites": sites, "employments": employments, "role_state": role_state, "logged_in_user": user})
 
 @router.get("/offboard_employee/{employee_id}")
 async def offboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):
@@ -271,6 +319,23 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
 
     db.add(employee_model)
     db.commit()
+
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employee_model.employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employee_model.employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employee_model.employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == employee_model.site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == employee_model.hr_team_id).first()
+    if hr_department != None:
+        hr_department = hr_department.name
+    else:
+        hr_department = "N/A"
+    department = db.query(models.Departments).filter(models.Departments.id == employee_model.department_id).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_offboarded_employee == True:
+        await slack_send_message(message=f"Employee offboarded: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_offboarded_employee == True:
+        await email_send_message(subject=f"Employee Offboarding: {employee_model.full_name}", message=f"Hermes\nOffboarding notification for: {employee_model.full_name}\n\nThis email is to notify you of the following employee leaving our organization:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nlease disable all accesses provided on the specified above date (unless otherwise instructed) and contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Offboarded the employee with the email {employee_model.email}.")
     await create_log(request=request, log=log, db=db)
@@ -293,6 +358,24 @@ async def reboard_employee(request: Request, employee_id: int, db: Session =Depe
 
     db.add(employee_model)
     db.commit()
+
+    preferences = db.query(models.Preferences).order_by(models.Preferences.id.desc()).first()
+    current_employer = db.query(models.Employers).filter(models.Employers.id == employee_model.employer_id).first()
+    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employee_model.employment_contract_id).first()
+    employment_type = db.query(models.Employment).filter(models.Employment.id == employee_model.employment_type_id).first()
+    site = db.query(models.Sites).filter(models.Sites.id == employee_model.site_id).first()
+    hr_department = db.query(models.Teams).filter(models.Teams.id == employee_model.hr_team_id).first()
+    if hr_department != None:
+        hr_department = hr_department.name
+    else:
+        hr_department = "N/A"
+    department = db.query(models.Departments).filter(models.Departments.id == employee_model.department_id).first()
+
+    if preferences.slack_webhook_channel != None and preferences.email_updated_employee == True:
+        await slack_send_message(message=f"Employee Re-Onboarded: {employee_model.full_name} ({employee_model.email})", db=db)
+    if preferences.email_list != None and preferences.email_offboarded_employee == True:
+        await email_send_message(subject=f"Re-Onboarding: {employee_model.full_name}", message=f"Hermes\nEmployee Re-Onboarding: {employee_model.full_name}\n\nThis email is to notify you of the following Re-Onboarding:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nPlease contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
+
 
     log = Log(action="Info",user=user['username'],description=f"Reboarded the employee with the email {employee_model.email}.")
     await create_log(request=request, log=log, db=db)

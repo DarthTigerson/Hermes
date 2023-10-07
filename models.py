@@ -18,6 +18,7 @@ class Users(Base):
     password = Column(String(50))
     role_id = Column(Integer, ForeignKey('roles.id'))
     team_id = Column(Integer, ForeignKey('teams.id'))
+    token = Column(String(250))
     active = Column(Boolean, default=True)
 
 class Roles(Base):
@@ -32,6 +33,7 @@ class Roles(Base):
     payroll = Column(Boolean, default=False)
     admin = Column(Boolean, default=False)
     logs = Column(Boolean, default=False)
+    preferences = Column(Boolean, default=False)
     api_report = Column(Boolean, default=False)
 
 class Teams(Base):
@@ -132,3 +134,18 @@ class PayFrequency(Base):
     __tablename__ = 'salary_pay_frequency'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
+
+class Preferences(Base):
+    __tablename__ = 'preferences'
+    id = Column(Integer, primary_key=True, index=True)
+    email_new_employee = Column(Boolean, default=False)
+    email_updated_employee = Column(Boolean, default=False)
+    email_offboarded_employee = Column(Integer, default=5)
+    email_list = Column(String(200), default=None)
+    email_smtp_server = Column(String(200), default=None)
+    email_smtp_port = Column(Integer, default=587)
+    email_smtp_username = Column(String(200), default=None)
+    email_smtp_password = Column(String(200), default=None)
+    slack_webhook_channel = Column(String(200), default=None)
+    daily_user_reports = Column(Boolean, default=False)
+    monthly_user_reports = Column(Boolean, default=False)

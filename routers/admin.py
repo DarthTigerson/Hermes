@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from typing import Annotated, Optional
 from database import SessionLocal, engine
 from pydantic import BaseModel, Field
-from models import Users, Roles, Teams, Base
+from models import Users, Roles, Teams, Base, Preferences
+from routers.messaging import slack_send_message
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from fastapi.responses import HTMLResponse
@@ -133,7 +134,8 @@ async def logout(request: Request):
 
 @router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    role_state = {"admin": 0}
+    return templates.TemplateResponse("login.html", {"request": request, "role_state": role_state})
 
 @router.post("/login", response_class=HTMLResponse)
 async def login(request: Request, db: Session = Depends(get_db)):
@@ -145,11 +147,11 @@ async def login(request: Request, db: Session = Depends(get_db)):
         validate_user_cookie = await login_for_access_token(response, form_data=form, db=db)
         if not validate_user_cookie:
             msg = "Incorrect username or password"
-            return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+            return templates.TemplateResponse("login.html", {"request": request, "msg": msg, "role_state": {"admin": 0}})
         return response
-    except HTTPException:
+    except:
         msg = "Unknown Error"
-        return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+        return templates.TemplateResponse("login.html", {"request": request, "msg": msg, "role_state": {"admin": 0}})
 
 @router.get("/add_role")
 async def add_role(request: Request, db: Session = Depends(get_db)):
@@ -167,7 +169,7 @@ async def add_role(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("add-role.html", {"request": request, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_role", response_class=HTMLResponse)
-async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
+async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), preferences: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
 
@@ -189,10 +191,14 @@ async def create_role(request: Request, name: str = Form(...), description: str 
     role_model.manage_modify = manage_modify
     role_model.admin = admin
     role_model.payroll = payroll
+    role_model.preferences = preferences
     role_model.api_report = api_report
 
     db.add(role_model)
     db.commit()
+
+    if payroll == True:
+        await slack_send_message(f"<!channel> Role {name} has been created by {user['username']} with Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
@@ -240,6 +246,9 @@ async def edit_role(request: Request, role_id: int, name: str = Form(...), descr
 
     db.add(role)
     db.commit()
+
+    if payroll == True:
+        await slack_send_message(f"<!channel> Role {name} has been modified by {user['username']} to have access to Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
@@ -364,6 +373,11 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     db.add(user_model)
     db.commit()
 
+    payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
+    
+    if payroll_data_access.payroll == True:
+        await slack_send_message(f"<!channel> User {username} has been created by {user['username']} with Payroll Access", db=db)
+
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
 @router.get("/edit_user/{user_id}")
@@ -408,6 +422,11 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 
     db.add(user)
     db.commit()
+
+    payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
+
+    if payroll_data_access.payroll == True:
+        await slack_send_message(f"<!channel> User {username} has been modified by {user['username']} to have access to Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 

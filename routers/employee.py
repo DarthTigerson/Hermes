@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
@@ -381,3 +381,41 @@ async def reboard_employee(request: Request, employee_id: int, db: Session =Depe
     await create_log(request=request, log=log, db=db)
 
     return RedirectResponse(url="/employee/offboarded_employee", status_code=status.HTTP_302_FOUND)
+
+@router.get("/api_employees_return/")
+async def api_employees_return(db: Session = Depends(get_db)):
+    working_country = aliased(models.Country)
+    country_of_origin = aliased(models.Country)
+
+    employees = db.query(
+        working_country.name.label('working_country'),
+        models.Employees.end_date,
+        models.Employees.email,
+        models.Employees.first_name,
+        models.Employees.last_name,
+        models.Employees.job_title,
+        models.Sites.name.label('site'),
+        models.Departments.name.label('department'),
+        models.Employees.direct_manager,
+        country_of_origin.name.label('country_of_origin'),
+        models.Employment.name.label('employment_type'),
+        models.Employees.business_unit,
+        models.Contracts.name.label('employment_contract')
+    ).join(
+        models.Sites, models.Sites.id == models.Employees.site_id
+    ).join(
+        models.Departments, models.Departments.id == models.Employees.department_id
+    ).join(
+        models.Employment, models.Employment.id == models.Employees.employment_type_id
+    ).join(
+        models.Contracts, models.Contracts.id == models.Employees.employment_contract_id
+    ).join(
+        working_country, working_country.id == models.Employees.working_country_id
+    ).join(
+        country_of_origin, country_of_origin.id == models.Employees.country_of_origin_id
+    ).filter(
+        models.Employees.employment_status_id == 0
+    ).order_by(
+        models.Employees.email
+    ).all()
+    return employees

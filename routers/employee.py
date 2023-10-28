@@ -53,16 +53,20 @@ async def get_employee(request: Request, employee_search: Optional[str] = None, 
     log = Log(action="Info",user=user['username'],description="Viewed the employee page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state, "employee_search": employee_search})
 
 @router.get("/offboarded_employee")
-async def get_offboarded_employee(request: Request, db: Session = Depends(get_db)):
+async def get_offboarded_employee(request: Request, offboarded_employee_search: Optional[str] = None, db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
     
-    employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 1).all()
+    if offboarded_employee_search is None:
+        employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 1).all()
+    else:
+        employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 1).filter(models.Employees.full_name.ilike(f"%{offboarded_employee_search}%")).all()
+
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
@@ -72,7 +76,7 @@ async def get_offboarded_employee(request: Request, db: Session = Depends(get_db
     log = Log(action="Info",user=user['username'],description="Viewed the offboarded users page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state, "offboarded_employee_search": offboarded_employee_search})
 
 @router.get("/add_employee")
 async def add_employee(request: Request, db: Session = Depends(get_db)):

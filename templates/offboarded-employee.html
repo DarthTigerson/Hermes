@@ -4,6 +4,9 @@
     <div class="card text-center">
         <div class="card-header" style="text-align: right;">
             <a href="/employee/" class="btn btn-info float-left">Onboarded Employees List</a>
+            <form class="form-inline ml-auto float-right" action="/employee/offboarded_employee" method="GET">
+                <input class="form-control mr-sm-2" type="search" placeholder="{% if offboarded_employee_search %}{{ offboarded_employee_search }}{% else %}Search Offboarded Employees{% endif %}" aria-label="Search" name="offboarded_employee_search" style="width: 300px; text-align: center;">
+            </form>
         </div>
         <div class="card-body">            
             <table class="table table-hover">

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
 from sqlalchemy.orm import Session, aliased
-from typing import Annotated
+from typing import Annotated, Optional
 from database import SessionLocal
 from pydantic import BaseModel, Field
 from routers.admin import get_current_user
@@ -32,13 +32,18 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
-async def get_employee(request: Request, db: Session = Depends(get_db)):
-
+async def get_employee(request: Request, employee_search: Optional[str] = None, db: Session = Depends(get_db)):
+    
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
+    if employee_search is None:
+        employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 0).all()
 
-    employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 0).all()
+    else:
+        employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 0).filter(models.Employees.full_name.ilike(f"%{employee_search}%")).all()
+
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
@@ -160,7 +165,7 @@ async def create_employee(request: Request, email: str = Form(None), first_name:
     else:
         hr_department = "N/A"
     department = db.query(models.Departments).filter(models.Departments.id == department_id).first()
-
+    
     if preferences.slack_webhook_channel != None and preferences.email_new_employee == True:
         await slack_send_message(message=f"New employee added: {employee_model.full_name} ({employee_model.email})", db=db)
     if preferences.email_list != None and preferences.email_new_employee == True:

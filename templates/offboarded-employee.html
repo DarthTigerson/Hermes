@@ -3,9 +3,10 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header" style="text-align: right;">
-            <a href="/employee/" class="btn btn-info float-left">Onboarded Employees List</a>
+            <h3 style="display: inline-block; margin-right: 30px;" class="float-left">Offboardings List</h3>
+            <a href="/employee/" class="btn btn-info" style="margin-right: 5px;">Employees List</a>
             <form class="form-inline ml-auto float-right" action="/employee/offboarded_employee" method="GET">
-                <input class="form-control mr-sm-2" type="search" placeholder="{% if offboarded_employee_search %}{{ offboarded_employee_search }}{% else %}Search Offboarded Employees{% endif %}" aria-label="Search" name="offboarded_employee_search" style="width: 300px; text-align: center;">
+                <input class="form-control mr-sm-2" type="search" placeholder="{% if offboarded_employee_search %}{{ offboarded_employee_search }}{% else %}Search Offboarded Employees{% endif %}" aria-label="Search" name="offboarded_employee_search" style="width: 300px; text-align: center; margin-right: 0px;">
             </form>
         </div>
         <div class="card-body">            

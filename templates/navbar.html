@@ -37,6 +37,9 @@
             </ul>
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <form class="form-inline" action="/employee" method="GET">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search Employees" aria-label="Search" name="employee_search">
+            </form>
             <ul class="navbar-nav">
                 {% if logged_in_user %}
                 <li class="nav-item dropdown active">

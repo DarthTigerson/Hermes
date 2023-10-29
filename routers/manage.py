@@ -35,6 +35,11 @@ async def test(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     departments = db.query(Departments).order_by(Departments.name).all()
     sites = db.query(Sites).order_by(Sites.name).all()
     contracts = db.query(Contracts).order_by(Contracts.name).all()
@@ -43,8 +48,6 @@ async def test(request: Request, db: Session = Depends(get_db)):
     country = db.query(Country).order_by(Country.name).all()
     currency = db.query(Currency).order_by(Currency.name).all()
     salary_pay_frequency = db.query(PayFrequency).order_by(PayFrequency.name).all()
-
-    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the manage page.")
     await create_log(request=request, log=log, db=db)
@@ -60,6 +63,9 @@ async def add_department(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     log = Log(action="Info",user=user['username'],description=f"Viewed the add department page.")
     await create_log(request=request, log=log, db=db)
 
@@ -71,6 +77,11 @@ async def create_department(request: Request, name: str = Form(...), description
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     department_model = Departments()
 
@@ -91,10 +102,13 @@ async def edit_department(request: Request, department_id: int, db: Session = De
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    
-    department = db.query(Departments).filter(Departments.id == department_id).first()
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+    
+    department = db.query(Departments).filter(Departments.id == department_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit department page for {department.name}.")
     await create_log(request=request, log=log, db=db)
@@ -107,6 +121,11 @@ async def update_department(request: Request, department_id: int, name: str = Fo
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     department_model = db.query(Departments).filter(Departments.id == department_id).first()
 
@@ -127,6 +146,11 @@ async def delete_department(request: Request, department_id: int, db: Session = 
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     department = db.query(Departments).filter(Departments.id == department_id).first()
 
@@ -150,6 +174,9 @@ async def add_site(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     log = Log(action="Info",user=user['username'],description=f"Viewed the add site page.")
     await create_log(request=request, log=log, db=db)
     
@@ -161,6 +188,11 @@ async def create_site(request: Request, name: str = Form(...), description: str 
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     site_model = Sites()
 
@@ -181,10 +213,13 @@ async def edit_site(request: Request, site_id: int, db: Session = Depends(get_db
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    
-    site = db.query(Sites).filter(Sites.id == site_id).first()
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+    
+    site = db.query(Sites).filter(Sites.id == site_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit site page for {site.name}.")
     await create_log(request=request, log=log, db=db)
@@ -197,6 +232,11 @@ async def update_site(request: Request, site_id: int, name: str = Form(...), des
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     site_model = db.query(Sites).filter(Sites.id == site_id).first()
 
@@ -217,6 +257,11 @@ async def delete_site(request: Request, site_id: int, db: Session = Depends(get_
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     site = db.query(Sites).filter(Sites.id == site_id).first()
 
@@ -240,6 +285,9 @@ async def add_contract(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     log = Log(action="Info",user=user['username'],description=f"Viewed the add contract page.")
     await create_log(request=request, log=log, db=db)
     
@@ -251,6 +299,11 @@ async def create_contract(request: Request, name: str = Form(...), description: 
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     contract_model = Contracts()
 
@@ -272,9 +325,12 @@ async def edit_contract(request: Request, contract_id: int, db: Session = Depend
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    contract = db.query(Contracts).filter(Contracts.id == contract_id).first()
-
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    contract = db.query(Contracts).filter(Contracts.id == contract_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit contract page for {contract.name}.")
     await create_log(request=request, log=log, db=db)
@@ -287,6 +343,11 @@ async def update_contract(request: Request, contract_id: int, name: str = Form(.
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     contract_model = db.query(Contracts).filter(Contracts.id == contract_id).first()
 
@@ -308,6 +369,11 @@ async def delete_contract(request: Request, contract_id: int, db: Session = Depe
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     contract = db.query(Contracts).filter(Contracts.id == contract_id).first()
 
     if contract is None:
@@ -328,7 +394,10 @@ async def add_employer(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()    
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the add employer page.")
     await create_log(request=request, log=log, db=db)
@@ -341,6 +410,11 @@ async def create_employer(request: Request, name: str = Form(...), description: 
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     employer_model = Employers()
 
@@ -361,10 +435,13 @@ async def edit_employer(request: Request, employer_id: int, db: Session = Depend
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    
-    employer = db.query(Employers).filter(Employers.id == employer_id).first()
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+    
+    employer = db.query(Employers).filter(Employers.id == employer_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit employer page for {employer.name}.")
     await create_log(request=request, log=log, db=db)
@@ -377,6 +454,11 @@ async def update_employer(request: Request, employer_id: int, name: str = Form(.
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     employer_model = db.query(Employers).filter(Employers.id == employer_id).first()
 
@@ -397,6 +479,11 @@ async def delete_employer(request: Request, employer_id: int, db: Session = Depe
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
     
     employer = db.query(Employers).filter(Employers.id == employer_id).first()
 
@@ -420,6 +507,9 @@ async def add_employment(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     log = Log(action="Info",user=user['username'],description=f"Viewed the add employment page.")
     await create_log(request=request, log=log, db=db)
     
@@ -431,6 +521,11 @@ async def create_employment(request: Request, name: str = Form(...), description
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     employment_model = Employment()
 
@@ -452,9 +547,12 @@ async def edit_employment(request: Request, employment_id: int, db: Session = De
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    employment = db.query(Employment).filter(Employment.id == employment_id).first()
-
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    employment = db.query(Employment).filter(Employment.id == employment_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit employment page for {employment.name}.")
     await create_log(request=request, log=log, db=db)
@@ -467,6 +565,11 @@ async def update_employment(request: Request, employment_id: int, name: str = Fo
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     employment_model = db.query(Employment).filter(Employment.id == employment_id).first()
 
@@ -487,6 +590,11 @@ async def delete_employment(request: Request, employment_id: int, db: Session = 
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     employment = db.query(Employment).filter(Employment.id == employment_id).first()
 
@@ -510,6 +618,11 @@ async def add_country(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
     log = Log(action="Info",user=user['username'],description=f"Viewed the add country page.")
     await create_log(request=request, log=log, db=db)
 
@@ -521,6 +634,11 @@ async def create_country(request: Request, name: str = Form(...), short_name: st
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     country_model = Country()
 
@@ -542,9 +660,12 @@ async def edit_country(request: Request, country_id: int, db: Session = Depends(
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    country = db.query(Country).filter(Country.id == country_id).first()
-
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    country = db.query(Country).filter(Country.id == country_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit country page for {country.name}.")
     await create_log(request=request, log=log, db=db)
@@ -557,6 +678,11 @@ async def update_country(request: Request, country_id: int, name: str = Form(...
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     country_model = db.query(Country).filter(Country.id == country_id).first()
 
@@ -577,6 +703,11 @@ async def delete_country(request: Request, country_id: int, db: Session = Depend
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     counrty = db.query(Country).filter(Country.id == country_id).first()
 
@@ -600,6 +731,9 @@ async def add_currency(request: Request, db: Session = Depends(get_db)):
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     log = Log(action="Info",user=user['username'],description=f"Viewed the add currency page.")
     await create_log(request=request, log=log, db=db)
 
@@ -611,6 +745,11 @@ async def create_currency(request: Request, name: str = Form(...), symbol: str =
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     currency_model = Currency()
 
@@ -632,9 +771,12 @@ async def edit_currency(request: Request, currency_id: int, db: Session = Depend
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    currency = db.query(Currency).filter(Currency.id == currency_id).first()
-
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    currency = db.query(Currency).filter(Currency.id == currency_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit currency page for {currency.name}.")
     await create_log(request=request, log=log, db=db)
@@ -647,6 +789,11 @@ async def update_currency(request: Request, currency_id: int, name: str = Form(.
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     currency_model = db.query(Currency).filter(Currency.id == currency_id).first()
 
@@ -668,6 +815,11 @@ async def delete_currency(request: Request, currency_id: int, db: Session = Depe
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+    
     currency = db.query(Currency).filter(Currency.id == currency_id).first()
 
     if currency is None:
@@ -690,6 +842,9 @@ async def add_salary_pay_frequency(request: Request, db: Session = Depends(get_d
 
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
     log = Log(action="Info",user=user['username'],description=f"Viewed the add salary pay frequency page.")
     await create_log(request=request, log=log, db=db)
 
@@ -701,6 +856,11 @@ async def create_salary_pay_frequency(request: Request, name: str = Form(...), d
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     salary_pay_frequency = PayFrequency()
 
@@ -721,9 +881,12 @@ async def edit_salary_pay_frequency(request: Request, spf_id: int, db: Session =
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    payFrequency = db.query(PayFrequency).filter(PayFrequency.id == spf_id).first()
-
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
+
+    payFrequency = db.query(PayFrequency).filter(PayFrequency.id == spf_id).first()
 
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit salary pay frequency page for {payFrequency.name}.")
     await create_log(request=request, log=log, db=db)
@@ -736,6 +899,11 @@ async def update_salary_pay_frequency(request: Request, spf_id: int, name: str =
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     payFrequency = db.query(PayFrequency).filter(PayFrequency.id == spf_id).first()
 
@@ -755,6 +923,11 @@ async def delete_salary_pay_frequency(request: Request, spf_id: int, db: Session
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.manage_modify == False:
+        return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
     payFrequency = db.query(PayFrequency).filter(PayFrequency.id == spf_id).first()
 

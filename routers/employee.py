@@ -78,6 +78,28 @@ async def get_offboarded_employee(request: Request, offboarded_employee_search: 
 
     return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state, "offboarded_employee_search": offboarded_employee_search})
 
+@router.get("/details/{employee_id}")
+async def get_employee_details(request: Request, employee_id: int, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
+    employee_data = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
+    countries = db.query(models.Country).order_by(models.Country.name).all()
+    sites = db.query(models.Sites).order_by(models.Sites.name).all()
+    departments = db.query(models.Departments).order_by(models.Departments.name).all()
+    currencies = db.query(models.Currency).order_by(models.Currency.name).all()
+    employment_contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
+    employment_types = db.query(models.Employment).order_by(models.Employment.name).all()
+    employers = db.query(models.Employers).order_by(models.Employers.name).all()
+    hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
+    salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+    
+    return templates.TemplateResponse("employee-details.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
+
 @router.get("/add_employee")
 async def add_employee(request: Request, db: Session = Depends(get_db)):
 

@@ -1,0 +1,268 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header" style="text-align: left;">
+            <button onclick="goBack()" class="btn btn-info">Back</button>
+            {% if role_state.employee_updates == 1 %}
+            <a href="/employee/edit_employee/{{employee_data.id}}" class="btn btn-primary float-right">Edit</a>
+            {% endif %}
+        </div>
+        <div class="card" style="margin: 20px;">
+            <div style="text-align: left;" class="card-header">
+                Basic Information
+            </div>
+            <div class="card-body">
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">E-mail:</label>
+                    <span class="label-value">{{employee_data.email}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">First Name:</label>
+                    <span class="label-value">{{employee_data.first_name}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Last Name:</label>
+                    <span class="label-value">{{employee_data.last_name}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Full Name:</label>
+                    <span class="label-value">{{employee_data.full_name}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="margin: 20px;">
+            <div style="text-align: left;" class="card-header">
+                Personal Information
+            </div>
+            <div class="card-body">
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Date of Birth:</label>
+                    <span class="label-value">{{employee_data.date_of_birth}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Gender:</label>
+                    <span class="label-value">{{ 'Male' if employee_data.gender == 0 else 'Female' if employee_data.gender == 1 else 'Other' }}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Nationality:</label>
+                    <span class="label-value">{{employee_data.nationality}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Country of Origin:</label>
+                    <span class="label-value">
+                        {% for country in countries %}
+                            {% if employee_data.country_of_origin_id == country.id %}
+                                {{ country.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Working Country:</label>
+                    <span class="label-value">
+                        {% for country in countries %}
+                            {% if employee_data.working_country_id == country.id %}
+                                {{ country.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Personal E-mail:</label>
+                    <span class="label-value">{{employee_data.personal_email}}</span>
+                </div>
+            </div>
+        </div>
+        </br>
+        <div class="card" style="margin: 20px;">
+            <div style="text-align: left;" class="card-header">
+                Work Profile
+            </div>
+            <div class="card-body">
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Job Title:</label>
+                    <span class="label-value">{{employee_data.job_title}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Direct Managers E-mail:</label>
+                    <span class="label-value">{{employee_data.direct_manager}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">HR Team in Charge:</label>
+                    <span class="label-value">
+                        {% for team in hr_teams %}
+                            {% if employee_data.hr_team_id == team.id %}
+                                {{ team.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Start Date:</label>
+                    <span class="label-value">{{employee_data.start_date}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">End Date:</label>
+                    <span class="label-value">{{employee_data.end_date}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Site:</label>
+                    <span class="label-value">
+                        {% for site in sites %}
+                            {% if employee_data.site_id == site.id %}
+                                {{ site.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Department:</label>
+                    <span class="label-value">
+                        {% for department in departments %}
+                            {% if employee_data.department_id == department.id %}
+                                {{ department.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Product Code:</label>
+                    <span class="label-value">{{employee_data.product_code}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Brand Code:</label>
+                    <span class="label-value">{{employee_data.brand_code}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Business Unit:</label>
+                    <span class="label-value">{{employee_data.business_unit}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Business Vertical:</label>
+                    <span class="label-value">{{employee_data.business_verticle}}</span>
+                </div>
+            </div>
+        </div>
+        </br>
+        {% if role_state.payroll == 1 %}
+        <div class="card" style="margin: 20px;">
+            <div style="text-align: left;" class="card-header">
+                Payroll
+            </div>
+            <div class="card-body">
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Salary Currency:</label>
+                    <span class="label-value">
+                        {% for currency in currencies %}
+                            {% if employee_data.salary_currency_id == currency.id %}
+                                {{ currency.name }} - {{currency.symbol}}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Base Salary:</label>
+                    <span class="label-value">{{employee_data.salary}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Salary Period:</label>
+                    <span class="label-value">{{employee_data.salary_period}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Working Hours:</label>
+                    <span class="label-value">{{employee_data.working_hours}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Contract:</label>
+                    <span class="label-value">
+                        {% for contract in employment_contracts %}
+                            {% if employee_data.employment_contract_id == contract.id %}
+                                {{ contract.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Employment Type:</label>
+                    <span class="label-value">
+                        {% for type in employment_types %}
+                            {% if employee_data.employment_type_id == type.id %}
+                                {{ type.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Net Monthly Salary:</label>
+                    <span class="label-value">{{employee_data.net_monthly_salary}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Change Reason:</label>
+                    <span class="label-value">{{employee_data.change_reason}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Increase Percent:</label>
+                    <span class="label-value">{{employee_data.increase_percentage}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Salary Pay Frequency:</label>
+                    <span class="label-value">
+                        {% for salary_pay_frequency in salary_pay_frequencies %}
+                            {% if employee_data.salary_pay_frequency_id == salary_pay_frequency.id %}
+                                {{ salary_pay_frequency.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        </br>
+        {% endif %}
+        <div class="card" style="margin: 20px;">
+            <div style="text-align: left;" class="card-header">
+                Supplier
+            </div>
+            <div class="card-body">
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Supplier:</label>
+                    <span class="label-value">{{employee_data.supplier}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Entity to be Billed:</label>
+                    <span class="label-value">{{employee_data.entity_to_be_billed}}</span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Employer:</label>
+                    <span class="label-value">
+                        {% for employer in employers %}
+                            {% if employee_data.employer_id == employer.id %}
+                                {{ employer.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Supplier User E-mail:</label>
+                    <span class="label-value">{{employee_data.company_email}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+<style>
+    .label-title {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .label-value {
+        font-style: italic;
+    }
+</style>

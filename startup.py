@@ -1,5 +1,5 @@
 from database import SessionLocal, engine
-import models
+import models, os
 from routers import admin
 
 def create_default_user():
@@ -163,12 +163,49 @@ def create_all_pay_frequencies():
     finally:
         db.close()
 
-create_default_user()
-create_all_countries()
-create_all_currencies()
-create_all_contracts()
-create_all_employment_types()
-create_all_departments()
-create_all_employers()
-create_all_pay_frequencies()
-#openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 730
+def create_preferences_table():
+    db = SessionLocal()
+    try:
+        # Delete all existing preferences
+        db.query(models.Preferences).delete()
+
+        # Setup Preferences table
+        preferences = models.Preferences(id=1, email_new_employee=False, email_updated_employee=False, email_offboarded_employee=False, email_list=None, email_smtp_server=None, email_smtp_port=587, email_smtp_username=None, email_smtp_password=None, slack_webhook_channel=None, daily_user_reports=False, monthly_user_reports=False)
+        db.add(preferences)
+        db.commit()
+
+        print("Preferences table created successfully.")
+    except Exception as e:
+        print(f"Error creating preferences table: {e}")
+    finally:
+        db.close()
+
+def full_run():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    db_path = "hermes.db"
+    if os.path.exists(db_path):
+        db_run_status = input("You are about to overwrite Hermes database!\nThis will delete all records and accounts currently present.\n\nAre you sure you want to proceed? (y/n): ")
+    else:
+        print("Setting up database for the first time.")
+        db_run_status = "y"
+
+
+    if db_run_status.lower() == 'y':
+        create_default_user()
+        create_all_countries()
+        create_all_currencies()
+        create_all_contracts()
+        create_all_employment_types()
+        create_all_departments()
+        create_all_employers()
+        create_all_pay_frequencies()
+        create_preferences_table()
+        #openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 730
+
+        print("\nSetup complete.\nYou can launch Hermes with the following command: `uvicorn main:app --reload`")
+    else:
+        print("Setup cancelled.")
+
+if __name__ == "__main__":
+    full_run()

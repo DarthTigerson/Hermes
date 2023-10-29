@@ -45,4 +45,4 @@ async def test(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description="Viewed the about page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("about.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("about.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'settings'})

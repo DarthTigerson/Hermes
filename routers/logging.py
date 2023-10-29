@@ -48,7 +48,7 @@ async def show_logging(request: Request, db: Session = Depends(get_db)):
     
     logs = db.query(Logs).order_by(Logs.id.desc()).limit(400).all()
 
-    return templates.TemplateResponse("logging.html", {"request": request, "logs": logs, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("logging.html", {"request": request, "logs": logs, "logged_in_user": user, "role_state": role_state, "nav": 'settings'})
 
 @router.post("/create_log")
 async def create_log(request: Request, log: Log, db: Session = Depends(get_db)):

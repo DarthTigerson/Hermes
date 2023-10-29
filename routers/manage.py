@@ -49,7 +49,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the manage page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("manage.html", {"request": request, "departments": departments, "sites": sites, "contracts": contracts, "employers": employers, "employment": employment, "countries": country, "currencies": currency, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("manage.html", {"request": request, "departments": departments, "sites": sites, "contracts": contracts, "employers": employers, "employment": employment, "countries": country, "currencies": currency, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'manage'})
 
 @router.get("/add_department")
 async def add_department(request: Request, db: Session = Depends(get_db)):

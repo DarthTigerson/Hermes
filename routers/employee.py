@@ -47,13 +47,14 @@ async def get_employee(request: Request, employee_search: Optional[str] = None, 
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
+    countries = db.query(models.Country).order_by(models.Country.name).all()
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
 
     log = Log(action="Info",user=user['username'],description="Viewed the employee page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state, "employee_search": employee_search})
+    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state, "employee_search": employee_search, "countries": countries})
 
 @router.get("/offboarded_employee")
 async def get_offboarded_employee(request: Request, offboarded_employee_search: Optional[str] = None, db: Session = Depends(get_db)):

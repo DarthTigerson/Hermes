@@ -5,70 +5,68 @@
         <div class="card-header" style="text-align: right;">
             <h3 style="display: inline-block; margin-right: 30px;" class="float-left">Employees List</h3>
             {% if role_state.offboarding == 1 %}
-            <a href="/employee/offboarded_employee/" class="btn btn-danger">Offboardings List</a>
+                <a href="/employee/offboarded_employee/" class="btn btn-danger">Offboardings List</a>
             {% endif %}
             {% if role_state.onboarding == 1 %}
-            <a href="/employee/add_employee" class="btn btn-primary">+</a>
+                <a href="/employee/add_employee" class="btn btn-primary">+</a>
             {% endif %}
         </div>
         <div class="card-body">            
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th scope="col">E-mail</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Manager</th>
-                    <th scope="col">Department</th>
-                    <th scope="col">Site</th>
-                    <th scope="col">Contract</th>
-                    {% if role_state.employee_updates == 1 %}
-                    <th scope="col">Edit</th>
-                    {% endif %}
-                    {% if role_state.offboarding == 1 %}
-                    <th scope="col">Offboard</th>
-                    {% endif %}
-
-                </tr>
+                    <tr>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Manager</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Site</th>
+                        <th scope="col">Contract</th>
+                        <th scope="col">Country</th>
+                    </tr>
                 </thead>
                 <tbody>
-
-                {% for employee in employees %}
-                <tr class="pointer" onclick="window.location.href='details/{{employee.id}}'">
-                    <td>{{employee.email}}</td>
-                    <td>{{employee.full_name}}</td>
-                    <td>{{employee.job_title}}</td>
-                    <td>{{employee.direct_manager}}</td>
-                    {% for department in departments %}
-                        {% if department.id == employee.department_id %}
-                            <td>{{department.name}}</td>
-                        {% endif %}
+                    {% for employee in employees %}
+                        <tr class="pointer" data-toggle="collapse" data-target="#options{{employee.id}}">
+                            <td>{{employee.email}}</td>
+                            <td>{{employee.full_name}}</td>
+                            <td>{{employee.job_title}}</td>
+                            <td>{{employee.direct_manager}}</td>
+                            {% for department in departments %}
+                                {% if department.id == employee.department_id %}
+                                    <td>{{department.name}}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% for site in sites %}
+                                {% if site.id == employee.site_id %}
+                                    <td>{{site.name}}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% for employment in employments %}
+                                {% if employment.id == employee.employment_type_id %}
+                                    <td>{{employment.name}}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% for country in countries %}
+                                {% if country.id == employee.working_country_id %}
+                                    <td>{{country.name}}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        <tr class="collapse" id="options{{employee.id}}">
+                            <td colspan="4">
+                                <button onclick="window.location.href='details/{{employee.id}}'" type="button" class="btn btn-info" style="width: 100%;">View Details</button>
+                            </td>
+                            <td colspan="2">
+                                <button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-primary" style="width: 100%;" {%if role_state.employee_updates != 1%}enabled="False"{%endif%}>Edit Details</button>                                
+                            </td>
+                            <td colspan="2">
+                                <button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger" style="width: 100%;" {%if role_state.offboarding != 1%}enabled="False"{%endif%}>Offboard {{employee.first_name}}</button>
+                            </td>
+                        </tr>
                     {% endfor %}
-
-                    {% for site in sites %}
-                        {% if site.id == employee.site_id %}
-                            <td>{{site.name}}</td>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% for employment in employments %}
-                        {% if employment.id == employee.employment_type_id %}
-                            <td>{{employment.name}}</td>
-                        {% endif %}
-                    {% endfor %}
-                    
-                    {% if role_state.employee_updates == 1 %}
-                    <td><button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-info">Edit</button></td>
-                    {% endif %}
-                    {% if role_state.offboarding == 1 %}
-                    <td><button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger">Offboard</button></td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-
                 </tbody>
             </table>
-
         </div>
     </div>
 </div>

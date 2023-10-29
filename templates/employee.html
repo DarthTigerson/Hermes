@@ -34,7 +34,7 @@
                 <tbody>
 
                 {% for employee in employees %}
-                <tr class="pointer">
+                <tr class="pointer" onclick="window.location.href='details/{{employee.id}}'">
                     <td>{{employee.email}}</td>
                     <td>{{employee.full_name}}</td>
                     <td>{{employee.job_title}}</td>

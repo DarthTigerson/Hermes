@@ -58,10 +58,10 @@
                                 <button onclick="window.location.href='details/{{employee.id}}'" type="button" class="btn btn-info" style="width: 100%;">View Details</button>
                             </td>
                             <td colspan="2">
-                                <button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-primary" style="width: 100%;" {%if role_state.employee_updates != 1%}enabled="False"{%endif%}>Edit Details</button>                                
+                                <button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-primary" style="width: 100%;" {%if role_state.employee_updates != 1%}disabled="True"{%endif%}>Edit Details</button>                                
                             </td>
                             <td colspan="2">
-                                <button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger" style="width: 100%;" {%if role_state.offboarding != 1%}enabled="False"{%endif%}>Offboard {{employee.first_name}}</button>
+                                <button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger" style="width: 100%;" {%if role_state.offboarding != 1%}disabled="True"{%endif%}>Offboard {{employee.first_name}}</button>
                             </td>
                         </tr>
                     {% endfor %}

@@ -62,6 +62,11 @@ async def get_offboarded_employee(request: Request, offboarded_employee_search: 
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.offboarding == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     if offboarded_employee_search is None:
         employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 1).all()
@@ -71,8 +76,6 @@ async def get_offboarded_employee(request: Request, offboarded_employee_search: 
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     employments = db.query(models.Employment).order_by(models.Employment.name).all()
-
-    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
 
     log = Log(action="Info",user=user['username'],description="Viewed the offboarded users page.")
     await create_log(request=request, log=log, db=db)
@@ -85,6 +88,8 @@ async def get_employee_details(request: Request, employee_id: int, db: Session =
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
     employee_data = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
@@ -96,8 +101,6 @@ async def get_employee_details(request: Request, employee_id: int, db: Session =
     employers = db.query(models.Employers).order_by(models.Employers.name).all()
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
-
-    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
     return templates.TemplateResponse("employee-details.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
 
@@ -107,6 +110,11 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.onboarding == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
@@ -117,8 +125,6 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     employers = db.query(models.Employers).order_by(models.Employers.name).all()
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
-
-    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
 
     log = Log(action="Info",user=user['username'],description="Viewed the add employee page.")
     await create_log(request=request, log=log, db=db)
@@ -131,6 +137,11 @@ async def create_employee(request: Request, email: str = Form(None), first_name:
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.onboarding == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
@@ -209,6 +220,11 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.employee_updates == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     employee_data = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
@@ -221,8 +237,6 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
-    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
-
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit employee page for the employee with the email {employee_data.email}")
     await create_log(request=request, log=log, db=db)
 
@@ -234,6 +248,11 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.employee_updates == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     employee = db.query(models.Employees).filter(models.Employees.email == email).first()
 
@@ -322,6 +341,8 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
     employee = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
@@ -341,6 +362,11 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.offboarding == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
 
@@ -380,6 +406,11 @@ async def reboard_employee(request: Request, employee_id: int, db: Session =Depe
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.onboarding == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
 

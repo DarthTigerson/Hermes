@@ -53,7 +53,7 @@ async def post_preferences(request: Request, db: Session = Depends(get_db), trig
 
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    
+
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.preferences == False:

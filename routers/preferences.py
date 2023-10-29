@@ -44,7 +44,7 @@ async def get_preferences(request: Request, db: Session = Depends(get_db)):
     
     preferences = db.query(Preferences).order_by(Preferences.id.desc()).first()
 
-    return templates.TemplateResponse("preferences.html", {"request": request, "logged_in_user": user, "role_state": role_state, "preferences": preferences})
+    return templates.TemplateResponse("preferences.html", {"request": request, "logged_in_user": user, "role_state": role_state, "preferences": preferences, "nav": 'settings'})
 
 @router.post("/", response_class=HTMLResponse)
 async def post_preferences(request: Request, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None)):

@@ -124,7 +124,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
 
-    return templates.TemplateResponse("admin.html", {"request": request, "users": users, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("admin.html", {"request": request, "users": users, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state, "nav": 'settings'})
 
 @router.get("/logout")
 async def logout(request: Request):

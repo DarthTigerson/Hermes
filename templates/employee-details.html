@@ -142,6 +142,16 @@
                     <label class="label-title">Business Vertical:</label>
                     <span class="label-value">{{employee_data.business_verticle}}</span>
                 </div>
+                <div class="form-group" style="width: 320px; display: inline-block;" >
+                    <label class="label-title">Contract:</label>
+                    <span class="label-value">
+                        {% for contract in employment_contracts %}
+                            {% if employee_data.employment_contract_id == contract.id %}
+                                {{ contract.name }}
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
             </div>
         </div>
         </br>
@@ -172,16 +182,6 @@
                 <div class="form-group" style="width: 320px; display: inline-block;" >
                     <label class="label-title">Working Hours:</label>
                     <span class="label-value">{{employee_data.working_hours}}</span>
-                </div>
-                <div class="form-group" style="width: 320px; display: inline-block;" >
-                    <label class="label-title">Contract:</label>
-                    <span class="label-value">
-                        {% for contract in employment_contracts %}
-                            {% if employee_data.employment_contract_id == contract.id %}
-                                {{ contract.name }}
-                            {% endif %}
-                        {% endfor %}
-                    </span>
                 </div>
                 <div class="form-group" style="width: 320px; display: inline-block;" >
                     <label class="label-title">Employment Type:</label>

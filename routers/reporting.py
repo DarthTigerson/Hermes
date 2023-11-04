@@ -40,4 +40,4 @@ async def get_reporting(request: Request, db: Session = Depends(get_db)):
     
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
-    return templates.TemplateResponse("reporting.html", {"request": request, "user": user, "role_state": role_state, "nav": 'reporting'})
+    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting'})

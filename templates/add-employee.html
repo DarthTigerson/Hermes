@@ -161,6 +161,20 @@
                     <label>Business Vertical</label>
                     <input type="text" class="form-control" name="business_verticle" value="">
                 </div>
+                <div style="width: 350px; display: inline-block;" class="form-group">
+                    <label>Contract</label>
+                    <select class="form-control" name="employment_contract_id" required>
+                        {% if employment_contracts == [] %}
+                            <option value="">No Contracts are Available</option>
+                        {% endif %}
+                        {% if employment_contracts != [] %}
+                            <option value="">Select Contract</option>
+                            {% for contract in employment_contracts %}
+                                <option value="{{contract.id}}">{{ contract.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
             </div>
         </div>
         </br>
@@ -196,27 +210,13 @@
                     <input type="text" class="form-control" name="working_hours" required>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
-                    <label>Contract</label>
-                    <select class="form-control" name="employment_contract_id" required>
-                        {% if employment_contracts == [] %}
-                            <option value="">No Contracts are Available</option>
-                        {% endif %}
-                        {% if employment_contracts != [] %}
-                            <option value="">Select Contract</option>
-                            {% for contract in employment_contracts %}
-                                <option value="{{contract.id}}">{{ contract.name }}</option>
-                            {% endfor %}
-                        {% endif %}
-                    </select>
-                </div>
-                <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Employment Type</label>
                     <select class="form-control" name="employment_type_id" required>
                         {% if employment_types == [] %}
-                            <option value="">No Contracts are Available</option>
+                            <option value="">No Employments are Available</option>
                         {% endif %}
                         {% if employment_types != [] %}
-                            <option value="">Select Contract</option>
+                            <option value="">Select Employment Type</option>
                             {% for type in employment_types %}
                                 <option value="{{type.id}}">{{ type.name }}</option>
                             {% endfor %}
@@ -269,10 +269,10 @@
                     <label>Employer</label>
                     <select class="form-control" name="employer_id" required>
                         {% if employers == [] %}
-                            <option value="">No Contracts are Available</option>
+                            <option value="">No Employers are Available</option>
                         {% endif %}
                         {% if employers != [] %}
-                            <option value="">Select Contract</option>
+                            <option value="">Select Employer</option>
                             {% for employer in employers %}
                                 <option value="{{employer.id}}">{{ employer.name }}</option>
                             {% endfor %}

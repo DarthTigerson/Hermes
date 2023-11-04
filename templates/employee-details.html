@@ -5,7 +5,10 @@
         <div class="card-header" style="text-align: left;">
             <button onclick="goBack()" class="btn btn-info">Back</button>
             {% if role_state.employee_updates == 1 %}
-            <a href="/employee/edit_employee/{{employee_data.id}}" class="btn btn-primary float-right">Edit</a>
+            <a href="/employee/edit_employee/{{employee_data.id}}" class="btn btn-primary float-right" style="margin-left: 5px;">Edit</a>
+            {% endif %}
+            {% if role_state.offboarding == 1 %}
+            <button onclick="if (confirm('Are you sure you want to offboard {{employee_data.full_name}}?')) { window.location.href='/employee/offboard_employee/{{employee_data.id}}'; }" type="button" class="btn btn-danger float-right">Offboard {{employee_data.full_name}}</button> ,
             {% endif %}
         </div>
         <div class="card" style="margin: 20px;">

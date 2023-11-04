@@ -22,7 +22,7 @@
                 <input type="date" class="form-control" name="end_date" id="endDate" value="{{header_value.end_date.strftime('%Y-%m-%d')}}" required>
             </div>
             <div style="width: 300px; display: inline-block; margin-top: 30px; text-align: right;" class="form-group float-right">
-                <a type="button" class="btn btn-secondary" style="color: white;"><img src="/static/img/csv.png" alt="csv_download" width="20px"></a>
+                <a id="generateCsv" type="button" class="btn btn-secondary" style="color: white;" href="/reporting/download_csv/?report_type=report_type?start_date=start_date?end_date=end_date'"><img src="/static/img/csv.png" alt="csv_download" width="20px"></a>
                 <a id="generateReport" type="button" class="btn btn-primary" style="color: white;" href="/reporting/?report_type=report_type?start_date=start_date?end_date=end_date">Generate Report</a>
             </div>
         </div>
@@ -57,6 +57,7 @@
                             <th scope="col">Business Unit</th>
                             <th scope="col">Business Vertical</th>
                             <th scope="col">Contract</th>
+                            {% if role_state.payroll == 1 %}
                             <th scope="col">Currency</th>
                             <th scope="col">Base Salary</th>
                             <th scope="col">Salary Period</th>
@@ -66,6 +67,7 @@
                             <th scope="col">Change Reason</th>
                             <th scope="col">Increase %</th>
                             <th scope="col">SPF</th>
+                            {% endif %}
                             <th scope="col">Supplier</th>
                             <th scope="col">EtbB</th>
                             <th scope="col">Employer</th>
@@ -133,11 +135,42 @@
                                     <td>{{ contract.name }}</td>
                                 {% endif %}
                             {% endfor %}
-                            {% for currency in currencies %}
-                                {% if employee.salary_currency_id == currency.id %}
-                                    <td>{{ currency.name }}</td>
+                            {% if role_state.payroll == 1 %}
+                                {% for currency in currencies %}
+                                    {% if employee.salary_currency_id == currency.id %}
+                                        <td>{{ currency.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>{{employee.salary}}</td>
+                                <td>{{employee.salary_period}}</td>
+                                <td>{{employee.working_hours}}</td>
+                                {% for employment_type in employment_types %}
+                                    {% if employee.employment_type_id == employment_type.id %}
+                                        <td>{{ employment_type.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>{{employee.net_monthly_salary}}</td>
+                                <td>{{employee.change_reason}}</td>
+                                <td>{{employee.increase_percentage}}</td>
+                                {% for frequency in salary_pay_frequency %}
+                                    {% if employee.salary_pay_frequency_id == frequency.id %}
+                                        <td>{{ frequency.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <td>{{employee.supplier}}</td>
+                            <td>{{employee.entity_to_be_billed}}</td>
+                            {% for employer in employers %}
+                                {% if employee.employer_id == employer.id %}
+                                    <td>{{ employer.name }}</td>
                                 {% endif %}
                             {% endfor %}
+                            <td>{{employee.company_email}}</td>
+                            {% if employee.employment_status_id == 0 %}
+                                <td>Onboarded</td>
+                            {% else %}
+                                <td>Offboarded</td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -154,6 +187,14 @@
     var startDate = document.getElementById('startDate').value + 'T00:00:00';
     var endDate = document.getElementById('endDate').value + 'T23:59:59';
     var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
+    window.location.href = url;
+});
+    document.getElementById('generateCsv').addEventListener('click', function(event) {
+    event.preventDefault();
+    var reportType = document.getElementById('reportType').value;
+    var startDate = document.getElementById('startDate').value + 'T00:00:00';
+    var endDate = document.getElementById('endDate').value + 'T23:59:59';
+    var url = "/reporting/download_csv/"+reportType+"/"+startDate+"/"+endDate;
     window.location.href = url;
 });
 </script>

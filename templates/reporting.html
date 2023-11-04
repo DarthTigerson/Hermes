@@ -1,1 +1,35 @@
 {% include 'layout.html' %}
+
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header" style="text-align: left;">
+            <h3 style="display: inline-block; margin-right: 30px;">Reporting</h3>
+            <br><br>
+            <div style="width: 350px; display: inline-block; text-align: left; margin-left: 20px;" class="form-group">
+                <label style="margin-left: 10px;">Report Type</label>
+                <select class="form-control" name="report_type">
+                    <option value="0">Onboarded Employees</option>
+                    <option value="1">Offboarded Employees</option>
+                    <option value="2">Employee Updates</option>
+                </select>
+            </div>
+            <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Start Date</label>
+                <input type="date" class="form-control" name="start_date" required>
+            </div>
+            <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">End Date</label>
+                <input type="date" class="form-control" name="end_date" required>
+            </div>
+            <div style="width: 300px; display: inline-block; margin-top: 30px;" class="form-group float-right">
+                <button type="button" class="btn btn-secondary">Download Report</button>
+                <button type="button" class="btn btn-primary">Generate Report</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                
+            </table>
+        </div>
+    </div>
+</div>

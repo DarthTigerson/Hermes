@@ -11,7 +11,6 @@
                     <option value="0" {% if header_value.report_type == 0%} selected="selected" {% endif %}>Select Report Type</option>
                     <option value="1" {% if header_value.report_type == 1%} selected="selected" {% endif %}>Onboarded Employees</option>
                     <option value="2" {% if header_value.report_type == 2%} selected="selected" {% endif %}>Offboarded Employees</option>
-                    <option value="3" {% if header_value.report_type == 3%} selected="selected" {% endif %}>Employee Updates</option>
                 </select>
             </div>
             <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
@@ -27,11 +26,121 @@
                 <a id="generateReport" type="button" class="btn btn-primary" style="color: white;" href="/reporting/?report_type=report_type?start_date=start_date?end_date=end_date">Generate Report</a>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="overflow:auto;">
             <table class="table table-hover">
-                {% if report_data == None %}
+                {% if report_data == None or report_data == [] %}
                     <br>
                     <h5>No data is available</h5>
+                {% else %}
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">DoB</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Nationality</th>
+                            <th scope="col">CoO</th>
+                            <th scope="col">Working Country</th>
+                            <th scope="col">Personal E-mail</th>
+                            <th scope="col">Job Title</th>
+                            <th scope="col">Manager</th>
+                            <th scope="col">HR Team</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                            <th scope="col">Site</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Product Code</th>
+                            <th scope="col">Brand Code</th>
+                            <th scope="col">Business Unit</th>
+                            <th scope="col">Business Vertical</th>
+                            <th scope="col">Contract</th>
+                            <th scope="col">Currency</th>
+                            <th scope="col">Base Salary</th>
+                            <th scope="col">Salary Period</th>
+                            <th scope="col">Working Hours</th>
+                            <th scope="col">Employment Type</th>
+                            <th scope="col">Net Salary</th>
+                            <th scope="col">Change Reason</th>
+                            <th scope="col">Increase %</th>
+                            <th scope="col">SPF</th>
+                            <th scope="col">Supplier</th>
+                            <th scope="col">EtbB</th>
+                            <th scope="col">Employer</th>
+                            <th scope="col">Supplier E-mail</th>
+                            <th scope="col">Employment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in report_data %}
+                        <tr>
+                            <td>{{employee.id}}</td>
+                            <td>{{employee.email}}</td>
+                            <td>{{employee.first_name}}</td>
+                            <td>{{employee.last_name}}</td>
+                            <td>{{employee.full_name}}</td>
+                            <td>{{employee.date_of_birth}}</td>
+                            {% if employee.gender == 0 %}
+                                <td>Male</td>
+                            {% elif employee.gender == 1 %}
+                                <td>Female</td>
+                            {% else %}
+                                <td>Other</td>
+                            {% endif %}
+                            <td>{{employee.nationality}}</td>
+                            {% for country in countries %}
+                                {% if employee.country_of_origin_id == country.id %}
+                                    <td>{{ country.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% for country in countries %}
+                                {% if employee.working_country_id == country.id %}
+                                    <td>{{ country.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{employee.personal_email}}</td>
+                            <td>{{employee.job_title}}</td>
+                            <td>{{employee.direct_manager}}</td>
+                            {% if employee.hr_team_id == 0 %}
+                                <td>No Team</td>
+                            {% else %}
+                                {% for hr_team in hr_teams %}
+                                    {% if employee.hr_team_id == hr_team.id %}
+                                        <td>{{ hr_team.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <td>{{employee.start_date}}</td>
+                            <td>{{employee.end_date}}</td>
+                            {% for site in sites %}
+                                {% if employee.site_id == site.id %}
+                                    <td>{{ site.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% for department in departments %}
+                                {% if employee.department_id == department.id %}
+                                    <td>{{ department.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{employee.product_code}}</td>
+                            <td>{{employee.brand_code}}</td>
+                            <td>{{employee.business_unit}}</td>
+                            <td>{{employee.business_verticle}}</td>
+                            {% for contract in employment_contracts %}
+                                {% if employee.employment_contract_id == contract.id %}
+                                    <td>{{ contract.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% for currency in currencies %}
+                                {% if employee.salary_currency_id == currency.id %}
+                                    <td>{{ currency.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 {%endif%}
             </table>
         </div>

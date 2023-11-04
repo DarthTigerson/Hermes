@@ -7,29 +7,44 @@
             <br><br>
             <div style="width: 350px; display: inline-block; text-align: left; margin-left: 20px;" class="form-group">
                 <label style="margin-left: 10px;">Report Type</label>
-                <select class="form-control" name="report_type">
-                    <option value="0">Onboarded Employees</option>
-                    <option value="1">Offboarded Employees</option>
-                    <option value="2">Employee Updates</option>
+                <select class="form-control" id="reportType" name="report_type">
+                    <option value="0" {% if header_value.report_type == 0%} selected="selected" {% endif %}>Select Report Type</option>
+                    <option value="1" {% if header_value.report_type == 1%} selected="selected" {% endif %}>Onboarded Employees</option>
+                    <option value="2" {% if header_value.report_type == 2%} selected="selected" {% endif %}>Offboarded Employees</option>
+                    <option value="3" {% if header_value.report_type == 3%} selected="selected" {% endif %}>Employee Updates</option>
                 </select>
             </div>
             <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Start Date</label>
-                <input type="date" class="form-control" name="start_date" required>
+                <input type="date" class="form-control" name="start_date" id="startDate" value="{{header_value.start_date.strftime('%Y-%m-%d')}}" required>
             </div>
             <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">End Date</label>
-                <input type="date" class="form-control" name="end_date" required>
+                <input type="date" class="form-control" name="end_date" id="endDate" value="{{header_value.end_date.strftime('%Y-%m-%d')}}" required>
             </div>
             <div style="width: 300px; display: inline-block; margin-top: 30px; text-align: right;" class="form-group float-right">
-                <button type="button" class="btn btn-secondary"><img src="/static/img/csv.png" alt="csv_download" width="20px"></button>
-                <button type="button" class="btn btn-primary">Generate Report</button>
+                <a type="button" class="btn btn-secondary" style="color: white;"><img src="/static/img/csv.png" alt="csv_download" width="20px"></a>
+                <a id="generateReport" type="button" class="btn btn-primary" style="color: white;" href="/reporting/?report_type=report_type?start_date=start_date?end_date=end_date">Generate Report</a>
             </div>
         </div>
         <div class="card-body">
             <table class="table table-hover">
-
+                {% if report_data == None %}
+                    <br>
+                    <h5>No data is available</h5>
+                {%endif%}
             </table>
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('generateReport').addEventListener('click', function(event) {
+    event.preventDefault();
+    var reportType = document.getElementById('reportType').value;
+    var startDate = document.getElementById('startDate').value + 'T00:00:00';
+    var endDate = document.getElementById('endDate').value + 'T23:59:59';
+    var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
+    window.location.href = url;
+});
+</script>

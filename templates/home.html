@@ -46,9 +46,9 @@
                         {% endif %}
                     {% endfor %}
 
-                    {% for employment in employments %}
-                        {% if employment.id == missed_offboarding.employment_type_id %}
-                            <td>{{employment.name}}</td>
+                    {% for contract in contracts %}
+                        {% if contract.id == missed_offboarding.employment_contract_id %}
+                            <td>{{contract.name}}</td>
                         {% endif %}
                     {% endfor %}
 
@@ -117,11 +117,12 @@
                         {% endif %}
                     {% endfor %}
 
-                    {% for employment in employments %}
-                        {% if employment.id == todays_offboarding.employment_type_id %}
-                            <td>{{employment.name}}</td>
+                    {% for contract in contracts %}
+                        {% if contract.id == missed_offboarding.employment_contract_id %}
+                            <td>{{contract.name}}</td>
                         {% endif %}
                     {% endfor %}
+
 
                     <td>{{todays_offboarding.end_date}}</td>
                     {% if role_state.employee_updates == 1 %}
@@ -187,9 +188,9 @@
                         {% endif %}
                     {% endfor %}
 
-                    {% for employment in employments %}
-                        {% if employment.id == upcoming_offboarding.employment_type_id %}
-                            <td>{{employment.name}}</td>
+                    {% for contract in contracts %}
+                        {% if contract.id == missed_offboarding.employment_contract_id %}
+                            <td>{{contract.name}}</td>
                         {% endif %}
                     {% endfor %}
 

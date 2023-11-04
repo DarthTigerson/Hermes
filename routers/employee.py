@@ -46,7 +46,7 @@ async def get_employee(request: Request, employee_search: Optional[str] = None, 
 
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
-    employments = db.query(models.Employment).order_by(models.Employment.name).all()
+    contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
     countries = db.query(models.Country).order_by(models.Country.name).all()
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
@@ -54,7 +54,7 @@ async def get_employee(request: Request, employee_search: Optional[str] = None, 
     log = Log(action="Info",user=user['username'],description="Viewed the employee page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state, "employee_search": employee_search, "countries": countries, "nav": 'employee'})
+    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "contracts": contracts, "logged_in_user": user, "role_state": role_state, "employee_search": employee_search, "countries": countries, "nav": 'employee'})
 
 @router.get("/offboarded_employee")
 async def get_offboarded_employee(request: Request, offboarded_employee_search: Optional[str] = None, db: Session = Depends(get_db)):
@@ -75,12 +75,12 @@ async def get_offboarded_employee(request: Request, offboarded_employee_search: 
 
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
-    employments = db.query(models.Employment).order_by(models.Employment.name).all()
+    contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
 
     log = Log(action="Info",user=user['username'],description="Viewed the offboarded users page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "employments": employments, "logged_in_user": user, "role_state": role_state, "offboarded_employee_search": offboarded_employee_search})
+    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "contracts": contracts, "logged_in_user": user, "role_state": role_state, "offboarded_employee_search": offboarded_employee_search})
 
 @router.get("/details/{employee_id}")
 async def get_employee_details(request: Request, employee_id: int, db: Session = Depends(get_db)):
@@ -285,31 +285,21 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     employee_model.brand_code = brand_code
     employee_model.business_unit = business_unit
     employee_model.business_verticle = business_verticle
-    if salary_currency_id != 0:
+    employee_model.employment_contract_id = employment_contract_id
+    if role_state.payroll == True:
         employee_model.salary_currency_id = salary_currency_id
-    if salary != None:
         employee_model.salary = salary
-    if salary_period != None:
         employee_model.salary_period = salary_period
-    if salary_pay_frequency_id != 0:
         employee_model.salary_pay_frequency_id = salary_pay_frequency_id
-    if net_monthly_salary != None:
         employee_model.net_monthly_salary = net_monthly_salary
-    if change_reason != None:
         employee_model.change_reason = change_reason
-    if increase_percent != None:
         employee_model.increase_percentage = increase_percent
+        employee_model.working_hours = working_hours
+        employee_model.employment_type_id = employment_type_id
     if hr_team_id != 0:
         employee_model.hr_team_id = hr_team_id
-    if working_hours != None:
-        employee_model.working_hours = working_hours
-    if employment_contract_id != 0:
-        employee_model.employment_contract_id = employment_contract_id
-    if employment_type_id != 0:
-        employee_model.employment_type_id = employment_type_id
     employee_model.employment_status_id = 0
     employee_model.modified_date = datetime.now()
-
     db.add(employee_model)
     db.commit()
 

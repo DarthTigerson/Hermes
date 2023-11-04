@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
 from sqlalchemy.orm import Session, aliased
+from sqlalchemy import func
 from typing import Annotated, Optional
 from database import SessionLocal
 from pydantic import BaseModel, Field
@@ -44,10 +45,26 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
         "end_date": end_date
     }
 
-    if report_type == 0:
-        report_data = None
+    # Convert start_date and end_date to strings in the 'YYYY-MM-DD' format
+    start_date_str = start_date.strftime('%Y-%m-%d')
+    end_date_str = end_date.strftime('%Y-%m-%d')
+
+    if report_type == 1:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .all()
+
+        # Filter the data in Python
+        report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.start_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
+    elif report_type == 2:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 1)\
+            .all()
+
+        # Filter the data in Python
+        report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.end_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
     else:
-        report_data = 'Data'
+        report_data = None
     
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     

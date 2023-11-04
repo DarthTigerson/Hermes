@@ -29,7 +29,7 @@
                 <tbody>
 
                 {% for missed_offboarding in missed_offboardings %}
-                <tr class="pointer">
+                <tr class="pointer" ondblclick="window.location.href='employee/details/{{missed_offboarding.id}}'">
                     <td>{{missed_offboarding.email}}</td>
                     <td>{{missed_offboarding.full_name}}</td>
                     <td>{{missed_offboarding.job_title}}</td>
@@ -100,7 +100,7 @@
                 <tbody>
 
                 {% for todays_offboarding in todays_offboardings %}
-                <tr class="pointer">
+                <tr class="pointer" ondblclick="window.location.href='employee/details/{{todays_offboarding.id}}'">
                     <td>{{todays_offboarding.email}}</td>
                     <td>{{todays_offboarding.full_name}}</td>
                     <td>{{todays_offboarding.job_title}}</td>
@@ -171,7 +171,7 @@
                 <tbody>
 
                 {% for upcoming_offboarding in upcoming_offboardings %}
-                <tr class="pointer">
+                <tr class="pointer" ondblclick="window.location.href='employee/details/{{upcoming_offboarding.id}}'">
                     <td>{{upcoming_offboarding.email}}</td>
                     <td>{{upcoming_offboarding.full_name}}</td>
                     <td>{{upcoming_offboarding.job_title}}</td>
@@ -231,7 +231,7 @@
                     </thead>
                     <tbody>
                         {% for todays_birthday in todays_birthdays %}
-                        <tr class="pointer">
+                        <tr class="pointer" ondblclick="window.location.href='employee/details/{{todays_birthday.id}}'">
                         <td>{{todays_birthday.email}}</td>
                         <td>{{todays_birthday.full_name}}</td>
                         <td>{{todays_birthday.job_title}}</td>

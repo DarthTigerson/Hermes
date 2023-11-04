@@ -22,7 +22,7 @@
                 <input type="date" class="form-control" name="end_date" id="endDate" value="{{header_value.end_date.strftime('%Y-%m-%d')}}" required>
             </div>
             <div style="width: 300px; display: inline-block; margin-top: 30px; text-align: right;" class="form-group float-right">
-                <a id="generateCsv" type="button" class="btn btn-secondary" style="color: white;" href="/reporting/download_csv/?report_type=report_type?start_date=start_date?end_date=end_date'"><img src="/static/img/csv.png" alt="csv_download" width="20px"></a>
+                <a id="generateCsv" type="button" style="color: white; padding-right: 10px;" href="/reporting/download_csv/?report_type=report_type?start_date=start_date?end_date=end_date'"><img src="/static/img/csv.png" alt="csv_download" width="38px"></a>
                 <a id="generateReport" type="button" class="btn btn-primary" style="color: white;" href="/reporting/?report_type=report_type?start_date=start_date?end_date=end_date">Generate Report</a>
             </div>
         </div>

@@ -46,9 +46,9 @@
                         {% endif %}
                     {% endfor %}
 
-                    {% for employment in employments %}
-                        {% if employment.id == employee.employment_type_id %}
-                            <td>{{employment.name}}</td>
+                    {% for contract in contracts %}
+                        {% if contract.id == employee.employment_contract_id %}
+                            <td>{{contract.name}}</td>
                         {% endif %}
                     {% endfor %}
 

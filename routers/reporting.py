@@ -34,6 +34,10 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @router.get("/")
 async def get_reporting(request: Request, report_type: Optional[int] = 0, start_date: Optional[datetime] = date.today() - timedelta(days=30), end_date: Optional[datetime] = date.today(), db: Session = Depends(get_db)):
 
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
     header_value = {
         "report_type": report_type,
         "start_date": start_date,
@@ -44,10 +48,6 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
         report_data = None
     else:
         report_data = 'Data'
-
-    user = await get_current_user(request)
-    if user is None:
-        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
     
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     

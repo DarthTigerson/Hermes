@@ -4,11 +4,18 @@
     <div class="card">
         <div class="card-header" style="text-align: left;">
             <button onclick="goBack()" class="btn btn-info">Back</button>
-            {% if role_state.employee_updates == 1 %}
-            <a href="/employee/edit_employee/{{employee_data.id}}" class="btn btn-primary float-right" style="margin-left: 5px;">Edit</a>
-            {% endif %}
-            {% if role_state.offboarding == 1 %}
-            <button onclick="if (confirm('Are you sure you want to offboard {{employee_data.full_name}}?')) { window.location.href='/employee/offboard_employee/{{employee_data.id}}'; }" type="button" class="btn btn-danger float-right">Offboard {{employee_data.full_name}}</button> ,
+            {% if employee_data.employment_status_id == 0 %}
+                {% if role_state.employee_updates == 1 %}
+                <a href="/employee/edit_employee/{{employee_data.id}}" class="btn btn-primary float-right" style="margin-left: 5px;">Edit</a>
+                {% endif %}
+                {% if role_state.offboarding == 1 %}
+                <button onclick="if (confirm('Are you sure you want to offboard {{employee_data.full_name}}?')) { window.location.href='/employee/offboard_employee/{{employee_data.id}}'; }" type="button" class="btn btn-danger float-right">Offboard {{employee_data.full_name}}</button> ,
+                {% endif %}
+            {% else %}
+                {% if role_state.onboarding == 1 %}
+                <button onclick="if (confirm('Are you sure you want to re-onboard {{employee_data.full_name}}?')) { window.location.href='/employee/reboard_employee/{{employee_data.id}}'; }" type="button" class="btn btn-danger float-right">Re-Onboard {{employee_data.full_name}}</button> ,
+                {% endif %}
+
             {% endif %}
         </div>
         <div class="card" style="margin: 20px;">

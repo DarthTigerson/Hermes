@@ -111,7 +111,7 @@
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>Start Date</label>
-                    <input type="date" class="form-control" name="start_date" required>
+                    <input type="date" class="form-control" name="start_date" id="start_date" required>
                 </div>
                 <div style="width: 350px; display: inline-block;" class="form-group">
                     <label>End Date</label>
@@ -314,4 +314,6 @@
       console.log('Last name changed');
       fullNameInput.value = `${firstNameInput.value} ${lastNameInput.value}`;
     });
+
+    document.getElementById('start_date').valueAsDate = new Date();
 </script>

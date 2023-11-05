@@ -363,6 +363,7 @@ async def offboard_employee(request: Request, employee_id: int, db: Session =Dep
     if employee_model is None:
         raise RedirectResponse(url="/employee", status_code=status.HTTP_404_NOT_FOUND)
     
+    employee_model.end_date = datetime.now().date()
     employee_model.employment_status_id = 1
 
     db.add(employee_model)

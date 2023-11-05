@@ -263,6 +263,9 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     if employee == True and employee.id != employee_id:
         return RedirectResponse(url="/employee/user_exists/" + str(employee.id), status_code=status.HTTP_302_FOUND)
     
+    if employee.employment_status_id == 1:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+    
     employee_model = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
 
     employee_model.email = email

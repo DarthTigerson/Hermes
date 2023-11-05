@@ -227,6 +227,10 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
         return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     employee_data = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
+
+    if employee_data.employment_status_id == 1:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()

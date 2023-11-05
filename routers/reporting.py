@@ -103,8 +103,10 @@ async def download_csv(request: Request, report_type: int, start_date: datetime,
     # Convert start_date and end_date to strings in the 'YYYY-MM-DD' format
     start_date_str = start_date.strftime('%Y-%m-%d')
     end_date_str = end_date.strftime('%Y-%m-%d')
+    now_date_time_str = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
     if report_type == 1:
+        file_name = f"Onboarded_Report_{now_date_time_str}"
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 0)\
             .all()
@@ -112,6 +114,7 @@ async def download_csv(request: Request, report_type: int, start_date: datetime,
         # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.start_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
     elif report_type == 2:
+        file_name = f"Offboarded_Report_{now_date_time_str}"
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 1)\
             .all()
@@ -119,7 +122,7 @@ async def download_csv(request: Request, report_type: int, start_date: datetime,
         # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.end_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
     else:
-        report_data = None
+        return None
 
     if role_state.payroll == True:
         csv = "ID,E-mail,Name,Surname,Full_Name,Dath_of_Birth,Gender,Nationality,Country_of_Origin,Working_Country,Personal_E-mail,Job_Title,Manager,HR_Team,Start_Date,End_Date,Site,Department,Product_Code,Brand_Code,Business_Unit,Business_Vertical,Contract,Currency,Base_Salary,Salary_Period,Working_Hours,Employment_Type,Net_Salary,Change_Reason,Increase_Percentage,Salary_Pay_Frequency,Supplier,Entity_to_be_Billed,Emlpoyer,Supplier_E-mail,Employment_Status\n"
@@ -195,6 +198,62 @@ async def download_csv(request: Request, report_type: int, start_date: datetime,
 
             csv += f"{employee.id},{employee.email},{employee.first_name},{employee.last_name},{employee.full_name},{employee.date_of_birth},{local_data['gender']},{employee.nationality},{local_data['country_of_origin']},{local_data['working_country']},{employee.personal_email},{employee.job_title},{employee.direct_manager},{local_data['hr_team']},{employee.start_date},{employee.end_date},{local_data['site']},{local_data['department']},{employee.product_code},{employee.brand_code},{employee.business_unit},{employee.business_verticle},{local_data['contract']},{local_data['currency']},{employee.salary},{employee.salary_period},{employee.working_hours},{local_data['employment_type']},{employee.net_monthly_salary},{employee.change_reason},{employee.increase_percentage},{local_data['salary_pay_frequency']},{employee.supplier},{employee.entity_to_be_billed},{local_data['employer']},{employee.company_email},{local_data['employment_status']}\n"
     else:
-        csv = "ID,E-mail,Name,Surname,Full_Name,Dath_of_Birth,Gender,Nationality,Country_of_Origin,Working_Country,Personal_E-mail,Job_Title,Manager,HR_Team,Start_Date,End_Date,Site,Department,Product_Code,Brand_Code,Business_Unit,Business_Vertical,Contract,Currency,Base_Salary,Salary_Period,Working_Hours,Employment_Type,Net_Salary,Change_Reason,Increase_Percentage,Salary_Pay_Frequency,Supplier,Entity_to_be_Billed,Emlpoyer,Supplier_E-mail,Employment_Status\n"
+        csv = "ID,E-mail,Name,Surname,Full_Name,Dath_of_Birth,Gender,Nationality,Country_of_Origin,Working_Country,Personal_E-mail,Job_Title,Manager,HR_Team,Start_Date,End_Date,Site,Department,Product_Code,Brand_Code,Business_Unit,Business_Vertical,Contract,Supplier,Entity_to_be_Billed,Emlpoyer,Supplier_E-mail,Employment_Status\n"
+        
+        for employee in report_data:
+            local_data = {}
+            for country in countries:
+                if country.id == employee.country_of_origin_id:
+                    tempName = country.name.replace('\n', '')
+                    tempName = tempName.replace(',', '')
+                    local_data['country_of_origin'] = tempName
+                if country.id == employee.working_country_id:
+                    tempName = country.name.replace('\n', '')
+                    tempName = tempName.replace(',', '')
+                    local_data['working_country'] = tempName
+            for site in sites:
+                if site.id == employee.site_id:
+                    tempName = site.name.replace('\n', '')
+                    tempName = tempName.replace(',', '')
+                    local_data['site'] = tempName
+            for department in departments:
+                if department.id == employee.department_id:
+                    tempName = department.name.replace('\n', '')
+                    tempName = tempName.replace(',', '')
+                    local_data['department'] = tempName
+            for contract in employment_contracts:
+                if contract.id == employee.employment_contract_id:
+                    tempName = contract.name.replace('\n', '')
+                    tempName = tempName.replace(',', '')
+                    local_data['contract'] = tempName
+            for employer in employers:
+                if employer.id == employee.employer_id:
+                    tempName = employer.name.replace('\n', '')
+                    tempName = tempName.replace(',', '')
+                    local_data['employer'] = tempName
+
+            if employee.gender == 0:
+                local_data['gender'] = 'Male'
+            elif employee.gender == 1:
+                local_data['gender'] = 'Female'
+            else:
+                local_data['gender'] = 'Other'
+
+            if employee.employment_status_id == 0:
+                local_data['employment_status'] = 'Onboarded'
+            else:
+                local_data['employment_status'] = 'Offboarded'
+
+            if employee.hr_team_id == 0:
+                local_data['hr_team'] = 'No Team'
+            else:
+                for team in hr_teams:
+                    if team.id == employee.hr_team_id:
+                        tempName = team.name.replace('\n', '')
+                        tempName = tempName.replace(',', '')
+                        local_data['hr_team'] = tempName
+
+            csv += f"{employee.id},{employee.email},{employee.first_name},{employee.last_name},{employee.full_name},{employee.date_of_birth},{local_data['gender']},{employee.nationality},{local_data['country_of_origin']},{local_data['working_country']},{employee.personal_email},{employee.job_title},{employee.direct_manager},{local_data['hr_team']},{employee.start_date},{employee.end_date},{local_data['site']},{local_data['department']},{employee.product_code},{employee.brand_code},{employee.business_unit},{employee.business_verticle},{local_data['contract']},{employee.supplier},{employee.entity_to_be_billed},{local_data['employer']},{employee.company_email},{local_data['employment_status']}\n"
+
     
-    return Response(content=csv, media_type='text/csv', headers={'Content-Disposition': 'attachment; filename=report.csv'})
+    return Response(content=csv, media_type='text/csv', headers={'Content-Disposition': f'attachment; filename={file_name}.csv'})

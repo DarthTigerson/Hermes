@@ -34,142 +34,142 @@
                 {% else %}
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Surname</th>
-                            <th scope="col">Full Name</th>
-                            <th scope="col">DoB</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Nationality</th>
-                            <th scope="col">CoO</th>
-                            <th scope="col">Working Country</th>
-                            <th scope="col">Personal E-mail</th>
-                            <th scope="col">Job Title</th>
-                            <th scope="col">Manager</th>
-                            <th scope="col">HR Team</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">End Date</th>
-                            <th scope="col">Site</th>
-                            <th scope="col">Department</th>
-                            <th scope="col">Product Code</th>
-                            <th scope="col">Brand Code</th>
-                            <th scope="col">Business Unit</th>
-                            <th scope="col">Business Vertical</th>
-                            <th scope="col">Contract</th>
+                            <th scope="col" title="ID">ID</th>
+                            <th scope="col" title="E-mail">E-mail</th>
+                            <th scope="col" title="Name">Name</th>
+                            <th scope="col" title="Surname">Surname</th>
+                            <th scope="col" title="Full Name">Full Name</th>
+                            <th scope="col" title="Date of Birth">DoB</th>
+                            <th scope="col" title="Gender">Gender</th>
+                            <th scope="col" title="Nationality">Nationality</th>
+                            <th scope="col" title="Country of Origin">CoO</th>
+                            <th scope="col" title="Working Country">Working Country</th>
+                            <th scope="col" title="Personal E-mail">Personal E-mail</th>
+                            <th scope="col" title="Job Title">Job Title</th>
+                            <th scope="col" title="Manager">Manager</th>
+                            <th scope="col" title="HR Team">HR Team</th>
+                            <th scope="col" title="Start Date">Start Date</th>
+                            <th scope="col" title="End Date">End Date</th>
+                            <th scope="col" title="Site">Site</th>
+                            <th scope="col" title="Department">Department</th>
+                            <th scope="col" title="Product Code">Product Code</th>
+                            <th scope="col" title="Brand Code">Brand Code</th>
+                            <th scope="col" title="Business Unit">Business Unit</th>
+                            <th scope="col" title="Business Vertical">Business Vertical</th>
+                            <th scope="col" title="Contract">Contract</th>
                             {% if role_state.payroll == 1 %}
-                            <th scope="col">Currency</th>
-                            <th scope="col">Base Salary</th>
-                            <th scope="col">Salary Period</th>
-                            <th scope="col">Working Hours</th>
-                            <th scope="col">Employment Type</th>
-                            <th scope="col">Net Salary</th>
-                            <th scope="col">Change Reason</th>
-                            <th scope="col">Increase %</th>
-                            <th scope="col">SPF</th>
+                            <th scope="col" title="Currency">Currency</th>
+                            <th scope="col" title="Base Salary">Base Salary</th>
+                            <th scope="col" title="Salary Period">Salary Period</th>
+                            <th scope="col" title="Working Hours">Working Hours</th>
+                            <th scope="col" title="Employment Type">Employment Type</th>
+                            <th scope="col" title="Net Monthyl Salary">Net Salary</th>
+                            <th scope="col" title="Change Reason">Change Reason</th>
+                            <th scope="col" title="Increase Percentage">Increase %</th>
+                            <th scope="col" title="Salary Pay Frequency">SPF</th>
                             {% endif %}
-                            <th scope="col">Supplier</th>
-                            <th scope="col">EtbB</th>
-                            <th scope="col">Employer</th>
-                            <th scope="col">Supplier E-mail</th>
-                            <th scope="col">Employment Status</th>
+                            <th scope="col" title="Supplier">Supplier</th>
+                            <th scope="col" title="Entity to be Billed">EtbB</th>
+                            <th scope="col" title="Employer">Employer</th>
+                            <th scope="col" title="Supplier E-mail">Supplier E-mail</th>
+                            <th scope="col" title="Employment Status">Employment Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for employee in report_data %}
                         <tr>
-                            <td>{{employee.id}}</td>
-                            <td>{{employee.email}}</td>
-                            <td>{{employee.first_name}}</td>
-                            <td>{{employee.last_name}}</td>
-                            <td>{{employee.full_name}}</td>
-                            <td>{{employee.date_of_birth}}</td>
+                            <td title="ID">{{employee.id}}</td>
+                            <td title="E-mail">{{employee.email}}</td>
+                            <td title="Name">{{employee.first_name}}</td>
+                            <td title="Surname">{{employee.last_name}}</td>
+                            <td title="Full Name">{{employee.full_name}}</td>
+                            <td title="Date of Birth">{{employee.date_of_birth}}</td>
                             {% if employee.gender == 0 %}
-                                <td>Male</td>
+                                <td title="Gender">Male</td>
                             {% elif employee.gender == 1 %}
-                                <td>Female</td>
+                                <td title="Gender">Female</td>
                             {% else %}
-                                <td>Other</td>
+                                <td title="Gender">Other</td>
                             {% endif %}
-                            <td>{{employee.nationality}}</td>
+                            <td title="Nationality">{{employee.nationality}}</td>
                             {% for country in countries %}
                                 {% if employee.country_of_origin_id == country.id %}
-                                    <td>{{ country.name }}</td>
+                                    <td title="Country of Origin">{{ country.name }}</td>
                                 {% endif %}
                             {% endfor %}
                             {% for country in countries %}
                                 {% if employee.working_country_id == country.id %}
-                                    <td>{{ country.name }}</td>
+                                    <td title="Working Country">{{ country.name }}</td>
                                 {% endif %}
                             {% endfor %}
-                            <td>{{employee.personal_email}}</td>
-                            <td>{{employee.job_title}}</td>
-                            <td>{{employee.direct_manager}}</td>
+                            <td title="Personal E-mail">{{employee.personal_email}}</td>
+                            <td title="Job Title">{{employee.job_title}}</td>
+                            <td title="Direct Manager">{{employee.direct_manager}}</td>
                             {% if employee.hr_team_id == 0 %}
-                                <td>No Team</td>
+                                <td title="HR Team">No Team</td>
                             {% else %}
                                 {% for hr_team in hr_teams %}
                                     {% if employee.hr_team_id == hr_team.id %}
-                                        <td>{{ hr_team.name }}</td>
+                                        <td title="HR Team">{{ hr_team.name }}</td>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
-                            <td>{{employee.start_date}}</td>
-                            <td>{{employee.end_date}}</td>
+                            <td title="Start Date">{{employee.start_date}}</td>
+                            <td title="End Date">{{employee.end_date}}</td>
                             {% for site in sites %}
                                 {% if employee.site_id == site.id %}
-                                    <td>{{ site.name }}</td>
+                                    <td title="Site">{{ site.name }}</td>
                                 {% endif %}
                             {% endfor %}
                             {% for department in departments %}
                                 {% if employee.department_id == department.id %}
-                                    <td>{{ department.name }}</td>
+                                    <td title="Department">{{ department.name }}</td>
                                 {% endif %}
                             {% endfor %}
-                            <td>{{employee.product_code}}</td>
-                            <td>{{employee.brand_code}}</td>
-                            <td>{{employee.business_unit}}</td>
-                            <td>{{employee.business_verticle}}</td>
+                            <td title="Product Code">{{employee.product_code}}</td>
+                            <td title="Brand Code">{{employee.brand_code}}</td>
+                            <td title="Business Unit">{{employee.business_unit}}</td>
+                            <td title="Business Verticle">{{employee.business_verticle}}</td>
                             {% for contract in employment_contracts %}
                                 {% if employee.employment_contract_id == contract.id %}
-                                    <td>{{ contract.name }}</td>
+                                    <td title="Employment Contract">{{ contract.name }}</td>
                                 {% endif %}
                             {% endfor %}
                             {% if role_state.payroll == 1 %}
                                 {% for currency in currencies %}
                                     {% if employee.salary_currency_id == currency.id %}
-                                        <td>{{ currency.name }}</td>
+                                        <td title="Currency">{{ currency.name }}</td>
                                     {% endif %}
                                 {% endfor %}
-                                <td>{{employee.salary}}</td>
-                                <td>{{employee.salary_period}}</td>
-                                <td>{{employee.working_hours}}</td>
+                                <td title="Salary">{{employee.salary}}</td>
+                                <td title="Salary Period">{{employee.salary_period}}</td>
+                                <td title="Working Hours">{{employee.working_hours}}</td>
                                 {% for employment_type in employment_types %}
                                     {% if employee.employment_type_id == employment_type.id %}
-                                        <td>{{ employment_type.name }}</td>
+                                        <td title="Employment Type">{{ employment_type.name }}</td>
                                     {% endif %}
                                 {% endfor %}
-                                <td>{{employee.net_monthly_salary}}</td>
-                                <td>{{employee.change_reason}}</td>
-                                <td>{{employee.increase_percentage}}</td>
+                                <td title="Net Monthly Salary">{{employee.net_monthly_salary}}</td>
+                                <td title="Change Reason">{{employee.change_reason}}</td>
+                                <td title="Increase Percentage">{{employee.increase_percentage}}</td>
                                 {% for frequency in salary_pay_frequency %}
                                     {% if employee.salary_pay_frequency_id == frequency.id %}
-                                        <td>{{ frequency.name }}</td>
+                                        <td title="Salary Pay Frequency">{{ frequency.name }}</td>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
-                            <td>{{employee.supplier}}</td>
-                            <td>{{employee.entity_to_be_billed}}</td>
+                            <td title="Supplier">{{employee.supplier}}</td>
+                            <td title="Entity to be Billed">{{employee.entity_to_be_billed}}</td>
                             {% for employer in employers %}
                                 {% if employee.employer_id == employer.id %}
-                                    <td>{{ employer.name }}</td>
+                                    <td title="Employer">{{ employer.name }}</td>
                                 {% endif %}
                             {% endfor %}
-                            <td>{{employee.company_email}}</td>
+                            <td title="Company E-mail">{{employee.company_email}}</td>
                             {% if employee.employment_status_id == 0 %}
-                                <td>Onboarded</td>
+                                <td title="Employment Status">Onboarded</td>
                             {% else %}
-                                <td>Offboarded</td>
+                                <td title="Employment Status">Offboarded</td>
                             {% endif %}
                         </tr>
                         {% endfor %}

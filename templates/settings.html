@@ -153,9 +153,12 @@
                                     <h5>Primary Button</h5>
                                     <input type="color" id="primaryButtonColor" name="primary_button_color" value="{{settings.primary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
                                     <h5>Primary Button Text Color</h5>
                                     <input type="color" id="primaryButtonHoverColor" name="primary_button_hover_color" value="{{settings.primary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="primarySampleButton" type="button" class="btn" style="width: 220px;">Sample Primary Button</button>
                                 </div>
                             </div>
                         </div>
@@ -165,9 +168,12 @@
                                     <h5>Secondary Button</h5>
                                     <input type="color" id="secondaryButtonColor" name="secondary_button_color" value="{{settings.secondary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
                                     <h5>Secondary Button Text Color</h5>
                                     <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="secondarySampleButton" type="button" class="btn" style="width: 220px;">Sample Primary Button</button>
                                 </div>
                             </div>
                         </div>
@@ -177,9 +183,12 @@
                                     <h5>Info Button</h5>
                                     <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
                                     <h5>Info Button Text Color</h5>
                                     <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="infoSampleButton" type="button" class="btn" style="width: 220px;">Sample Info Button</button>
                                 </div>
                             </div>
                         </div>
@@ -189,9 +198,12 @@
                                     <h5>Critical Button</h5>
                                     <input type="color" id="criticalButtonColor" name="critical_button_color" value="{{settings.critical_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
                                     <h5>Critical Button Text Color</h5>
                                     <input type="color" id="criticalButtonHoverColor" name="critical_button_hover_color" value="{{settings.critical_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="criticalSampleButton" type="button" class="btn" style="width: 220px;">Sample Critical Button</button>
                                 </div>
                             </div>                
                         </div>        
@@ -236,5 +248,63 @@
             });
         }
         reader.readAsDataURL(event.target.files[0]);
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var primaryButton = document.getElementById('primarySampleButton');
+        var primaryButtonColor = document.getElementById('primaryButtonColor');
+        var primaryButtonHoverColor = document.getElementById('primaryButtonHoverColor');
+        var secondaryButton = document.getElementById('secondarySampleButton');
+        var secondaryButtonColor = document.getElementById('secondaryButtonColor');
+        var secondaryButtonHoverColor = document.getElementById('secondaryButtonHoverColor');
+        var infoButton = document.getElementById('infoSampleButton');
+        var infoButtonColor = document.getElementById('infoButtonColor');
+        var infoButtonHoverColor = document.getElementById('infoButtonHoverColor');
+        var criticalButton = document.getElementById('criticalSampleButton');
+        var criticalButtonColor = document.getElementById('criticalButtonColor');
+        var criticalButtonHoverColor = document.getElementById('criticalButtonHoverColor');
+        
+        primaryButton.style.backgroundColor = primaryButtonColor.value;
+        primaryButton.style.color = primaryButtonHoverColor.value;
+
+        primaryButtonColor.addEventListener('input', function() {
+            primaryButton.style.backgroundColor = this.value;
+        });
+
+        primaryButtonHoverColor.addEventListener('input', function() {
+            primaryButton.style.color = this.value;
+        });
+        
+        secondaryButton.style.backgroundColor = secondaryButtonColor.value;
+        secondaryButton.style.color = secondaryButtonHoverColor.value;
+
+        secondaryButtonColor.addEventListener('input', function() {
+            secondaryButton.style.backgroundColor = this.value;
+        });
+
+        secondaryButtonHoverColor.addEventListener('input', function() {
+            secondaryButton.style.color = this.value;
+        });
+        
+        infoButton.style.backgroundColor = infoButtonColor.value;
+        infoButton.style.color = infoButtonHoverColor.value;
+
+        infoButtonColor.addEventListener('input', function() {
+            infoButton.style.backgroundColor = this.value;
+        });
+
+        infoButtonHoverColor.addEventListener('input', function() {
+            infoButton.style.color = this.value;
+        });
+        
+        criticalButton.style.backgroundColor = criticalButtonColor.value;
+        criticalButton.style.color = criticalButtonHoverColor.value;
+
+        criticalButtonColor.addEventListener('input', function() {
+            criticalButton.style.backgroundColor = this.value;
+        });
+
+        criticalButtonHoverColor.addEventListener('input', function() {
+            criticalButton.style.color = this.value;
+        });
     });
 </script>

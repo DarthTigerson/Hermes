@@ -93,13 +93,15 @@
                 {% endif %}
                 {% if page == 'color_palettes' %}
                 <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-                    <div style="flex: 1; margin-right: 20px;">
+                    <div style="flex: 1; margin-right: 100px;">
                         <h3>Logo</h3>
                         <img src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
                         <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
                         <input type="file" id="logoUpload" accept=".png" style="display: none;">
-                        <label for="logoUpload" class="btn btn-primary" style="font-size: 18px; vertical-align: middle;">Change Logo</label>
-                        <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px; vertical-align: middle;">Reset Logo</a>
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="logoUpload" class="btn btn-primary" style="font-size: 18px; margin-bottom: 10px;">Change Logo</label>
+                            <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
+                        </div>
                         <div style="margin-top: 40px;">
                             <h3>Navbar Color <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;"></h3>                        
                         </div>
@@ -149,11 +151,11 @@
                             <div style="display: flex; justify-content: flex-start;">
                                 <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
                                     <h5>Critical Button</h5>
-                                    <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                    <input type="color" id="criticalButtonColor" name="critical_button_color" value="{{settings.critical_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
                                     <h5>Critical Button Hover</h5>
-                                    <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                    <input type="color" id="criticalButtonHoverColor" name="critical_button_hover_color" value="{{settings.critical_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                             </div>                
                         </div>        

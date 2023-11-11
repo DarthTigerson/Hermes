@@ -178,7 +178,7 @@ def create_settings_table():
         hermes_logo = base64.b64encode(image_data).decode('utf-8')
 
         # Setup Settings table
-        settings = models.Settings(id=1, email_new_employee=False, email_updated_employee=False, email_offboarded_employee=False, email_list=None, email_smtp_server=None, email_smtp_port=587, email_smtp_username=None, email_smtp_password=None, slack_webhook_channel=None, daily_user_reports=False, monthly_user_reports=False, company_logo=hermes_logo, navigation_bar_color='#0e76a8', primary_color='#0e76a8', primary_color_hover='#0069d9', secondary_color='#6c757d', secondary_color_hover='#5a6268', info_color='#17a2b8', info_color_hover='#138496', critical_color='#dc3545', critical_color_hover='#bd2130', table_color_id=1)
+        settings = models.Settings(id=1, email_new_employee=False, email_updated_employee=False, email_offboarded_employee=False, email_list=None, email_smtp_server=None, email_smtp_port=587, email_smtp_username=None, email_smtp_password=None, slack_webhook_channel=None, daily_user_reports=False, monthly_user_reports=False, company_logo=hermes_logo, navigation_bar_color='#0e76a8', primary_color='#0e76a8', primary_color_hover='#ffffff', secondary_color='#6c757d', secondary_color_hover='#ffffff', info_color='#17a2b8', info_color_hover='#ffffff', critical_color='#dc3545', critical_color_hover='#ffffff', table_color_id=1)
         db.add(settings)
         db.commit()
 

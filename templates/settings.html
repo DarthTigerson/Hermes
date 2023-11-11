@@ -98,7 +98,7 @@
                     <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
                     <input type="file" id="logoUpload" accept=".png" style="display: none;">
                     <label for="logoUpload" class="btn btn-primary" style="font-size: 18px;">Change Logo</label>
-                    <a href="/settings/#" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
+                    <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
                 </div>
                 {% endif %}
             </div>
@@ -114,10 +114,30 @@
     document.getElementById('logoUpload').addEventListener('change', function(event) {
         var reader = new FileReader();
         reader.onloadend = function() {
-            var base64data = reader.result;
-            console.log(base64data);
-            // You can now use the base64data for your needs
+            var base64data = reader.result.split(',')[1]; // Remove the data URL prefix
+            fetch('/settings/change_company_logo', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ logo: base64data }) 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+                // Reload the page
+                location.reload();
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
         }
         reader.readAsDataURL(event.target.files[0]);
     });
-    </script>
+</script>

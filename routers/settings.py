@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
 from models import Roles, Settings
-import models, datetime
+import models, datetime, base64
 
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -94,3 +94,56 @@ async def post_settings(request: Request, page: str, db: Session = Depends(get_d
     db.commit()
 
     return RedirectResponse(url="/settings", status_code=status.HTTP_302_FOUND)
+
+@router.post("/change_company_logo", response_class=HTMLResponse)
+async def change_company_logo(request: Request, db: Session = Depends(get_db)):
+    data = await request.json()
+    logo = data.get('logo')
+
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.settings == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
+
+    settings.company_logo = logo
+
+    db.add(settings)
+    db.commit()
+
+    return RedirectResponse(url="/settings/?page=color_palettes", status_code=status.HTTP_302_FOUND)
+
+@router.get("/reset_company_logo", response_class=HTMLResponse)
+async def reset_company_logo(request: Request, db: Session = Depends(get_db)):
+    user = await get_current_user(request)
+
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+
+    if role_state.settings == False:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
+
+    # Open the image file in binary mode
+    with open('static/img/logo.png', 'rb') as f:
+        # Read the contents
+        image_data = f.read()
+
+    # Encode the image data into a base64 string
+    hermes_logo = base64.b64encode(image_data).decode('utf-8')
+
+    settings.company_logo = hermes_logo
+
+    db.add(settings)
+    db.commit()
+
+    return RedirectResponse(url="/settings/?page=color_palettes", status_code=status.HTTP_302_FOUND)

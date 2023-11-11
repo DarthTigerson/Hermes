@@ -18,7 +18,81 @@
             </div>
             <div class="card-body" style="overflow:auto;">
                 <br>
+                {% if page == 'trigger_points' %}
+                <div class="card-body" style="overflow-y: auto;">
+                    <table class="table text-center table-hover">
+                        <tr onclick="document.querySelector('input[name=trigger_onboarded_employee]').checked = !document.querySelector('input[name=trigger_onboarded_employee]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_onboarded_employee" {% if settings.email_new_employee %}checked{% endif %}></td>
+                            <td style="text-align: left; width: 20%;">Onboarding trigger</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an e-mail when a new employee is onboarded onto Hermes.</td>
+                        </tr>
+                        <tr onclick="document.querySelector('input[name=trigger_updated_employee]').checked = !document.querySelector('input[name=trigger_updated_employee]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_updated_employee" {% if settings.email_updated_employee %}checked{% endif %}></td>
+                            <td style="text-align: left; width: 20%">Updated Employee trigger</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an e-mail when a employee is updated onto Hermes.</td>
+                        </tr>
+                        <tr onclick="document.querySelector('input[name=trigger_offboarded_employee]').checked = !document.querySelector('input[name=trigger_offboarded_employee]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_offboarded_employee" {% if settings.email_offboarded_employee %}checked{% endif %}></td>
+                            <td style="text-align: left; width: 20%">Offboarded Employee trigger</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an e-mail when a employee is offboarded from Hermes.</td>
+                        </tr>
+                    </table>
+                </div>
+                {% endif %}
+                {% if page == 'slack_settings' %}
+                <div class="card-body" style="overflow-y: auto;">
+                    <table class="table text-center table-hover">
+                        <tr>
+                            <td style="text-align: right; width: 10%; vertical-align: middle;">Webhook</td>
+                            <td>
+                                <input type="text" class="form-control" name="slack_webhook" {% if settings.slack_webhook_channel != None %} value="{{settings.slack_webhook_channel}} {% endif %}">
+                            </td>
+                        </tr> 
+                    </table>
+                </div>
+                {% endif %}
+                {% if page == 'email_settings' %}
+                <div class="card-body" style="overflow-y: auto;">
+                    <table class="table text-center table-hover">
+                        <tr>
+                            <td style="text-align: right; width: 10%; vertical-align: middle;">E-mail Send To</td>
+                            <td>
+                                <input type="text" class="form-control" name="email_list" {% if settings.email_list != None %} value="{{settings.email_list}}" {% endif %}>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Server</td>
+                            <td>
+                                <input type="text" class="form-control" name="email_smtp_server" {% if settings.email_smtp_server != None %} value="{{settings.email_smtp_server}}" {% endif %}>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Port</td>
+                            <td>
+                                <input type="text" class="form-control" name="email_smtp_port" value="{{settings.email_smtp_port}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Username</td>
+                            <td>
+                                <input type="text" class="form-control" name="email_smtp_username" {% if settings.email_smtp_username != None %} value="{{settings.email_smtp_username}}" {% endif %}>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Password</td>
+                            <td>
+                                <input type="password" class="form-control" name="email_smtp_password" value="">
+                            </td>
+                        </tr>
+                        </tr> 
+                    </table>
+                </div> 
+                {% endif %}
             </div>
+        </div>
+        <div style="padding-bottom: 60px;"></div>
+        <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            <button type="submit" class="btn btn-primary">Update Settings Old</button>
         </div>
     </form>
 </div>

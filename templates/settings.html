@@ -91,6 +91,16 @@
                     </table>
                 </div> 
                 {% endif %}
+                {% if page == 'color_palettes' %}
+                <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
+                    <h3>Logo</h3>
+                    <img src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
+                    <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
+                    <input type="file" id="logoUpload" accept=".png" style="display: none;">
+                    <label for="logoUpload" class="btn btn-primary" style="font-size: 18px;">Change Logo</label>
+                    <a href="/settings/#" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div style="padding-bottom: 60px;"></div>
@@ -99,3 +109,15 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('logoUpload').addEventListener('change', function(event) {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            var base64data = reader.result;
+            console.log(base64data);
+            // You can now use the base64data for your needs
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    });
+    </script>

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated, Optional
 from database import SessionLocal, engine
 from pydantic import BaseModel, Field
-from models import Users, Roles, Teams, Base, Preferences
+from models import Users, Roles, Teams, Base, Settings
 from routers.messaging import slack_send_message
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
@@ -169,7 +169,7 @@ async def add_role(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("add-role.html", {"request": request, "logged_in_user": user, "role_state": role_state})
 
 @router.post("/add_role", response_class=HTMLResponse)
-async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), preferences: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
+async def create_role(request: Request, name: str = Form(...), description: str = Form(None), onboarding: bool = Form(False), employee_updates: bool = Form(False), offboarding: bool = Form(False), manage_modify: bool = Form(False), admin: bool = Form(False), payroll: bool = Form(False), settings: bool = Form(False), api_report: bool = Form(False), db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
 
@@ -191,7 +191,7 @@ async def create_role(request: Request, name: str = Form(...), description: str 
     role_model.manage_modify = manage_modify
     role_model.admin = admin
     role_model.payroll = payroll
-    role_model.preferences = preferences
+    role_model.settings = settings
     role_model.api_report = api_report
 
     db.add(role_model)

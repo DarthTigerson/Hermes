@@ -11,17 +11,17 @@
                     <div class="card-body" style="overflow-y: auto;">
                         <table class="table text-center table-hover">
                             <tr onclick="document.querySelector('input[name=trigger_onboarded_employee]').checked = !document.querySelector('input[name=trigger_onboarded_employee]').checked;">
-                                <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_onboarded_employee" {% if preferences.email_new_employee %}checked{% endif %}></td>
+                                <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_onboarded_employee" {% if settings.email_new_employee %}checked{% endif %}></td>
                                 <td style="text-align: left; width: 20%;">Onboarding trigger</td>
                                 <td style="text-align: left; padding-left: 25px;">Send an e-mail when a new employee is onboarded onto Hermes.</td>
                             </tr>
                             <tr onclick="document.querySelector('input[name=trigger_updated_employee]').checked = !document.querySelector('input[name=trigger_updated_employee]').checked;">
-                                <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_updated_employee" {% if preferences.email_updated_employee %}checked{% endif %}></td>
+                                <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_updated_employee" {% if settings.email_updated_employee %}checked{% endif %}></td>
                                 <td style="text-align: left; width: 20%">Updated Employee trigger</td>
                                 <td style="text-align: left; padding-left: 25px;">Send an e-mail when a employee is updated onto Hermes.</td>
                             </tr>
                             <tr onclick="document.querySelector('input[name=trigger_offboarded_employee]').checked = !document.querySelector('input[name=trigger_offboarded_employee]').checked;">
-                                <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_offboarded_employee" {% if preferences.email_offboarded_employee %}checked{% endif %}></td>
+                                <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_offboarded_employee" {% if settings.email_offboarded_employee %}checked{% endif %}></td>
                                 <td style="text-align: left; width: 20%">Offboarded Employee trigger</td>
                                 <td style="text-align: left; padding-left: 25px;">Send an e-mail when a employee is offboarded from Hermes.</td>
                             </tr>
@@ -35,7 +35,7 @@
                             <tr>
                                 <td style="text-align: right; width: 10%; vertical-align: middle;">Webhook</td>
                                 <td>
-                                    <input type="text" class="form-control" name="slack_webhook" value="{{preferences.slack_webhook_channel}}">
+                                    <input type="text" class="form-control" name="slack_webhook" value="{{settings.slack_webhook_channel}}">
                                 </td>
                             </tr> 
                         </table>
@@ -48,25 +48,25 @@
                             <tr>
                                 <td style="text-align: right; width: 10%; vertical-align: middle;">E-mail Send To</td>
                                 <td>
-                                    <input type="text" class="form-control" name="email_list" value="{{preferences.email_list}}">
+                                    <input type="text" class="form-control" name="email_list" value="{{settings.email_list}}">
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Server</td>
                                 <td>
-                                    <input type="text" class="form-control" name="email_smtp_server" value="{{preferences.email_smtp_server}}">
+                                    <input type="text" class="form-control" name="email_smtp_server" value="{{settings.email_smtp_server}}">
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Port</td>
                                 <td>
-                                    <input type="text" class="form-control" name="email_smtp_port" value="{{preferences.email_smtp_port}}">
+                                    <input type="text" class="form-control" name="email_smtp_port" value="{{settings.email_smtp_port}}">
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align: right; width: 15%; vertical-align: middle;">E-mail SMTP Username</td>
                                 <td>
-                                    <input type="text" class="form-control" name="email_smtp_username" value="{{preferences.email_smtp_username}}">
+                                    <input type="text" class="form-control" name="email_smtp_username" value="{{settings.email_smtp_username}}">
                                 </td>
                             </tr>
                             <tr>
@@ -83,7 +83,7 @@
         </div>
         <div style="padding-bottom: 60px;"></div>
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
-            <button type="submit" class="btn btn-primary">Update Preferences</button>
+            <button type="submit" class="btn btn-primary">Update Settings</button>
         </div>
     </form>
 </div>

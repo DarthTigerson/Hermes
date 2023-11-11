@@ -35,7 +35,7 @@ class Roles(Base):
     payroll = Column(Boolean, default=False)
     admin = Column(Boolean, default=False)
     logs = Column(Boolean, default=False)
-    preferences = Column(Boolean, default=False)
+    settings = Column(Boolean, default=False)
     api_report = Column(Boolean, default=False)
 
 class Teams(Base):
@@ -138,8 +138,8 @@ class PayFrequency(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
 
-class Preferences(Base):
-    __tablename__ = 'preferences'
+class Settings(Base):
+    __tablename__ = 'settings'
     id = Column(Integer, primary_key=True, index=True)
     email_new_employee = Column(Boolean, default=False)
     email_updated_employee = Column(Boolean, default=False)

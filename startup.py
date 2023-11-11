@@ -10,7 +10,7 @@ def create_default_user():
         models.Base.metadata.create_all(bind=engine)
 
         # Create a default role
-        role = models.Roles(name="Admin", description="Administrator", onboarding=True, employee_updates=True, offboarding=True, manage_modify=True, payroll=False, admin=True, preferences=True, logs=True, api_report=True)
+        role = models.Roles(name="Admin", description="Administrator", onboarding=True, employee_updates=True, offboarding=True, manage_modify=True, payroll=False, admin=True, settings=True, logs=True, api_report=True)
         db.add(role)
         db.commit()
 
@@ -163,20 +163,20 @@ def create_all_pay_frequencies():
     finally:
         db.close()
 
-def create_preferences_table():
+def create_settings_table():
     db = SessionLocal()
     try:
-        # Delete all existing preferences
-        db.query(models.Preferences).delete()
+        # Delete all existing settings
+        db.query(models.Settings).delete()
 
-        # Setup Preferences table
-        preferences = models.Preferences(id=1, email_new_employee=False, email_updated_employee=False, email_offboarded_employee=False, email_list=None, email_smtp_server=None, email_smtp_port=587, email_smtp_username=None, email_smtp_password=None, slack_webhook_channel=None, daily_user_reports=False, monthly_user_reports=False, company_logo=None, navigation_bar_color='0e76a8', primary_color='0e76a8', primary_color_hover='0069d9', secondary_color='6c757d', secondary_color_hover='5a6268', info_color='17a2b8', info_color_hover='138496', critical_color='dc3545', critical_color_hover='bd2130', table_color_id=1)
-        db.add(preferences)
+        # Setup Settings table
+        settings = models.Settings(id=1, email_new_employee=False, email_updated_employee=False, email_offboarded_employee=False, email_list=None, email_smtp_server=None, email_smtp_port=587, email_smtp_username=None, email_smtp_password=None, slack_webhook_channel=None, daily_user_reports=False, monthly_user_reports=False, company_logo=None, navigation_bar_color='0e76a8', primary_color='0e76a8', primary_color_hover='0069d9', secondary_color='6c757d', secondary_color_hover='5a6268', info_color='17a2b8', info_color_hover='138496', critical_color='dc3545', critical_color_hover='bd2130', table_color_id=1)
+        db.add(settings)
         db.commit()
 
-        print("Preferences table created successfully.")
+        print("Settings table created successfully.")
     except Exception as e:
-        print(f"Error creating preferences table: {e}")
+        print(f"Error creating settings table: {e}")
     finally:
         db.close()
 
@@ -200,7 +200,7 @@ def full_run():
         create_all_departments()
         create_all_employers()
         create_all_pay_frequencies()
-        create_preferences_table()
+        create_settings_table()
         #openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 730
 
         print("\nSetup complete.\nYou can launch Hermes with the following command: `uvicorn main:app --reload`")

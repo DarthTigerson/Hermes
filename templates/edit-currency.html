@@ -17,9 +17,9 @@
                 </div>
                 <div class="text-center">
                     {% if role_state.manage_modify == 1 %}
-                    <button type="submit" class="btn btn-primary" style="width: 170px;">Update</button>
+                    <button type="submit" class="btn" style="width: 170px; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Update</button>
                     {% endif %}
-                    <button type="button" onclick="window.location.href='/manage/delete_currency/{{currency.id}}'" class="btn btn-danger" style="width: 170px;">Delete</button>
+                    <button type="button" onclick="window.location.href='/manage/delete_currency/{{currency.id}}'" class="btn" style="width: 170px; background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}}">Delete</button>
                 </div>
             </div>
         </div>

@@ -290,7 +290,7 @@
         <div style="padding-bottom: 60px;"></div>
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
             {% if role_state.employee_updates == 1 %}
-            <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to update this employee?')">Update Employee</button>
+            <button type="submit" class="btn" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" onclick="return confirm('Are you sure you want to update this employee?')">Update Employee</button>
             {% endif %}
         </div>
     </form>

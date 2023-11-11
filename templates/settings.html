@@ -6,17 +6,53 @@
             <div class="card-header" style="text-align: left;">
                 <h3 style="display: inline-block; margin-right: 30px;">Settings</h3>
                 <br>
-                <div style="display: inline-block; text-align: left;" class="form-group">
-                    <a href="/settings/?page=trigger_points" {% if page == 'trigger_points' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/clipboard.png" alt="Trigger Point" style="width: 25px; height: 25px; margin-right: 10px;">Trigger Points</a>
+                <div style="display: inline-block; text-align: left;background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" class="form-group">
+                    <a href="/settings/?page=trigger_points" class="btn"
+                    style="
+                    {% if page == 'trigger_points' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/clipboard.png" alt="Trigger Point" style="width: 25px; height: 25px; margin-right: 10px;">Trigger Points
+                    </a>
                 </div>
-                <div style="display: inline-block; text-align: left;" class="form-group">                    
-                    <a href="/settings/?page=slack_settings" {% if page == 'slack_settings' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/slack.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Slack Settings</a>
+                <div style="display: inline-block; text-align: left;" class="form-group">       
+                    <a href="/settings/?page=slack_settings" class="btn"
+                    style="
+                    {% if page == 'slack_settings' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/slack.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Slack Settings
+                    </a>
                 </div>
                 <div style="display: inline-block; text-align: left;" class="form-group">
-                    <a href="/settings/?page=email_settings" {% if page == 'email_settings' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/email.png" alt="E-mail" style="width: 25px; height: 25px; margin-right: 10px;">E-mail Settings</a>
+                    <a href="/settings/?page=email_settings" class="btn"
+                    style="
+                    {% if page == 'email_settings' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/email.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">E-mail Settings
+                    </a>
                 </div>
                 <div style="display: inline-block; text-align: left;" class="form-group">
-                    <a href="/settings/?page=color_palettes" {% if page == 'color_palettes' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/pantone.png" alt="E-mail" style="width: 25px; height: 25px; margin-right: 10px;">Color Palettes</a>
+                    <a href="/settings/?page=color_palettes" class="btn"
+                    style="
+                    {% if page == 'color_palettes' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/pantone.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Color Settings
+                    </a>
                 </div>
             </div>
             <div class="card-body" style="overflow:auto;">
@@ -99,8 +135,8 @@
                         <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
                         <input type="file" id="logoUpload" accept=".png" style="display: none;">
                         <div style="display: flex; flex-direction: column;">
-                            <label for="logoUpload" class="btn btn-primary" style="font-size: 18px; margin-bottom: 10px;">Change Logo</label>
-                            <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
+                            <label for="logoUpload" class="btn" style="font-size: 18px; margin-bottom: 10px; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Change Logo</label>
+                            <a href="/settings/reset_company_logo" class="btn" style="font-size: 18px; background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}">Reset Logo</a>
                         </div>
                         <div style="margin-top: 40px;">
                             <h3>Navbar Color <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;"></h3>                        
@@ -118,7 +154,7 @@
                                     <input type="color" id="primaryButtonColor" name="primary_button_color" value="{{settings.primary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
-                                    <h5>Primary Button Hover</h5>
+                                    <h5>Primary Button Text Color</h5>
                                     <input type="color" id="primaryButtonHoverColor" name="primary_button_hover_color" value="{{settings.primary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                             </div>
@@ -130,7 +166,7 @@
                                     <input type="color" id="secondaryButtonColor" name="secondary_button_color" value="{{settings.secondary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
-                                    <h5>Secondary Button Hover</h5>
+                                    <h5>Secondary Button Text Color</h5>
                                     <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                             </div>
@@ -142,7 +178,7 @@
                                     <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
-                                    <h5>Info Button Hover</h5>
+                                    <h5>Info Button Text Color</h5>
                                     <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                             </div>
@@ -154,7 +190,7 @@
                                     <input type="color" id="criticalButtonColor" name="critical_button_color" value="{{settings.critical_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
-                                    <h5>Critical Button Hover</h5>
+                                    <h5>Critical Button Text Color</h5>
                                     <input type="color" id="criticalButtonHoverColor" name="critical_button_hover_color" value="{{settings.critical_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                             </div>                
@@ -166,7 +202,7 @@
         </div>
         <div style="padding-bottom: 60px;"></div>
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
-            <button type="submit" class="btn btn-primary">Update Settings</button>
+            <button type="submit" class="btn" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Update Settings</button>
         </div>
     </form>
 </div>

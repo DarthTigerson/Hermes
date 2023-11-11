@@ -5,10 +5,10 @@
         <div class="card-header" style="text-align: right;">
             <h3 style="display: inline-block; margin-right: 30px;" class="float-left">Employees List</h3>
             {% if role_state.offboarding == 1 %}
-                <a href="/employee/offboarded_employee/" class="btn btn-danger">Offboardings List</a>
+                <a href="/employee/offboarded_employee/" class="btn" style="background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}};">Offboardings List</a>
             {% endif %}
             {% if role_state.onboarding == 1 %}
-                <a href="/employee/add_employee" class="btn btn-primary">+</a>
+                <a href="/employee/add_employee" class="btn" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}};">+</a>
             {% endif %}
         </div>
         <div class="card-body">            
@@ -55,13 +55,13 @@
                         </tr>
                         <tr class="collapse" id="options{{employee.id}}">
                             <td colspan="4">
-                                <button onclick="window.location.href='details/{{employee.id}}'" type="button" class="btn btn-info" style="width: 100%;">View Details</button>
+                                <button onclick="window.location.href='details/{{employee.id}}'" type="button" class="btn" style="width: 100%; background-color: {{settings.info_color}}; color: {{settings.info_color_hover}};">View Details</button>
                             </td>
                             <td colspan="2">
-                                <button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn btn-primary" style="width: 100%;" {%if role_state.employee_updates != 1%}disabled="True"{%endif%}>Edit Details</button>                                
+                                <button onclick="window.location.href='edit_employee/{{employee.id}}'" type="button" class="btn" style="width: 100%; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}};" {%if role_state.employee_updates != 1%}disabled="True"{%endif%}>Edit Details</button>                                
                             </td>
                             <td colspan="2">
-                                <button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn btn-danger" style="width: 100%;" {%if role_state.offboarding != 1%}disabled="True"{%endif%}>Offboard {{employee.first_name}}</button>
+                                <button onclick="if (confirm('Are you sure you want to offboard {{employee.full_name}}?')) { window.location.href='offboard_employee/{{employee.id}}'; }" type="button" class="btn" style="width: 100%; background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}};" {%if role_state.offboarding != 1%}disabled="True"{%endif%}>Offboard {{employee.first_name}}</button>
                             </td>
                         </tr>
                     {% endfor %}

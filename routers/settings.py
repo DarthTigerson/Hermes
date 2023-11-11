@@ -51,7 +51,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings, "page": page, "settings": settings})
 
 @router.post("/", response_class=HTMLResponse)
-async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None)):
+async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None), primary_button_color: str = Form(None), primary_button_hover_color: str = Form(None), secondary_button_color: str = Form(None), secondary_button_hover_color: str = Form(None), info_button_color: str = Form(None), info_button_hover_color: str = Form(None), critical_color: str = Form(None), critical_color_hover: str = Form(None)):
     
     user = await get_current_user(request)
 
@@ -89,6 +89,14 @@ async def post_settings(request: Request, page: str, db: Session = Depends(get_d
             settings.email_smtp_password = email_smtp_password
     elif page == 'color_palettes':
         settings.navigation_bar_color = navigation_bar_color
+        settings.primary_color = primary_button_color
+        settings.primary_color_hover = primary_button_hover_color
+        settings.secondary_color = secondary_button_color
+        settings.secondary_color_hover = secondary_button_hover_color
+        settings.info_color = info_button_color
+        settings.info_color_hover = info_button_hover_color
+        settings.critical_color = critical_color
+        settings.critical_color_hover = critical_color_hover
     settings.daily_user_reports = False
     settings.monthly_user_reports = False
 

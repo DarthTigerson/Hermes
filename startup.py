@@ -15,7 +15,7 @@ def create_default_user():
         db.commit()
 
         # Create a default user
-        user = models.Users(first_name="Hermes", last_name="Admin", username="hermes", password=admin.get_password_hash('hermes'), role_id=role.id, team_id=0, active=True)
+        user = models.Users(first_name="Hermes", last_name="Admin", username="hermes", password=admin.get_password_hash('hermes'), role_id=role.id, team_id=0, active=True, users_profile=None, dark_mode=0)
         db.add(user)
         db.commit()
 
@@ -170,7 +170,7 @@ def create_preferences_table():
         db.query(models.Preferences).delete()
 
         # Setup Preferences table
-        preferences = models.Preferences(id=1, email_new_employee=False, email_updated_employee=False, email_offboarded_employee=False, email_list=None, email_smtp_server=None, email_smtp_port=587, email_smtp_username=None, email_smtp_password=None, slack_webhook_channel=None, daily_user_reports=False, monthly_user_reports=False)
+        preferences = models.Preferences(id=1, email_new_employee=False, email_updated_employee=False, email_offboarded_employee=False, email_list=None, email_smtp_server=None, email_smtp_port=587, email_smtp_username=None, email_smtp_password=None, slack_webhook_channel=None, daily_user_reports=False, monthly_user_reports=False, company_logo=None, navigation_bar_color='0e76a8', primary_color='0e76a8', primary_color_hover='0069d9', secondary_color='6c757d', secondary_color_hover='5a6268', info_color='17a2b8', info_color_hover='138496', critical_color='dc3545', critical_color_hover='bd2130', table_color_id=1)
         db.add(preferences)
         db.commit()
 

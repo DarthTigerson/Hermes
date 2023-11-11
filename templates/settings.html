@@ -92,32 +92,61 @@
                 </div> 
                 {% endif %}
                 {% if page == 'color_palettes' %}
-                <div class="card-body" style="display: flex; flex-direction: column; align-items: center;">
-                    <h3>Logo</h3>
-                    <img src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
-                    <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
-                    <input type="file" id="logoUpload" accept=".png" style="display: none;">
-                    <label for="logoUpload" class="btn btn-primary" style="font-size: 18px;">Change Logo</label>
-                    <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
-                    <h3>Navbar Color</h3>
-                    <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h3>Button Colors</h3>
-                    <h4>Primary Button</h4>
-                    <input type="color" id="primaryButtonColor" name="primary_button_color" value="{{settings.primary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h4>Primary Button Hover</h4>
-                    <input type="color" id="primaryButtonHoverColor" name="primary_button_hover_color" value="{{settings.primary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h4>Secondary Button</h4>
-                    <input type="color" id="secondaryButtonColor" name="secondary_button_color" value="{{settings.secondary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h4>Secondary Button Hover</h4>
-                    <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h4>Info Button Color</h4>
-                    <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h4>Info Button Hover</h4>
-                    <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h4>Critical Color</h4>
-                    <input type="color" id="criticalColor" name="critical_color" value="{{settings.critical_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                    <h4>Critical Color Hover</h4>
-                    <input type="color" id="criticalColorHover" name="critical_color_hover" value="{{settings.critical_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                    <div style="flex: 1; margin-right: 20px;">
+                        <h3>Logo</h3>
+                        <img src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
+                        <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
+                        <input type="file" id="logoUpload" accept=".png" style="display: none;">
+                        <label for="logoUpload" class="btn btn-primary" style="font-size: 18px;">Change Logo</label>
+                        <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
+                    </div>
+                    <div style="flex: 2;">
+                        <h3>Navbar Color</h3>
+                        <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                        <h3>Button Colors</h3>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <h4>Primary Button</h4>
+                                <input type="color" id="primaryButtonColor" name="primary_button_color" value="{{settings.primary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                            <div>
+                                <h4>Primary Button Hover</h4>
+                                <input type="color" id="primaryButtonHoverColor" name="primary_button_hover_color" value="{{settings.primary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <h4>Secondary Button</h4>
+                                <input type="color" id="secondaryButtonColor" name="secondary_button_color" value="{{settings.secondary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                            <div>
+                                <h4>Secondary Button Hover</h4>
+                                <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <h4>Info Button</h4>
+                                <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                            <div>
+                                <h4>Info Button Hover</h4>
+                                <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <h4>Critical Button</h4>
+                                <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                            <div>
+                                <h4>Critical Button Hover</h4>
+                                <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
                 {% endif %}
             </div>

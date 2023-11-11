@@ -51,7 +51,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings, "page": page, "settings": settings})
 
 @router.post("/", response_class=HTMLResponse)
-async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None)):
+async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None)):
     
     user = await get_current_user(request)
 
@@ -87,6 +87,8 @@ async def post_settings(request: Request, page: str, db: Session = Depends(get_d
             settings.email_smtp_password = settings.email_smtp_password
         elif email_smtp_password != '' and settings is not None:
             settings.email_smtp_password = email_smtp_password
+    elif page == 'color_palettes':
+        settings.navigation_bar_color = navigation_bar_color
     settings.daily_user_reports = False
     settings.monthly_user_reports = False
 

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
-from models import Departments, Sites, Contracts, Employers, Employment, Country, Currency, PayFrequency, Roles
+from models import Departments, Sites, Contracts, Employers, Employment, Country, Currency, PayFrequency, Roles, Settings
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
 from fastapi.responses import HTMLResponse
@@ -40,6 +40,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     if role_state.manage_modify == False:
         return RedirectResponse(url="/manage", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     departments = db.query(Departments).order_by(Departments.name).all()
     sites = db.query(Sites).order_by(Sites.name).all()
     contracts = db.query(Contracts).order_by(Contracts.name).all()
@@ -52,7 +53,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the manage page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("manage.html", {"request": request, "departments": departments, "sites": sites, "contracts": contracts, "employers": employers, "employment": employment, "countries": country, "currencies": currency, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'manage'})
+    return templates.TemplateResponse("manage.html", {"request": request, "departments": departments, "sites": sites, "contracts": contracts, "employers": employers, "employment": employment, "countries": country, "currencies": currency, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.get("/add_department")
 async def add_department(request: Request, db: Session = Depends(get_db)):
@@ -61,6 +62,7 @@ async def add_department(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -69,7 +71,7 @@ async def add_department(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the add department page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("add-department.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-department.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_department", response_class=HTMLResponse)
 async def create_department(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -103,6 +105,7 @@ async def edit_department(request: Request, department_id: int, db: Session = De
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -113,7 +116,7 @@ async def edit_department(request: Request, department_id: int, db: Session = De
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit department page for {department.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-department.html", {"request": request, "department": department, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-department.html", {"request": request, "department": department, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/edit_department/{department_id}", response_class=HTMLResponse)
 async def update_department(request: Request, department_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -172,6 +175,7 @@ async def add_site(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -180,7 +184,7 @@ async def add_site(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the add site page.")
     await create_log(request=request, log=log, db=db)
     
-    return templates.TemplateResponse("add-site.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-site.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_site", response_class=HTMLResponse)
 async def create_site(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -214,6 +218,7 @@ async def edit_site(request: Request, site_id: int, db: Session = Depends(get_db
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -224,7 +229,7 @@ async def edit_site(request: Request, site_id: int, db: Session = Depends(get_db
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit site page for {site.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-site.html", {"request": request, "site": site, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-site.html", {"request": request, "site": site, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/edit_site/{site_id}", response_class=HTMLResponse)
 async def update_site(request: Request, site_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -283,6 +288,7 @@ async def add_contract(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -291,7 +297,7 @@ async def add_contract(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the add contract page.")
     await create_log(request=request, log=log, db=db)
     
-    return templates.TemplateResponse("add-contract.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-contract.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_contract", response_class=HTMLResponse)
 async def create_contract(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -325,6 +331,7 @@ async def edit_contract(request: Request, contract_id: int, db: Session = Depend
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -335,7 +342,7 @@ async def edit_contract(request: Request, contract_id: int, db: Session = Depend
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit contract page for {contract.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-contract.html", {"request": request, "contract": contract, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-contract.html", {"request": request, "contract": contract, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/edit_contract/{contract_id}", response_class=HTMLResponse)
 async def update_contract(request: Request, contract_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -394,6 +401,7 @@ async def add_employer(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -402,7 +410,7 @@ async def add_employer(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the add employer page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("add-employer.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-employer.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_employer", response_class=HTMLResponse)
 async def create_employer(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -436,6 +444,7 @@ async def edit_employer(request: Request, employer_id: int, db: Session = Depend
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -446,7 +455,7 @@ async def edit_employer(request: Request, employer_id: int, db: Session = Depend
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit employer page for {employer.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-employer.html", {"request": request, "employer": employer, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-employer.html", {"request": request, "employer": employer, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/edit_employer/{employer_id}", response_class=HTMLResponse)
 async def update_employer(request: Request, employer_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -505,6 +514,7 @@ async def add_employment(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -513,7 +523,7 @@ async def add_employment(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the add employment page.")
     await create_log(request=request, log=log, db=db)
     
-    return templates.TemplateResponse("add-employment.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-employment.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_employment", response_class=HTMLResponse)
 async def create_employment(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -547,6 +557,7 @@ async def edit_employment(request: Request, employment_id: int, db: Session = De
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -557,7 +568,7 @@ async def edit_employment(request: Request, employment_id: int, db: Session = De
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit employment page for {employment.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-employment.html", {"request": request, "employment": employment, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-employment.html", {"request": request, "employment": employment, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/edit_employment/{employment_id}", response_class=HTMLResponse)
 async def update_employment(request: Request, employment_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -616,6 +627,7 @@ async def add_country(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -626,7 +638,7 @@ async def add_country(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the add country page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("add-country.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-country.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_country", response_class=HTMLResponse)
 async def create_country(request: Request, name: str = Form(...), short_name: str = Form(...), db: Session = Depends(get_db)):
@@ -660,6 +672,7 @@ async def edit_country(request: Request, country_id: int, db: Session = Depends(
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -670,7 +683,7 @@ async def edit_country(request: Request, country_id: int, db: Session = Depends(
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit country page for {country.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-country.html", {"request": request, "country": country, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-country.html", {"request": request, "country": country, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/edit_country/{country_id}", response_class=HTMLResponse)
 async def update_country(request: Request, country_id: int, name: str = Form(...), short_name: str = Form(...), db: Session = Depends(get_db)):
@@ -729,6 +742,7 @@ async def add_currency(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -737,7 +751,7 @@ async def add_currency(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description=f"Viewed the add currency page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("add-currency.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-currency.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_currency", response_class=HTMLResponse)
 async def create_currency(request: Request, name: str = Form(...), symbol: str = Form(...), db: Session = Depends(get_db)):
@@ -771,6 +785,7 @@ async def edit_currency(request: Request, currency_id: int, db: Session = Depend
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -781,7 +796,7 @@ async def edit_currency(request: Request, currency_id: int, db: Session = Depend
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit currency page for {currency.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-currency.html", {"request": request, "currency": currency, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-currency.html", {"request": request, "currency": currency, "logged_in_user": user, "role_state": role_state, "nav":"manage", "settings": settings})
 
 @router.post("/edit_currency/{currency_id}", response_class=HTMLResponse)
 async def update_currency(request: Request, currency_id: int, name: str = Form(...), symbol: str = Form(...), db: Session = Depends(get_db)):
@@ -840,6 +855,7 @@ async def add_salary_pay_frequency(request: Request, db: Session = Depends(get_d
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -848,7 +864,7 @@ async def add_salary_pay_frequency(request: Request, db: Session = Depends(get_d
     log = Log(action="Info",user=user['username'],description=f"Viewed the add salary pay frequency page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("add-salary-frequency.html", {"request": request, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-salary-frequency.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/add_salary_pay_frequency", response_class=HTMLResponse)
 async def create_salary_pay_frequency(request: Request, name: str = Form(...), db: Session = Depends(get_db)):
@@ -881,6 +897,7 @@ async def edit_salary_pay_frequency(request: Request, spf_id: int, db: Session =
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.manage_modify == False:
@@ -891,7 +908,7 @@ async def edit_salary_pay_frequency(request: Request, spf_id: int, db: Session =
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit salary pay frequency page for {payFrequency.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-salary-frequency.html", {"request": request, "salary_pay_frequency": payFrequency, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-salary-frequency.html", {"request": request, "salary_pay_frequency": payFrequency, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings})
 
 @router.post("/edit_salary_pay_frequency/{spf_id}", response_class=HTMLResponse)
 async def update_salary_pay_frequency(request: Request, spf_id: int, name: str = Form(...), db: Session = Depends(get_db)):

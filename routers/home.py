@@ -35,6 +35,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
     
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
@@ -53,4 +54,4 @@ async def test(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description="Viewed the home page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "total_users": total_users, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "contracts": contracts, "missed_offboardings": missed_offboardings, "upcoming_offboardings": upcoming_offboardings, "todays_birthdays": todays_birthdays, "logged_in_user": user, "role_state": role_state, "nav": 'home'})
+    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "total_users": total_users, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "contracts": contracts, "missed_offboardings": missed_offboardings, "upcoming_offboardings": upcoming_offboardings, "todays_birthdays": todays_birthdays, "logged_in_user": user, "role_state": role_state, "nav": 'home', "settings": settings})

@@ -44,6 +44,7 @@ async def get_employee(request: Request, employee_search: Optional[str] = None, 
     else:
         employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 0).filter(models.Employees.full_name.ilike(f"%{employee_search}%")).all()
 
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
@@ -54,7 +55,7 @@ async def get_employee(request: Request, employee_search: Optional[str] = None, 
     log = Log(action="Info",user=user['username'],description="Viewed the employee page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "contracts": contracts, "logged_in_user": user, "role_state": role_state, "employee_search": employee_search, "countries": countries, "nav": 'employee'})
+    return templates.TemplateResponse("employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "contracts": contracts, "logged_in_user": user, "role_state": role_state, "employee_search": employee_search, "countries": countries, "nav": 'employee', "settings": settings})
 
 @router.get("/offboarded_employee")
 async def get_offboarded_employee(request: Request, offboarded_employee_search: Optional[str] = None, db: Session = Depends(get_db)):
@@ -73,6 +74,7 @@ async def get_offboarded_employee(request: Request, offboarded_employee_search: 
     else:
         employees = db.query(models.Employees).order_by(models.Employees.first_name).filter(models.Employees.employment_status_id == 1).filter(models.Employees.full_name.ilike(f"%{offboarded_employee_search}%")).all()
 
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
@@ -80,7 +82,7 @@ async def get_offboarded_employee(request: Request, offboarded_employee_search: 
     log = Log(action="Info",user=user['username'],description="Viewed the offboarded users page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "contracts": contracts, "logged_in_user": user, "role_state": role_state, "offboarded_employee_search": offboarded_employee_search})
+    return templates.TemplateResponse("offboarded-employee.html", {"request": request, "employees": employees, "departments": departments, "sites": sites, "contracts": contracts, "logged_in_user": user, "role_state": role_state, "offboarded_employee_search": offboarded_employee_search, "nav": 'employee', "settings": settings})
 
 @router.get("/details/{employee_id}")
 async def get_employee_details(request: Request, employee_id: int, db: Session = Depends(get_db)):
@@ -91,6 +93,7 @@ async def get_employee_details(request: Request, employee_id: int, db: Session =
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     employee_data = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
@@ -102,7 +105,7 @@ async def get_employee_details(request: Request, employee_id: int, db: Session =
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
     
-    return templates.TemplateResponse("employee-details.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("employee-details.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings})
 
 @router.get("/add_employee")
 async def add_employee(request: Request, db: Session = Depends(get_db)):
@@ -116,6 +119,7 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     if role_state.onboarding == False:
         return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
@@ -129,7 +133,7 @@ async def add_employee(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description="Viewed the add employee page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("add-employee.html", {"request": request, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings})
 
 @router.post("/add_employee", response_class=HTMLResponse)
 async def create_employee(request: Request, email: str = Form(None), first_name: str = Form(None), last_name: str = Form(None), full_name: str = Form(None), date_of_birth: str = Form(None), gender: int = Form(0), nationality: str = Form(None), country_of_origin_id: int = Form(0), working_country_id: int = Form(0), job_title: str = Form(None), direct_manager:str = Form(None), start_date: str = Form(None), site_id: int = Form(0), department_id: int = Form(0), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(0), salary: str = Form(None), salary_period: str = Form(None), hr_team_id: int = Form(0),  working_hours: str = Form(None), employment_contract_id: int = Form(0), employment_type_id: int = Form(0), supplier: str = Form(None), entity_to_be_billed: str = Form(None), employer_id: int = Form(0), company_email: str = Form(None), end_date: str = Form(None), personal_email: str = Form(None), net_monthly_salary: str = Form(None), change_reason: str = Form(None), increase_percent: str = Form(None), salary_pay_frequency_id: int = Form(0), db: Session = Depends(get_db)):
@@ -231,6 +235,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     if employee_data.employment_status_id == 1:
         return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
@@ -244,7 +249,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit employee page for the employee with the email {employee_data.email}")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state})
+    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
 async def update_employee(request: Request, employee_id: int, email: str = Form(None), first_name: str = Form(None), last_name: str = Form(None), full_name: str = Form(None), date_of_birth: str = Form(None), gender: int = Form(0), nationality: str = Form(None), country_of_origin_id: int = Form(0), working_country_id: int = Form(0), job_title: str = Form(None), direct_manager:str = Form(None), start_date: str = Form(None), end_date: str = Form(None), site_id: int = Form(0), department_id: int = Form(0), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(None), salary: str = Form(None), salary_period: str = Form(None), hr_team_id: int = Form(None),  working_hours: str = Form(None), employment_contract_id: int = Form(None), employment_type_id: int = Form(None), supplier: str = Form(None), entity_to_be_billed: str = Form(None), employer_id: int = Form(0), company_email: str = Form(None), personal_email: str = Form(None), net_monthly_salary: str = Form(None), change_reason: str = Form(None), increase_percent: str = Form(None), salary_pay_frequency_id: int = Form(None), employment_status_id: int = Form(0), db: Session = Depends(get_db)):
@@ -341,6 +346,7 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
 
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     employee = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
@@ -351,7 +357,7 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
     log = Log(action="Warn",user=user['username'],description=f"Attempted to create a new employee with the email {employee.email} but it already exists.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("empoyee-exists.html", {"request": request, "employee": employee, "departments": departments, "sites": sites, "employments": employments, "role_state": role_state, "logged_in_user": user})
+    return templates.TemplateResponse("empoyee-exists.html", {"request": request, "employee": employee, "departments": departments, "sites": sites, "employments": employments, "role_state": role_state, "logged_in_user": user, "nav": 'employee', "settings": settings})
 
 @router.get("/offboard_employee/{employee_id}")
 async def offboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):

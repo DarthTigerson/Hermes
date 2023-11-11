@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
-from models import Roles
+from models import Roles, Settings
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
 
@@ -37,6 +37,7 @@ async def test(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.logs == False:
@@ -45,4 +46,4 @@ async def test(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=user['username'],description="Viewed the about page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("about.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'settings'})
+    return templates.TemplateResponse("about.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'settings', "settings": settings})

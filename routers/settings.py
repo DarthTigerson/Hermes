@@ -37,6 +37,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.settings == False:
@@ -47,7 +48,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     if page is None:
         return RedirectResponse(url="/settings/?page=trigger_points", status_code=status.HTTP_302_FOUND)
 
-    return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings, "page": page})
+    return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings, "page": page, "settings": settings})
 
 @router.post("/", response_class=HTMLResponse)
 async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None)):

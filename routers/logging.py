@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 from database import SessionLocal
 from pydantic import BaseModel, Field
-from models import Logs, Roles
+from models import Logs, Roles, Settings
 import datetime
 from routers.admin import get_current_user
 
@@ -41,6 +41,7 @@ async def show_logging(request: Request, db: Session = Depends(get_db)):
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
+    settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.logs == False:
@@ -48,7 +49,7 @@ async def show_logging(request: Request, db: Session = Depends(get_db)):
     
     logs = db.query(Logs).order_by(Logs.id.desc()).limit(400).all()
 
-    return templates.TemplateResponse("logging.html", {"request": request, "logs": logs, "logged_in_user": user, "role_state": role_state, "nav": 'settings'})
+    return templates.TemplateResponse("logging.html", {"request": request, "logs": logs, "logged_in_user": user, "role_state": role_state, "settings": settings})
 
 @router.post("/create_log")
 async def create_log(request: Request, log: Log, db: Session = Depends(get_db)):

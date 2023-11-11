@@ -20,6 +20,8 @@ class Users(Base):
     team_id = Column(Integer, ForeignKey('teams.id'))
     token = Column(String(250))
     active = Column(Boolean, default=True)
+    users_profile = Column(String(250), default=None)
+    dark_mode = Column(Integer, default=0)
 
 class Roles(Base):
     __tablename__ = 'roles'
@@ -49,6 +51,7 @@ class Employees(Base):
     first_name = Column(String(50))
     last_name = Column(String(50))
     full_name = Column(String(100))
+    employee_profiles = Column(String(250), default=None)
     gender = Column(Integer)
     date_of_birth = Column(String(50))
     nationality = Column(String(50))
@@ -149,3 +152,14 @@ class Preferences(Base):
     slack_webhook_channel = Column(String(200), default=None)
     daily_user_reports = Column(Boolean, default=False)
     monthly_user_reports = Column(Boolean, default=False)
+    company_logo = Column(String(250), default=None)
+    navigation_bar_color = Column(String(6), default='0e76a8')
+    primary_color = Column(String(6), default='0e76a8')
+    primary_color_hover = Column(String(6), default='0069d9')
+    secondary_color = Column(String(6), default='6c757d')
+    secondary_color_hover = Column(String(6), default='5a6268')
+    info_color = Column(String(6), default='17a2b8')
+    info_color_hover = Column(String(6), default='138496')
+    critical_color = Column(String(6), default='dc3545')
+    critical_color_hover = Column(String(6), default='bd2130')
+    table_color_id = Column(Integer, default=1)

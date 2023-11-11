@@ -99,6 +99,9 @@
                     <input type="file" id="logoUpload" accept=".png" style="display: none;">
                     <label for="logoUpload" class="btn btn-primary" style="font-size: 18px;">Change Logo</label>
                     <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
+                    <h3>Navbar Color</h3>
+                    <input type="text" id="navbarColorText" name="navigation_bar_color_text" value="{{settings.navigation_bar_color}}" style=" margin-bottom: 10px;">
+                    <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                 </div>
                 {% endif %}
             </div>
@@ -140,4 +143,16 @@
         }
         reader.readAsDataURL(event.target.files[0]);
     });
+    window.onload = function() {
+        var colorInput = document.getElementById('navbarColor');
+        var textInput = document.getElementById('navbarColorText');
+
+        colorInput.addEventListener('input', function() {
+            textInput.value = colorInput.value;
+        });
+
+        textInput.addEventListener('input', function() {
+            colorInput.value = textInput.value;
+        });
+    }
 </script>

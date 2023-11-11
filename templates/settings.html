@@ -15,6 +15,9 @@
                 <div style="display: inline-block; text-align: left;" class="form-group">
                     <a href="/settings/?page=email_settings" {% if page == 'email_settings' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/email.png" alt="E-mail" style="width: 25px; height: 25px; margin-right: 10px;">E-mail Settings</a>
                 </div>
+                <div style="display: inline-block; text-align: left;" class="form-group">
+                    <a href="/settings/?page=color_palettes" {% if page == 'color_palettes' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/pantone.png" alt="E-mail" style="width: 25px; height: 25px; margin-right: 10px;">Color Palettes</a>
+                </div>
             </div>
             <div class="card-body" style="overflow:auto;">
                 <br>
@@ -92,7 +95,7 @@
         </div>
         <div style="padding-bottom: 60px;"></div>
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
-            <button type="submit" class="btn btn-primary">Update Settings Old</button>
+            <button type="submit" class="btn btn-primary">Update Settings</button>
         </div>
     </form>
 </div>

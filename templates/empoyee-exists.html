@@ -3,7 +3,7 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header" style="text-align: left;">
-            <button onclick="goBack()" class="btn btn-info">Back</button>
+            <button onclick="goBack()" class="btn" style="background-color: {{settings.info_color}}; color: {{settings.info_color_hover}}">Back</button>
         </div>
         <div class="card-body">  
             <br>
@@ -51,7 +51,7 @@
                             {% endfor %}
 
                             {% if employee.active == 1 %}
-                            <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='/employee/reboard_employee/' + '{{str(employee.id)}}'; }" type="button" class="btn btn-danger">Re-Onboard</button></td>
+                            <td><button onclick="if (confirm('Are you sure you want to Re-Onboard {{employee.full_name}}?')) { window.location.href='/employee/reboard_employee/' + '{{str(employee.id)}}'; }" type="button" class="btn" style="background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}}">Re-Onboard</button></td>
                             {% endif %}
                         </tr>
                     </div>

@@ -6,14 +6,53 @@
             <div class="card-header" style="text-align: left;">
                 <h3 style="display: inline-block; margin-right: 30px;">Settings</h3>
                 <br>
-                <div style="display: inline-block; text-align: left;" class="form-group">
-                    <a href="/settings/?page=trigger_points" {% if page == 'trigger_points' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/clipboard.png" alt="Trigger Point" style="width: 25px; height: 25px; margin-right: 10px;">Trigger Points</a>
+                <div style="display: inline-block; text-align: left;background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" class="form-group">
+                    <a href="/settings/?page=trigger_points" class="btn"
+                    style="
+                    {% if page == 'trigger_points' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/clipboard.png" alt="Trigger Point" style="width: 25px; height: 25px; margin-right: 10px;">Trigger Points
+                    </a>
                 </div>
-                <div style="display: inline-block; text-align: left;" class="form-group">                    
-                    <a href="/settings/?page=slack_settings" {% if page == 'slack_settings' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/slack.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Slack Settings</a>
+                <div style="display: inline-block; text-align: left;" class="form-group">       
+                    <a href="/settings/?page=slack_settings" class="btn"
+                    style="
+                    {% if page == 'slack_settings' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/slack.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Slack Settings
+                    </a>
                 </div>
                 <div style="display: inline-block; text-align: left;" class="form-group">
-                    <a href="/settings/?page=email_settings" {% if page == 'email_settings' %}class="btn btn-primary"{% else %}class="btn btn-info"{% endif %}><img src="/static/img/email.png" alt="E-mail" style="width: 25px; height: 25px; margin-right: 10px;">E-mail Settings</a>
+                    <a href="/settings/?page=email_settings" class="btn"
+                    style="
+                    {% if page == 'email_settings' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/email.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">E-mail Settings
+                    </a>
+                </div>
+                <div style="display: inline-block; text-align: left;" class="form-group">
+                    <a href="/settings/?page=color_palettes" class="btn"
+                    style="
+                    {% if page == 'color_palettes' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/pantone.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Color Settings
+                    </a>
                 </div>
             </div>
             <div class="card-body" style="overflow:auto;">
@@ -88,11 +127,184 @@
                     </table>
                 </div> 
                 {% endif %}
+                {% if page == 'color_palettes' %}
+                <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                    <div style="flex: 1; margin-right: 100px;">
+                        <h3>Logo</h3>
+                        <img src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
+                        <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
+                        <input type="file" id="logoUpload" accept=".png" style="display: none;">
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="logoUpload" class="btn" style="font-size: 18px; margin-bottom: 10px; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Change Logo</label>
+                            <a href="/settings/reset_company_logo" class="btn" style="font-size: 18px; background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}">Reset Logo</a>
+                        </div>
+                        <div style="margin-top: 40px;">
+                            <h3>Navbar Color <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;"></h3>                        
+                        </div>
+                    </div>
+                    <br>
+                    <div style="flex: 2;">
+                        <div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px;">
+                            <h3>Button Colors</h3>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Primary Button</h5>
+                                    <input type="color" id="primaryButtonColor" name="primary_button_color" value="{{settings.primary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
+                                    <h5>Primary Button Text Color</h5>
+                                    <input type="color" id="primaryButtonHoverColor" name="primary_button_hover_color" value="{{settings.primary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="primarySampleButton" type="button" class="btn" style="width: 220px;">Sample Primary Button</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Secondary Button</h5>
+                                    <input type="color" id="secondaryButtonColor" name="secondary_button_color" value="{{settings.secondary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
+                                    <h5>Secondary Button Text Color</h5>
+                                    <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="secondarySampleButton" type="button" class="btn" style="width: 220px;">Sample Primary Button</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Info Button</h5>
+                                    <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
+                                    <h5>Info Button Text Color</h5>
+                                    <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="infoSampleButton" type="button" class="btn" style="width: 220px;">Sample Info Button</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Critical Button</h5>
+                                    <input type="color" id="criticalButtonColor" name="critical_button_color" value="{{settings.critical_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; width: 300px;">
+                                    <h5>Critical Button Text Color</h5>
+                                    <input type="color" id="criticalButtonHoverColor" name="critical_button_hover_color" value="{{settings.critical_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
+                                    <button id="criticalSampleButton" type="button" class="btn" style="width: 220px;">Sample Critical Button</button>
+                                </div>
+                            </div>                
+                        </div>        
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div style="padding-bottom: 60px;"></div>
         <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
-            <button type="submit" class="btn btn-primary">Update Settings Old</button>
+            <button type="submit" class="btn" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Update Settings</button>
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('logoUpload').addEventListener('change', function(event) {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            var base64data = reader.result.split(',')[1]; // Remove the data URL prefix
+            fetch('/settings/change_company_logo', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ logo: base64data }) 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+                // Reload the page
+                location.reload();
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var primaryButton = document.getElementById('primarySampleButton');
+        var primaryButtonColor = document.getElementById('primaryButtonColor');
+        var primaryButtonHoverColor = document.getElementById('primaryButtonHoverColor');
+        var secondaryButton = document.getElementById('secondarySampleButton');
+        var secondaryButtonColor = document.getElementById('secondaryButtonColor');
+        var secondaryButtonHoverColor = document.getElementById('secondaryButtonHoverColor');
+        var infoButton = document.getElementById('infoSampleButton');
+        var infoButtonColor = document.getElementById('infoButtonColor');
+        var infoButtonHoverColor = document.getElementById('infoButtonHoverColor');
+        var criticalButton = document.getElementById('criticalSampleButton');
+        var criticalButtonColor = document.getElementById('criticalButtonColor');
+        var criticalButtonHoverColor = document.getElementById('criticalButtonHoverColor');
+        
+        primaryButton.style.backgroundColor = primaryButtonColor.value;
+        primaryButton.style.color = primaryButtonHoverColor.value;
+
+        primaryButtonColor.addEventListener('input', function() {
+            primaryButton.style.backgroundColor = this.value;
+        });
+
+        primaryButtonHoverColor.addEventListener('input', function() {
+            primaryButton.style.color = this.value;
+        });
+        
+        secondaryButton.style.backgroundColor = secondaryButtonColor.value;
+        secondaryButton.style.color = secondaryButtonHoverColor.value;
+
+        secondaryButtonColor.addEventListener('input', function() {
+            secondaryButton.style.backgroundColor = this.value;
+        });
+
+        secondaryButtonHoverColor.addEventListener('input', function() {
+            secondaryButton.style.color = this.value;
+        });
+        
+        infoButton.style.backgroundColor = infoButtonColor.value;
+        infoButton.style.color = infoButtonHoverColor.value;
+
+        infoButtonColor.addEventListener('input', function() {
+            infoButton.style.backgroundColor = this.value;
+        });
+
+        infoButtonHoverColor.addEventListener('input', function() {
+            infoButton.style.color = this.value;
+        });
+        
+        criticalButton.style.backgroundColor = criticalButtonColor.value;
+        criticalButton.style.color = criticalButtonHoverColor.value;
+
+        criticalButtonColor.addEventListener('input', function() {
+            criticalButton.style.backgroundColor = this.value;
+        });
+
+        criticalButtonHoverColor.addEventListener('input', function() {
+            criticalButton.style.color = this.value;
+        });
+    });
+</script>

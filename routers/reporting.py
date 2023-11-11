@@ -69,6 +69,7 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
     
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()
@@ -79,7 +80,7 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
     
-    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency})
+    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings})
 
 @router.get("/download_csv/{report_type}/{start_date}/{end_date}")
 async def download_csv(request: Request, report_type: int, start_date: datetime, end_date: datetime, db: Session = Depends(get_db)):

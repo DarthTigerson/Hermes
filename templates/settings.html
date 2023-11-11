@@ -98,56 +98,65 @@
                         <img src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
                         <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
                         <input type="file" id="logoUpload" accept=".png" style="display: none;">
-                        <label for="logoUpload" class="btn btn-primary" style="font-size: 18px;">Change Logo</label>
-                        <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px;">Reset Logo</a>
+                        <label for="logoUpload" class="btn btn-primary" style="font-size: 18px; vertical-align: middle;">Change Logo</label>
+                        <a href="/settings/reset_company_logo" class="btn btn-secondary" style="font-size: 18px; vertical-align: middle;">Reset Logo</a>
+                        <div style="margin-top: 40px;">
+                            <h3>Navbar Color <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;"></h3>                        
+                        </div>
                     </div>
                     <br>
                     <div style="flex: 2;">
-                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                            <h3>Navbar Color</h3>
-                            <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                        <div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px;">
                             <h3>Button Colors</h3>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
-                            <div style="display: flex; flex-direction: column; align-items:flex-start;">
-                                <h5>Primary Button</h5>
-                                <input type="color" id="primaryButtonColor" name="primary_button_color" value="{{settings.primary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                <h5>Primary Button Hover</h5>
-                                <input type="color" id="primaryButtonHoverColor" name="primary_button_hover_color" value="{{settings.primary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                            </div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                                <h5>Secondary Button</h5>
-                                <input type="color" id="secondaryButtonColor" name="secondary_button_color" value="{{settings.secondary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                <h5>Secondary Button Hover</h5>
-                                <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Primary Button</h5>
+                                    <input type="color" id="primaryButtonColor" name="primary_button_color" value="{{settings.primary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                    <h5>Primary Button Hover</h5>
+                                    <input type="color" id="primaryButtonHoverColor" name="primary_button_hover_color" value="{{settings.primary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
                             </div>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
-                            <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                                <h5>Info Button</h5>
-                                <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                <h5>Info Button Hover</h5>
-                                <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Secondary Button</h5>
+                                    <input type="color" id="secondaryButtonColor" name="secondary_button_color" value="{{settings.secondary_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                    <h5>Secondary Button Hover</h5>
+                                    <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
                             </div>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
-                            <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                                <h5>Critical Button</h5>
-                                <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Info Button</h5>
+                                    <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                    <h5>Info Button Hover</h5>
+                                    <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                <h5>Critical Button Hover</h5>
-                                <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
-                            </div>
-                        </div>                        
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <div style="display: flex; flex-direction: column; align-items:flex-start; width: 200px;">
+                                    <h5>Critical Button</h5>
+                                    <input type="color" id="infoButtonColor" name="info_button_color" value="{{settings.info_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+                                    <h5>Critical Button Hover</h5>
+                                    <input type="color" id="infoButtonHoverColor" name="info_button_hover_color" value="{{settings.info_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
+                                </div>
+                            </div>                
+                        </div>        
                     </div>
                 </div>
                 {% endif %}

@@ -31,7 +31,7 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
-async def get_settings(request: Request, db: Session = Depends(get_db)):
+async def get_settings(request: Request, page=None, db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
@@ -44,7 +44,10 @@ async def get_settings(request: Request, db: Session = Depends(get_db)):
     
     settings = db.query(Settings).order_by(Settings.id.desc()).first()
 
-    return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings})
+    if page is None:
+        page = 'trigger_points'
+
+    return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings, "page": page})
 
 @router.post("/", response_class=HTMLResponse)
 async def post_settings(request: Request, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None)):

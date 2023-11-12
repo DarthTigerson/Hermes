@@ -54,6 +54,30 @@
                     <img src="/static/img/pantone.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Color Settings
                     </a>
                 </div>
+                <div style="display: inline-block; text-align: left;" class="form-group">
+                    <a href="/settings/?page=about" class="btn"
+                    style="
+                    {% if page == 'about' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/about.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">About
+                    </a>
+                </div>
+                <div style="display: inline-block; text-align: left;" class="form-group">
+                    <a href="/settings/?page=license" class="btn"
+                    style="
+                    {% if page == 'license' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/license.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">License
+                    </a>
+                </div>
             </div>
             <div class="card-body" style="overflow:auto;">
                 <br>
@@ -173,7 +197,7 @@
                                     <input type="color" id="secondaryButtonHoverColor" name="secondary_button_hover_color" value="{{settings.secondary_color_hover}}" style="width: 40px; height: 40px; margin-bottom: 10px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px; padding-top: 30px;">
-                                    <button id="secondarySampleButton" type="button" class="btn" style="width: 220px;">Sample Primary Button</button>
+                                    <button id="secondarySampleButton" type="button" class="btn" style="width: 220px;">Sample Secondary Button</button>
                                 </div>
                             </div>
                         </div>
@@ -207,6 +231,102 @@
                                 </div>
                             </div>                
                         </div>        
+                    </div>
+                </div>
+                {% endif %}
+                {% if page == 'about' %}
+                <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                    <div style="flex: 1; margin-right: 100px;">
+                        <h1>About Hermes</h1>
+                        <p>Hermes is an open source web application that allows you to manage your companies employees.</p>
+                        <br>
+                        <h2>Version</h2>
+                        <p>Version 1.4.4</p>
+                        <br>
+                        <h2>Licenses</h2>
+                        <ul class="list-unstyled">
+                            <li>Python</li>
+                            <li>SQLite</li>
+                            <li>Jinja</li>
+                        </ul>
+                        <br>
+                        <h2>GitHub</h2>
+                        <p>Created by <a href="https://github.com/DarthTigerson">Thomas Bonnici</a></p>
+                        <p>Project URL: <a href="https://github.com/DarthTigerson/Hermes">https://github.com/DarthTigerson/Hermes</a></p>
+                        <br>
+                    </div>
+                    <div style="flex: 1;">
+                        <h2>Artists</h2>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/hermes" title="hermes icons">Hermes icons created by max.icons - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/login" title="login icons">Login icons created by Pixel perfect - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/cake" title="cake icons">Cake icons created by Freepik - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/young" title="young icons">Young icons created by Freepik - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/error" title="error icons">Error icons created by Freepik - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/error" title="error icons">Error icons created by Smashicons - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/csv" title="csv icons">Csv icons created by kliwir art - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/slack" title="slack icons">Slack icons created by Pixel perfect - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email icons created by justicon - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/checklist" title="checklist icons">Checklist icons created by Smashicons - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/color-palette" title="color palette icons">Color palette icons created by Smashicons - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Anggara - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/contract" title="contract icons">Contract icons created by wanicon - Flaticon</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+                {% if page == 'license' %}
+                <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                    <div style="flex: 1; margin-right: 100px; text-align: center;">
+                        <h4>MIT License</h4>
+                        <br>
+                        <p>
+                        Copyright (c) 2023 Lawrence Livermore National Security, LLC
+                        <br><br>
+                        Permission is hereby granted, free of charge, to any person obtaining a copy<br>
+                        of this software and associated documentation files (the "Software"), to deal<br>
+                        in the Software without restriction, including without limitation the rights<br>
+                        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<br>
+                        copies of the Software, and to permit persons to whom the Software is<br>
+                        furnished to do so, subject to the following conditions:<br>
+                        <br><br>
+                        The above copyright notice and this permission notice shall be included in all<br>
+                        copies or substantial portions of the Software.<br>
+                        <br><br>
+                        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br>
+                        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<br>
+                        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<br>
+                        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<br>
+                        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<br>
+                        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE<br>
+                        SOFTWARE.
+                        </p>
                     </div>
                 </div>
                 {% endif %}

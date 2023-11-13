@@ -19,26 +19,44 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-    body, .card, .card-header, .card-body, .table {
-        background: #33333a !important;
-        color: #797979;
-    }
+  body, .card, .card-header, .card-body, .table, #color_override {
+    background: #33333a !important;
+    color: #797979;
+  }
 
-    h1, h2, h3, h4, h5, h6, th, td {
-        color: #fafafa;
-    }
+  h1, h2, h3, h4, h5, h6, th, td {
+    color: #fafafa;
+  }
 
-    .main-color {
-        background-color: #323232;
-    }
+  .main-color {
+    background-color: #323232;
+  }
 
-    .strike-through-td {
-        color: #fafafa;
-    }
+  .strike-through-td {
+    color: #fafafa;
+  }
 
-    /* Add these lines */
-    .card, .card-header, .card-body, .table {
-        background-color: #4e4e52;
-        color: #fafafa;
-    }
+  /* Add these lines */
+  .card, .card-header, .card-body, .table {
+    background-color: #4e4e52 !important;
+    color: #ffffff;
+  }
+
+  .dropdown-menu {
+    background-color: #4e4e52 !important;
+  }
+
+  .dropdown-item:hover {
+    background-color: #535353 !important;
+    color: #ffffff !important;
+  }
+
+  input, select, textarea {
+    background-color: #9c9c9c !important;
+    color: #fafafa;
+  }
+
+  .table {
+    border-color: #fafafa;
+  }
 }

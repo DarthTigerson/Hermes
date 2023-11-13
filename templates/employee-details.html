@@ -9,7 +9,7 @@
                 <a href="/employee/edit_employee/{{employee_data.id}}" class="btn float-right" style="margin-left: 5px; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Edit</a>
                 {% endif %}
                 {% if role_state.offboarding == 1 %}
-                <button onclick="if (confirm('Are you sure you want to offboard {{employee_data.full_name}}?')) { window.location.href='/employee/offboard_employee/{{employee_data.id}}'; }" type="button" class="btn btn-danger float-right" style="background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}}">Offboard {{employee_data.full_name}}</button> ,
+                <button onclick="if (confirm('Are you sure you want to offboard {{employee_data.full_name}}?')) { window.location.href='/employee/offboard_employee/{{employee_data.id}}'; }" type="button" class="btn btn-danger float-right" style="background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}}">Offboard {{employee_data.full_name}}</button>
                 {% endif %}
             {% else %}
                 {% if role_state.onboarding == 1 %}

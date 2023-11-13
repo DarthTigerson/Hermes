@@ -154,7 +154,7 @@
                 <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
                     <div style="flex: 1; margin-right: 100px;">
                         <h3>Logo</h3>
-                        <img src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
+                        <img id="logo" src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
                         <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
                         <input type="file" id="logoUpload" accept=".png" style="display: none;">
                         <div style="display: flex; flex-direction: column;">
@@ -240,7 +240,7 @@
                         <p>Hermes is an open source web application that allows you to manage your companies employees.</p>
                         <br>
                         <h2>Version</h2>
-                        <p>Version 1.4.5</p>
+                        <p>Version 1.4.6</p>
                         <br>
                         <h2>Licenses</h2>
                         <ul class="list-unstyled">
@@ -344,7 +344,7 @@
             </div>
         </div>
         <div style="padding-bottom: 60px;"></div>
-        <div class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+        <div id="color_override" id="color_override" class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
             <button type="submit" class="btn" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Update Settings</button>
         </div>
     </form>
@@ -437,5 +437,15 @@
         criticalButtonHoverColor.addEventListener('input', function() {
             criticalButton.style.color = this.value;
         });
+    });
+    var logo = document.getElementById('logo');
+    var clickCount = 0;
+
+    logo.addEventListener('click', function() {
+        clickCount++;
+        if (clickCount === 5) {
+            clickCount = 0; // reset the count
+            logo.classList.add('animate-logo');
+        }
     });
 </script>

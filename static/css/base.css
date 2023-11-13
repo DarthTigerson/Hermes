@@ -17,6 +17,15 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: line-through;
 }
 
+@keyframes logo-animation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-logo {
+  animation: logo-animation 1s linear;
+}
+
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   body, .card, .card-header, .card-body, .table, #color_override {
@@ -59,4 +68,6 @@ h1, h2, h3, h4, h5, h6 {
   .table {
     border-color: #fafafa;
   }
+
+  
 }

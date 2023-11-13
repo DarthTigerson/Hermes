@@ -1,24 +1,44 @@
-
 body {
-    background: #fafafa;
-    color: #33333a;
-    padding-top: 70px;
-    padding-left: 20px;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    color: #323232;
-  }
-  
-  .main-color {
-    background-color: #0e76a8 ;
-  }
-  
-  .strike-through-td {
-      text-decoration: line-through;
-  }
-  
-  
-  
-  
-  
+  background: #fafafa !important;
+  color: #33333a;
+  padding-top: 70px;
+  padding-left: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #323232;
+}
+
+.main-color {
+  background-color: #0e76a8;
+}
+
+.strike-through-td {
+  text-decoration: line-through;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    body, .card, .card-header, .card-body, .table {
+        background: #33333a !important;
+        color: #797979;
+    }
+
+    h1, h2, h3, h4, h5, h6, th, td {
+        color: #fafafa;
+    }
+
+    .main-color {
+        background-color: #323232;
+    }
+
+    .strike-through-td {
+        color: #fafafa;
+    }
+
+    /* Add these lines */
+    .card, .card-header, .card-body, .table {
+        background-color: #4e4e52;
+        color: #fafafa;
+    }
+}

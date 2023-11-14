@@ -163,3 +163,14 @@ class Settings(Base):
     critical_color = Column(String(10), default='dc3545')
     critical_color_hover = Column(String(10), default='bd2130')
     table_color_id = Column(Integer, default=1)
+
+class employee_contracts(Base):
+    __tablename__ = 'employee_contracts'
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey('employees.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    start_date = Column(String(50))
+    end_date = Column(String(50))
+    contract_name = Column(String(250))
+    notes = Column(String(250))
+    contract_file = Column(String)

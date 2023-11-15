@@ -164,7 +164,7 @@ class Settings(Base):
     critical_color_hover = Column(String(10), default='bd2130')
     table_color_id = Column(Integer, default=1)
 
-class employee_contracts(Base):
+class Employee_Contracts(Base):
     __tablename__ = 'employee_contracts'
     id = Column(Integer, primary_key=True, index=True)
     employee_id = Column(Integer, ForeignKey('employees.id'))

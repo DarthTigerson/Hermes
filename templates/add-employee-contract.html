@@ -1,0 +1,39 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: center;" class="card-header">
+                <h4>Upload Contract for {{employee.full_name}}</h4>
+            </div>
+            <div class="card-body">
+                <div style="width: 59%; display: inline-block;" class="form-group">
+                    <label>Contract Name</label>
+                    <input type="text" class="form-control" name="contract_name" required>
+                </div>
+                <div style="width: 20%; display: inline-block;" class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" class="form-control" name="start_date" required>
+                </div>
+                <div style="width: 20%; display: inline-block;" class="form-group">
+                    <label>End Date</label>
+                    <input type="date" class="form-control" name="end_date" required>
+                </div>
+                <div style="width: 100%; display: inline-block;" class="form-group">
+                    <label>Notes</label>
+                    <textarea class="form-control" name="notes"></textarea>
+                </div>
+                <div style="display: inline-block;" class="form-group">
+                    <label>Contract File</label>
+                    <input type="file" class="form-control" name="contract_file" required>
+                </div>
+                <div class="text-center">
+                    {% if role_state.payroll == 1 %}
+                    <br>
+                    <button type="submit" class="btn" style="width: 230px; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}};">Add Employee Contract</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

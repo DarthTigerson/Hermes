@@ -272,12 +272,14 @@
                             <th style="width: 50px;">Options</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {% if employee_contract != None %}
+                    {% if employee_contracts == None or employee_contracts == [] %}
+                        </table>
+                        <br>
+                        <h4 style="text-align: center;">Upload Employee Contract</h4>
+                    {% else %}
 
-                        {% endif %}
-                    </tbody>
                 </table>
+                {% endif %}
             </div>
         </div>
         </br>

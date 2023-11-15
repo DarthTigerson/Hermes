@@ -506,7 +506,7 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
     return templates.TemplateResponse("add-employee-contract.html", {"request": request, "employee": employee, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings})
 
 @router.post("/add_employee_contract/{employee_id}", response_class=HTMLResponse)
-async def add_employee_contract(request: Request, employee_id: int, db: Session = Depends(get_db), user_id: int = Form(None), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: str = Form(None)):
+async def add_employee_contract(request: Request, employee_id: int, db: Session = Depends(get_db), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: str = Form(None)):
 
     user = await get_current_user(request)
     if user is None:
@@ -520,7 +520,7 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
     contract_model = models.Employee_Contracts()
 
     contract_model.employee_id = employee_id
-    contract_model.user_id = user_id
+    contract_model.user_id = user.id
     contract_model.start_date = start_date
     contract_model.end_date = end_date
     contract_model.contract_name = contract_name

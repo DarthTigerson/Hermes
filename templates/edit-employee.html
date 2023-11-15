@@ -253,6 +253,34 @@
             </div>
         </div>
         </br>
+        <div class="card">
+            <div style="text-align: left;" class="card-header">
+                Employee Contract
+                <a href="#" class="btn btn-sm" style="float: right; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">+</a>
+            </div>
+            <div class="card-body" style="width: 100%; height: 200px;">
+                <table class="table table-hover" style="text-overflow: ellipsis; white-space: nowrap;">
+                    <thead>
+                        <tr>
+                            <th>Contract Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Notes</th>
+                            <th style="width: 50px;">Updated By</th>
+                            <th style="width: 50px;">View</th>
+                            <th style="width: 50px;">Download</th>
+                            <th style="width: 50px;">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if employee_contract != None %}
+
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </br>
         {% endif %}
         <div class="card">
             <div style="text-align: left;" class="card-header">

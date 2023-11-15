@@ -288,9 +288,9 @@
                                         <td>{{user.first_name}} {{user.last_name}}</td>
                                     {% endif %}
                                 {% endfor %}
-                                <td><a href="/employee/view_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">View</a></td>
-                                <td><a href="/employee/download_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Download</a></td>
-                                <td><a href="/employee/delete_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Edit</a></td>
+                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/view.png" alt="Download" style="height: 25px;"></a></td>
+                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/download.png" alt="View" style="height: 25px;"></a></td>
+                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}"><img src="/static/img/edit.png" alt="Edit" style="height: 25px;"></a></td>
                             </tr>
                         {% endfor %}
                 </table>

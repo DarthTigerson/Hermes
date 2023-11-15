@@ -518,9 +518,8 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
         return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
     contract_model = models.Employee_Contracts()
-
     contract_model.employee_id = employee_id
-    contract_model.user_id = user.id
+    contract_model.user_id = user['id']
     contract_model.start_date = start_date
     contract_model.end_date = end_date
     contract_model.contract_name = contract_name

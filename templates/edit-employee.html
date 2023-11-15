@@ -266,7 +266,7 @@
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Notes</th>
-                            <th style="width: 50px;">Updated By</th>
+                            <th>Updated By</th>
                             <th style="width: 50px;">View</th>
                             <th style="width: 50px;">Download</th>
                             <th style="width: 50px;">Options</th>
@@ -277,7 +277,22 @@
                         <br>
                         <h4 style="text-align: center;">Upload Employee Contract</h4>
                     {% else %}
-
+                        {% for employee_contract in employee_contracts %}
+                            <tr>
+                                <td>{{employee_contract.contract_name}}</td>
+                                <td>{{employee_contract.start_date}}</td>
+                                <td>{{employee_contract.end_date}}</td>
+                                <td>{{employee_contract.notes}}</td>
+                                {% for user in users %}
+                                    {% if user.id == employee_contract.user_id %}
+                                        <td>{{user.first_name}} {{user.last_name}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td><a href="/employee/view_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">View</a></td>
+                                <td><a href="/employee/download_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Download</a></td>
+                                <td><a href="/employee/delete_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Edit</a></td>
+                            </tr>
+                        {% endfor %}
                 </table>
                 {% endif %}
             </div>

@@ -7,6 +7,7 @@ from routers.admin import get_current_user
 from routers.logging import create_log, Log
 from routers.messaging import slack_send_message, email_send_message
 from datetime import datetime
+from sqlalchemy import desc
 import models
 
 from fastapi.responses import HTMLResponse
@@ -486,3 +487,75 @@ async def api_employees_return(db: Session = Depends(get_db)):
         models.Employees.email
     ).all()
     return employees
+
+@router.get("/get_employee_contract/{employee_id}")
+async def get_employee_contract(request: Request, employee_id: int, db: Session = Depends(get_db)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.payroll == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+    
+
+    users = db.query(models.Users).all()
+    contracts = db.query(models.Contracts).order_by(desc(models.Contracts.id)).filter(models.Contracts.employer_id == employee_id).all()
+
+    return {"users": users, "contracts": contracts}
+
+@router.post("/add_employee_contract/{employee_id}", response_class=HTMLResponse)
+async def add_employee_contract(request: Request, db: Session = Depends(get_db), employee_id: int = Form(None), user_id: int = Form(None), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: str = Form(None)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.payroll == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+    
+    contract_model = models.Employee_Contracts()
+
+    contract_model.employee_id = employee_id
+    contract_model.user_id = user_id
+    contract_model.start_date = start_date
+    contract_model.end_date = end_date
+    contract_model.contract_name = contract_name
+    contract_model.notes = notes
+    contract_model.contract_file = contract_file
+
+    db.add(contract_model)
+    db.commit()
+
+    return RedirectResponse(url="/employee/edit_employee/" + str(employee_id), status_code=status.HTTP_302_FOUND)
+
+@router.post("/edit_employee_contract/{employee_id}", response_class=HTMLResponse)
+async def edit_employee_contract(request: Request, db: Session = Depends(get_db), employee_id: int = Form(None), user_id: int = Form(None), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: str = Form(None), contract_id: int = Form(None)):
+
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.payroll == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+    
+    contract_model = db.query(models.Employee_Contracts).filter(models.Employee_Contracts.id == contract_id).first()
+
+    contract_model.employee_id = employee_id
+    contract_model.user_id = user_id
+    contract_model.start_date = start_date
+    contract_model.end_date = end_date
+    contract_model.contract_name = contract_name
+    contract_model.notes = notes
+    contract_model.contract_file = contract_file
+    
+    db.add(contract_model)
+    db.commit()
+
+    return RedirectResponse(url="/employee/edit_employee/" + str(employee_id), status_code=status.HTTP_302_FOUND)

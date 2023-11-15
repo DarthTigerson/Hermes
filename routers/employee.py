@@ -236,6 +236,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     if employee_data.employment_status_id == 1:
         return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
 
+    users = db.query(models.Users).order_by(models.Users.username).all()
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()
     sites = db.query(models.Sites).order_by(models.Sites.name).all()
@@ -251,7 +252,7 @@ async def edit_employee(request: Request, employee_id: int, db: Session = Depend
     log = Log(action="Info",user=user['username'],description=f"Viewed the edit employee page for the employee with the email {employee_data.email}")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings, "employee_contracts": employee_contracts})
+    return templates.TemplateResponse("edit-employee.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings, "employee_contracts": employee_contracts, "users": users})
 
 @router.post("/edit_employee/{employee_id}", response_class=HTMLResponse)
 async def update_employee(request: Request, employee_id: int, email: str = Form(None), first_name: str = Form(None), last_name: str = Form(None), full_name: str = Form(None), date_of_birth: str = Form(None), gender: int = Form(0), nationality: str = Form(None), country_of_origin_id: int = Form(0), working_country_id: int = Form(0), job_title: str = Form(None), direct_manager:str = Form(None), start_date: str = Form(None), end_date: str = Form(None), site_id: int = Form(0), department_id: int = Form(0), product_code: str = Form(None), brand_code: str = Form(None),business_unit: str = Form(None), business_verticle: str = Form(None), salary_currency_id: int = Form(None), salary: str = Form(None), salary_period: str = Form(None), hr_team_id: int = Form(None),  working_hours: str = Form(None), employment_contract_id: int = Form(None), employment_type_id: int = Form(None), supplier: str = Form(None), entity_to_be_billed: str = Form(None), employer_id: int = Form(0), company_email: str = Form(None), personal_email: str = Form(None), net_monthly_salary: str = Form(None), change_reason: str = Form(None), increase_percent: str = Form(None), salary_pay_frequency_id: int = Form(None), employment_status_id: int = Form(0), db: Session = Depends(get_db)):

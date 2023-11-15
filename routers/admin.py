@@ -89,9 +89,10 @@ async def get_current_user(request: Request):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         role_id: int = payload.get("role_id")
+        id: int = payload.get("id")
         if username is None or role_id is None:
             logout(request)
-        return {"username": username, "role_id": role_id}
+        return {"username": username, "role_id": role_id, "id": id}
     except JWTError:
         logout(request)
 

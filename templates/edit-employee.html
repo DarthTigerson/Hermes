@@ -262,14 +262,14 @@
                 <table class="table table-hover" style="text-overflow: ellipsis; white-space: nowrap;">
                     <thead>
                         <tr>
-                            <th>Contract Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Notes</th>
-                            <th>Updated By</th>
-                            <th style="width: 50px;">View</th>
-                            <th style="width: 50px;">Download</th>
-                            <th style="width: 50px;">Options</th>
+                            <th style="text-align: center;">Contract Name</th>
+                            <th style="text-align: center;">Start Date</th>
+                            <th style="text-align: center;">End Date</th>
+                            <th style="text-align: center;">Notes</th>
+                            <th style="text-align: center;">Updated By</th>
+                            <th style="text-align: center;">View</th>
+                            <th style="text-align: center;">Download</th>
+                            <th style="text-align: center;">Options</th>
                         </tr>
                     </thead>
                     {% if employee_contracts == None or employee_contracts == [] %}
@@ -279,18 +279,18 @@
                     {% else %}
                         {% for employee_contract in employee_contracts %}
                             <tr>
-                                <td>{{employee_contract.contract_name}}</td>
-                                <td>{{employee_contract.start_date}}</td>
-                                <td>{{employee_contract.end_date}}</td>
-                                <td>{{employee_contract.notes}}</td>
+                                <td style="vertical-align: middle;">{{employee_contract.contract_name}}</td>
+                                <td style="vertical-align: middle;">{{employee_contract.start_date}}</td>
+                                <td style="vertical-align: middle;">{{employee_contract.end_date}}</td>
+                                <td style="vertical-align: middle;">{{employee_contract.notes}}</td>
                                 {% for user in users %}
                                     {% if user.id == employee_contract.user_id %}
-                                        <td>{{user.first_name}} {{user.last_name}}</td>
+                                        <td style="vertical-align: middle;">{{user.first_name}} {{user.last_name}}</td>
                                     {% endif %}
                                 {% endfor %}
-                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/view.png" alt="Download" style="height: 25px;"></a></td>
-                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/download.png" alt="View" style="height: 25px;"></a></td>
-                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}"><img src="/static/img/edit.png" alt="Edit" style="height: 25px;"></a></td>
+                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/view.png" alt="Download" style="height: 22px;"></a></td>
+                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/download.png" alt="View" style="height: 22px;"></a></td>
+                                <td style="text-align: center;"><a href="#" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}"><img src="/static/img/edit.png" alt="Edit" style="height: 22px;"></a></td>
                             </tr>
                         {% endfor %}
                 </table>

@@ -553,8 +553,8 @@ async def edit_employee_contract(request: Request, employee_id: int, employee_co
 
     return templates.TemplateResponse("edit-employee-contract.html", {"request": request, "employee": employee, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings, "employee_contract": employee_contract})
 
-@router.post("/edit_employee_contract/{employee_id}", response_class=HTMLResponse)
-async def edit_employee_contract(request: Request, employee_id: int, db: Session = Depends(get_db), user_id: int = Form(None), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: str = Form(None), contract_id: int = Form(None)):
+@router.post("/edit_employee_contract/{employee_id}/{employee_contract_id}", response_class=HTMLResponse)
+async def edit_employee_contract(request: Request, employee_id: int, employee_contract_id: int, db: Session = Depends(get_db), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None)):
 
     user = await get_current_user(request)
     if user is None:
@@ -565,15 +565,14 @@ async def edit_employee_contract(request: Request, employee_id: int, db: Session
     if role_state.payroll == False:
         return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
     
-    contract_model = db.query(models.Employee_Contracts).filter(models.Employee_Contracts.id == contract_id).first()
+    contract_model = db.query(models.Employee_Contracts).filter(models.Employee_Contracts.id == employee_contract_id).first()
 
     contract_model.employee_id = employee_id
-    contract_model.user_id = user_id
+    contract_model.user_id = user['id']
     contract_model.start_date = start_date
     contract_model.end_date = end_date
     contract_model.contract_name = contract_name
     contract_model.notes = notes
-    contract_model.contract_file = contract_file
     
     db.add(contract_model)
     db.commit()

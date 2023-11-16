@@ -532,6 +532,27 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
 
     return RedirectResponse(url="/employee/edit_employee/" + str(employee_id), status_code=status.HTTP_302_FOUND)
 
+@router.get("/edit_employee_contract/{employee_id}/{employee_contract_id}")
+async def edit_employee_contract(request: Request, employee_id: int, employee_contract_id:int, db: Session = Depends(get_db)):
+    
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    
+    employee_contract = db.query(models.Employee_Contracts).filter(models.Employee_Contracts.id == employee_contract_id).first()
+
+    if employee_contract is None:
+        return RedirectResponse(url="/employee_details/{employee_id}", status_code=status.HTTP_302_FOUND)
+
+    employee = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.payroll == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+
+    return templates.TemplateResponse("edit-employee-contract.html", {"request": request, "employee": employee, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings, "employee_contract": employee_contract})
+
 @router.post("/edit_employee_contract/{employee_id}", response_class=HTMLResponse)
 async def edit_employee_contract(request: Request, employee_id: int, db: Session = Depends(get_db), user_id: int = Form(None), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: str = Form(None), contract_id: int = Form(None)):
 

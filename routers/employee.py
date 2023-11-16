@@ -537,8 +537,6 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
 
     return RedirectResponse(url="/employee/edit_employee/" + str(employee_id), status_code=status.HTTP_302_FOUND)
 
-    return RedirectResponse(url="/employee/edit_employee/" + str(employee_id), status_code=status.HTTP_302_FOUND)
-
 @router.get("/edit_employee_contract/{employee_id}/{employee_contract_id}")
 async def edit_employee_contract(request: Request, employee_id: int, employee_contract_id:int, db: Session = Depends(get_db)):
     

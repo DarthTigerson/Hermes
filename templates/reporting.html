@@ -9,8 +9,9 @@
                 <label style="margin-left: 10px;">Report Type</label>
                 <select class="form-control" id="reportType" name="report_type">
                     <option value="0" {% if header_value.report_type == 0%} selected="selected" {% endif %}>Select Report Type</option>
-                    <option value="1" {% if header_value.report_type == 1%} selected="selected" {% endif %}>Onboarded Employees</option>
-                    <option value="2" {% if header_value.report_type == 2%} selected="selected" {% endif %}>Offboarded Employees</option>
+                    <option value="1" {% if header_value.report_type == 1%} selected="selected" {% endif %}>Onboardings</option>
+                    <option value="2" {% if header_value.report_type == 2%} selected="selected" {% endif %}>Offboardings</option>
+                    <option value="3" {% if header_value.report_type == 3%} selected="selected" {% endif %}>All Current Employees</option>
                 </select>
             </div>
             <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
@@ -182,19 +183,44 @@
 
 <script>
     document.getElementById('generateReport').addEventListener('click', function(event) {
-    event.preventDefault();
-    var reportType = document.getElementById('reportType').value;
-    var startDate = document.getElementById('startDate').value + 'T00:00:00';
-    var endDate = document.getElementById('endDate').value + 'T23:59:59';
-    var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
-    window.location.href = url;
-});
+        event.preventDefault();
+        var reportType = document.getElementById('reportType').value;
+        var startDate = document.getElementById('startDate').value + 'T00:00:00';
+        var endDate = document.getElementById('endDate').value + 'T23:59:59';
+        var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
+        window.location.href = url;
+    });
     document.getElementById('generateCsv').addEventListener('click', function(event) {
-    event.preventDefault();
-    var reportType = document.getElementById('reportType').value;
-    var startDate = document.getElementById('startDate').value + 'T00:00:00';
-    var endDate = document.getElementById('endDate').value + 'T23:59:59';
-    var url = "/reporting/download_csv/"+reportType+"/"+startDate+"/"+endDate;
-    window.location.href = url;
-});
+        event.preventDefault();
+        var reportType = document.getElementById('reportType').value;
+        var startDate = document.getElementById('startDate').value + 'T00:00:00';
+        var endDate = document.getElementById('endDate').value + 'T23:59:59';
+        var url = "/reporting/download_csv/"+reportType+"/"+startDate+"/"+endDate;
+        window.location.href = url;
+    });
+    document.getElementById('reportType').addEventListener('change', function() {
+        if (this.value == '3') {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+        } else {
+            document.getElementById('startDate').parentElement.style.display = 'inline-block';
+            document.getElementById('endDate').parentElement.style.display = 'inline-block';
+        }
+    });
+    function checkReportType() {
+        var reportType = document.getElementById('reportType');
+        if (reportType.value == '3') {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+        } else {
+            document.getElementById('startDate').parentElement.style.display = 'inline-block';
+            document.getElementById('endDate').parentElement.style.display = 'inline-block';
+        }
+    }
+
+    // Call the function when the page loads
+    window.onload = checkReportType;
+
+    // Call the function when the select value changes
+    document.getElementById('reportType').addEventListener('change', checkReportType);
 </script>

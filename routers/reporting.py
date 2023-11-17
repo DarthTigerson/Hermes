@@ -64,6 +64,10 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
 
         # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.end_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
+    elif report_type == 3:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .all()
     else:
         report_data = None
     
@@ -122,6 +126,11 @@ async def download_csv(request: Request, report_type: int, start_date: datetime,
 
         # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.end_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
+    elif report_type == 3:
+        file_name = f"All_Current_Employees_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .all()
     else:
         return None
 

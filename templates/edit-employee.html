@@ -258,7 +258,7 @@
                 Employee Contract
                 <a href="/employee/add_employee_contract/{{employee_data.id}}" class="btn btn-sm" style="float: right; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">+</a>
             </div>
-            <div class="card-body" style="width: 100%; height: 200px;">
+            <div class="card-body" style="width: 100%; height: 200px; overflow:auto;">
                 <table class="table table-hover" style="text-overflow: ellipsis; white-space: nowrap;">
                     <thead>
                         <tr>
@@ -272,10 +272,11 @@
                             <th style="text-align: center;">Edit</th>
                         </tr>
                     </thead>
+                    <tbody>
                     {% if employee_contracts == None or employee_contracts == [] %}
-                        </table>
-                        <br>
-                        <h4 style="text-align: center;">Upload Employee Contract</h4>
+                        <tr>
+                            <td colspan="8" style="text-align: center;">Upload Employee Contract</td>
+                        </tr>
                     {% else %}
                         {% for employee_contract in employee_contracts %}
                             <tr>
@@ -293,8 +294,9 @@
                                 <td style="text-align: center; width: 20px;"><a href="/employee/edit_employee_contract/{{employee_data.id}}/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}"><img src="/static/img/edit.png" alt="Edit" style="height: 22px;"></a></td>
                             </tr>
                         {% endfor %}
+                    {% endif %}
+                    </tbody>
                 </table>
-                {% endif %}
             </div>
         </div>
         </br>

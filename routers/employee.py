@@ -8,7 +8,7 @@ from routers.logging import create_log, Log
 from routers.messaging import slack_send_message, email_send_message
 from datetime import datetime
 from sqlalchemy import desc
-import models
+import models, gzip
 from io import BytesIO
 
 from fastapi.responses import HTMLResponse, StreamingResponse, JSONResponse
@@ -531,7 +531,8 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
     file_content = contract_file.file.read()
 
     # Save the file content
-    contract_model.contract_file = file_content
+    compressed_content = gzip.compress(file_content)
+    contract_model.contract_file = compressed_content
 
     db.add(contract_model)
     db.commit()
@@ -601,8 +602,16 @@ async def download_employee_contract(request: Request, employee_contract_id: int
     if employee_contract is None:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
-    # Create a BytesIO object from the contract_file field
-    file_like = BytesIO(employee_contract.contract_file)
+    # Get the compressed file content
+    compressed_content = employee_contract.contract_file
+
+    # Decompress the file content
+    file_content = gzip.decompress(compressed_content)
+
+    # Create a BytesIO object from the file content
+    file_like = BytesIO(file_content)
+
+    # Return a streaming response
     return StreamingResponse(file_like, media_type='application/pdf', headers={'Content-Disposition': f'attachment; filename={employee_contract.contract_name}.pdf'})
 
 @router.get("/open_employee_contract/{employee_contract_id}")
@@ -621,8 +630,16 @@ async def open_employee_contract(request: Request, employee_contract_id: int, db
     if employee_contract is None:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
-    # Create a BytesIO object from the contract_file field
-    file_like = BytesIO(employee_contract.contract_file)
+    # Get the compressed file content
+    compressed_content = employee_contract.contract_file
+
+    # Decompress the file content
+    file_content = gzip.decompress(compressed_content)
+
+    # Create a BytesIO object from the file content
+    file_like = BytesIO(file_content)
+
+    # Create a streaming response
     response = StreamingResponse(file_like, media_type='application/pdf')
     response.headers["Content-Disposition"] = f"inline; filename={employee_contract.contract_name}.pdf"
     return response

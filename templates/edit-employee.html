@@ -289,7 +289,7 @@
                                         <td style="vertical-align: middle; text-align: center;">{{user.first_name}} {{user.last_name}}</td>
                                     {% endif %}
                                 {% endfor %}
-                                <td style="text-align: center; width: 20px;"><a href="#" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/view.png" alt="Download" style="height: 22px;"></a></td>
+                                <td style="text-align: center; width: 20px;"><a target="_blank" href="/employee/open_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/view.png" alt="Download" style="height: 22px;"></a></td>
                                 <td style="text-align: center; width: 20px;"><a href="/employee/download_employee_contract/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}"><img src="/static/img/download.png" alt="View" style="height: 22px;"></a></td>
                                 <td style="text-align: center; width: 20px;"><a href="/employee/edit_employee_contract/{{employee_data.id}}/{{employee_contract.id}}" class="btn btn-sm" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}"><img src="/static/img/edit.png" alt="Edit" style="height: 22px;"></a></td>
                             </tr>

@@ -25,15 +25,23 @@
                 </div>
                 <div style="display: inline-block;" class="form-group">
                     <label>Contract File</label>
-                    <input type="file" class="form-control" name="contract_file" accept=".pdf" required>
+                    <input id="contract_file" type="file" class="form-control" name="contract_file" accept=".pdf" required>
                 </div>
                 <div class="text-center">
                     {% if role_state.payroll == 1 %}
                     <br>
-                    <button type="submit" class="btn" style="width: 230px; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}};">Add Employee Contract</button>
+                    <button type="submit" class="btn" style="width: 230px; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}};" onclick="return confirmUpload();">Add Employee Contract</button>
                     {% endif %}
                 </div>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+    function confirmUpload() {
+        var fileName = document.getElementById('contract_file').value.split('\\').pop(); // get the file name
+        var employeeName = "{{employee.full_name}}"; // treat as a string
+        return confirm('Are you sure you want to upload employee contract ' + fileName + ' to ' + employeeName + '? Once a contract is uploaded it cannot be removed.');
+    }
+</script>

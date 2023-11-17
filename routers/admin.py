@@ -70,10 +70,10 @@ def authenticate_user(username: str, password: str, db):
         return False
     return user
 
-def create_access_token(username: str, role_id: int,
+def create_access_token(id: int, username: str, role_id: int,
                         expires_delta: Optional[timedelta] = None):
 
-    encode = {"sub": username, "role_id": role_id}
+    encode = {"sub": username, "role_id": role_id, "id": id}
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
@@ -89,9 +89,10 @@ async def get_current_user(request: Request):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         role_id: int = payload.get("role_id")
+        id: int = payload.get("id")
         if username is None or role_id is None:
             logout(request)
-        return {"username": username, "role_id": role_id}
+        return {"username": username, "role_id": role_id, "id": id}
     except JWTError:
         logout(request)
 
@@ -101,7 +102,8 @@ async def login_for_access_token(response: Response, form_data: OAuth2PasswordRe
     if not user:
         return False
     token_expires = timedelta(minutes=300)
-    token = create_access_token(user.username,
+    token = create_access_token(user.id,
+                                user.username,
                                 user.role_id,
                                 expires_delta=token_expires)
     response.set_cookie(key="access_token", value=token, httponly=True)

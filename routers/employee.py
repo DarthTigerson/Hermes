@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form, UploadFile, File
+from fastapi import APIRouter, Depends, status, HTTPException, Request, Form, UploadFile, File, Header
 from sqlalchemy.orm import Session, aliased
 from typing import Annotated, Optional
 from database import SessionLocal
@@ -604,3 +604,25 @@ async def download_employee_contract(request: Request, employee_contract_id: int
     # Create a BytesIO object from the contract_file field
     file_like = BytesIO(employee_contract.contract_file)
     return StreamingResponse(file_like, media_type='application/pdf', headers={'Content-Disposition': f'attachment; filename={employee_contract.contract_name}.pdf'})
+
+@router.get("/open_employee_contract/{employee_contract_id}")
+async def open_employee_contract(request: Request, employee_contract_id: int, db: Session = Depends(get_db)):
+    user = await get_current_user(request)
+    if user is None:
+        return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+
+    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+
+    if role_state.payroll == False:
+        return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
+    
+    employee_contract = db.query(models.Employee_Contracts).filter(models.Employee_Contracts.id == employee_contract_id).first()
+
+    if employee_contract is None:
+        return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+    
+    # Create a BytesIO object from the contract_file field
+    file_like = BytesIO(employee_contract.contract_file)
+    response = StreamingResponse(file_like, media_type='application/pdf')
+    response.headers["Content-Disposition"] = f"inline; filename={employee_contract.contract_name}.pdf"
+    return response

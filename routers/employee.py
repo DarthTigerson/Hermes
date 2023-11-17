@@ -9,6 +9,7 @@ from routers.messaging import slack_send_message, email_send_message
 from datetime import datetime
 from sqlalchemy import desc
 import models
+from io import BytesIO
 
 from fastapi.responses import HTMLResponse, StreamingResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
@@ -507,7 +508,7 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
     return templates.TemplateResponse("add-employee-contract.html", {"request": request, "employee": employee, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings})
 
 @router.post("/add_employee_contract/{employee_id}", response_class=HTMLResponse)
-async def add_employee_contract(request: Request, employee_id: int, db: Session = Depends(get_db), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: UploadFile = File(None)):
+async def add_employee_contract(request: Request, employee_id: int, db: Session = Depends(get_db), start_date: str = Form(None), end_date: str = Form(None), contract_name: str = Form(None), notes: str = Form(None), contract_file: UploadFile = File(...)):
 
     user = await get_current_user(request)
     if user is None:
@@ -526,11 +527,11 @@ async def add_employee_contract(request: Request, employee_id: int, db: Session 
     contract_model.contract_name = contract_name
     contract_model.notes = notes
 
-    # Save the uploaded file
-    with open(contract_file.filename, "wb") as buffer:
-        buffer.write(contract_file.file.read())
+    # Read the uploaded file content
+    file_content = contract_file.file.read()
 
-    contract_model.contract_file = contract_file.filename
+    # Save the file content
+    contract_model.contract_file = file_content
 
     db.add(contract_model)
     db.commit()
@@ -600,8 +601,6 @@ async def download_employee_contract(request: Request, employee_contract_id: int
     if employee_contract is None:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
-    try:
-        file_like = open(employee_contract.contract_file, mode="rb")
-        return StreamingResponse(file_like, media_type='application/pdf', headers={'Content-Disposition': f'attachment; filename={employee_contract.contract_name}.pdf'})
-    except FileNotFoundError:
-        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Contract file not found"})
+    # Create a BytesIO object from the contract_file field
+    file_like = BytesIO(employee_contract.contract_file)
+    return StreamingResponse(file_like, media_type='application/pdf', headers={'Content-Disposition': f'attachment; filename={employee_contract.contract_name}.pdf'})

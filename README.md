@@ -13,7 +13,7 @@ Hermes is a FastAPI powered employee management web application. It allows you t
 - Generate reports on employee data
 - Create test admin account with unique employee checks and confirmation boxes
 - Automated Slack and E-mail triggers with employee onboarding, updating or offboarding
-- Security notification for access to privilages data
+- Security notification for access to privileges data
 - API call for generating active employee lists
 - Customise Hermes with your company's logo and color scheme
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -d db ]
+if [ ! -e db/hermes.db ]
 then
   mkdir db
   python startup.py --overwrite

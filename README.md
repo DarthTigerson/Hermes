@@ -54,7 +54,9 @@ This project creates a local database on your system.
 6. To assign a role to an employee, go to the employee details page and select a role from the dropdown menu. Click "Save" to assign the role.
 7. To create a test admin account, click the "Create Test Admin" button and follow the prompts.
 
-**Note:** On the first run, you need to create an admin user by running the `startup.py` script. Uncomment the bottom lines of the file and run it with `python startup.py`. The default username and password for the admin user is `hermes` and `hermes`, respectively.
+**Note:** On the first run, you need to create an admin user by running the `startup.py` script.  
+Uncomment the bottom lines of the file and run it with `python startup.py`.  
+The default username and password for the admin user is `hermes` and `hermes`, respectively.
 
 ## Contributing
 

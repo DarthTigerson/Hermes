@@ -6,4 +6,4 @@ then
   python startup.py --overwrite
 fi
 
-uvicorn main:app --reload
+uvicorn main:app --host 0.0.0.0 --reload

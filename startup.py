@@ -191,7 +191,7 @@ def create_settings_table():
 def full_run():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    db_path = "db/hermes.db"
+    db_path = "./db/hermes.db"
     if os.path.exists(db_path):
         db_run_status = input("You are about to overwrite Hermes database!\nThis will delete all records and accounts currently present.\n\nAre you sure you want to proceed? (y/n): ")
     else:

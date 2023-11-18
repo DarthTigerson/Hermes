@@ -39,7 +39,7 @@ you need to link a directory from your host system to the container.
 
 1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
 2. Build the image from the Dockerfile `docker build --tag <YOUR_TAG> .`
-3. Create and run a container from the image `docker run -v <DB_FOLDER>:/hermes/db -p 8000:8000 <YOUR_TAG>`
+3. Create and run a container from the image: `docker run --mount type=bind,source=<DB_FILE_PATH>,target=/hermes/db -p 8000:8000 <YOUR_TAG>`
 
 ## Run prebuilt image
 

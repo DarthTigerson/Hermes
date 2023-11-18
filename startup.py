@@ -1,6 +1,7 @@
 from database import SessionLocal, engine
 import models, os, base64
 from routers import admin
+import sys
 
 def create_default_user():
     db = SessionLocal()
@@ -191,12 +192,15 @@ def create_settings_table():
 def full_run():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    db_path = "./db/hermes.db"
-    if os.path.exists(db_path):
-        db_run_status = input("You are about to overwrite Hermes database!\nThis will delete all records and accounts currently present.\n\nAre you sure you want to proceed? (y/n): ")
-    else:
-        print("Setting up database for the first time.")
+    if len(sys.argv) > 1 and sys.argv[1] == "--overwrite":
         db_run_status = "y"
+    else:
+        db_path = "./db/hermes.db"
+        if os.path.exists(db_path):
+            db_run_status = input("You are about to overwrite Hermes database!\nThis will delete all records and accounts currently present.\n\nAre you sure you want to proceed? (y/n): ")
+        else:
+            print("Setting up database for the first time.")
+            db_run_status = "y"
 
 
     if db_run_status.lower() == 'y':

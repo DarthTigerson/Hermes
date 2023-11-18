@@ -1,6 +1,7 @@
 # Hermes v1.5.0
 
-Hermes is a FastAPI powered employee management web application. It allows you to manage your employees, their roles, and their onboarding/offboarding status.
+Hermes is a FastAPI powered employee management web application.  
+It allows you to manage your employees, their roles, and their onboarding/offboarding status.
 ![Capture of Hermes](/static/img/capture.gif)
 
 ## Features
@@ -30,8 +31,9 @@ You can install the [project locally](#local-installation), and run it on your o
 
 ## Run docker image
 
-It is possible to build your own docker image from the `Dockerfile` in this repository.
-Although, the preferred way to do it is to pull a [prebuilt image](#run-prebuilt-image). 
+It is possible to build your own docker image from the `Dockerfile` in this repository.  
+Although, the preferred way to do it is to pull a [prebuilt image](#run-prebuilt-image).   
+This project creates a local database on your system.
 
 1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
 2. Build the image from the Dockerfile `docker build --tag <YOUR_TAG> .`

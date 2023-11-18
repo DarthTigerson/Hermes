@@ -19,7 +19,7 @@ Hermes is a FastAPI powered employee management web application. It allows you t
 
 # Installation
 
-You can install the [project locally](#local-installation), and run it on your own machine, or you could run it in a [docker container](#local-installation).
+You can install the [project locally](#local-installation), and run it on your own machine, or you could run it in a [docker container](#run-docker-image).
 
 ## Local installation
 

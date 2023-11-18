@@ -33,16 +33,18 @@ You can install the [project locally](#local-installation), and run it on your o
 
 It is possible to build your own docker image from the `Dockerfile` in this repository.  
 Although, the preferred way to do it is to pull a [prebuilt image](#run-prebuilt-image).   
-This project creates a local database on your system.
+This project creates a local database on your system. So in order to use this in a container,
+you need to link a directory from your host system to the container.
+
 
 1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
 2. Build the image from the Dockerfile `docker build --tag <YOUR_TAG> .`
-3. Create and run a container from the image `docker run -p 8000:8000 <YOUR_TAG>`
+3. Create and run a container from the image `docker run -v <DB_FOLDER>:/hermes/db -p 8000:8000 <YOUR_TAG>`
 
 ## Run prebuilt image
 
 1. Pull the image from Dockerhub: TODO
-2. Run the docker image and set the forwarding web port: `docker run -d -p <YOUR_PORT>:8000 <DOCKER_IMAGE>`
+2. Run the docker image and set the forwarding web port: `docker run -d -v <DB_FOLDER>:/hermes/db -p <YOUR_PORT>:8000 <DOCKER_IMAGE>`
 
 ## Usage
 

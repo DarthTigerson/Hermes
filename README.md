@@ -17,12 +17,30 @@ Hermes is a FastAPI powered employee management web application. It allows you t
 - API call for generating active employee lists
 - Customise Hermes with your company's logo and color scheme
 
-## Installation
+# Installation
+
+You can install the [project locally](#local-installation), and run it on your own machine, or you could run it in a [docker container](#build-and-run-docker-image-locally).
+
+## Local installation
 
 1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
 2. Install the dependencies: `pip install -r requirements.txt`
 3. Create a `.env` file and set the environment variables (see `.env.example` for an example)
 4. Run the application: `uvicorn main:app --reload`
+
+## Run docker image
+
+It is possible to build your own docker image from the `Dockerfile` in this repository.
+Although, the preferred way to do it is to pull a [prebuilt image](#run-prebuilt-image). 
+
+1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
+2. Build the image from the Dockerfile `docker build --tag <YOUR_TAG> .`
+3. Create and run a container from the image `docker run -p 8000:8000 <YOUR_TAG>`
+
+## Run prebuilt image
+
+1. Pull the image from Dockerhub: TODO
+2. Run the docker image and set the forwarding web port: `docker run -d -p <YOUR_PORT>:8000 <DOCKER_IMAGE>`
 
 ## Usage
 

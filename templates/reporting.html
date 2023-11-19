@@ -55,7 +55,7 @@
                 <select class="form-control" name="site_list" id="siteList">
                     <option value="0">Select Site</option>
                     {% for site in sites %}
-                        <option value="{{site.id}}">{{site.name}}</option>
+                        <option value="{{site.id}}" {% if siteValue == site.id%} selected {% endif %}>{{site.name}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -236,6 +236,7 @@
         var managerSearch = document.getElementById('managerSearch').value;
         var departmentValue = document.getElementById('departmentList').value;
         var countryValue = document.getElementById('countryList').value;
+        var siteValue = document.getElementById('siteList').value;
         console.log('reportType:', reportType);  // Debugging line
         console.log('managerSearch:', managerSearch);  // Debugging line
         if (reportType == '1' || reportType == '2') 
@@ -257,6 +258,10 @@
         else if (reportType == '6' || reportType == '7')
         {
             var url = "/reporting/?report_type=" + reportType + "&countryValue=" + countryValue;
+        }
+        else if (reportType == '8')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&siteValue=" + siteValue;
         }
         else
         {

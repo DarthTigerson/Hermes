@@ -1,18 +1,17 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
-from sqlalchemy.orm import Session
 from typing import Annotated
-from database import SessionLocal
-from pydantic import BaseModel, Field
-from routers.admin import get_current_user
-from routers.logging import create_log, Log
-from models import Roles, Settings
-import models, datetime, base64
 
+from fastapi import APIRouter, Depends, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-
+from sqlalchemy.orm import Session
 from starlette import status
 from starlette.responses import RedirectResponse
+
+import base64
+import models
+from database import SessionLocal
+from models import Roles, Settings
+from routers.admin import get_current_user
 
 router = APIRouter(
     prefix="/settings",
@@ -37,7 +36,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
+    # settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.settings == False:

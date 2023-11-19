@@ -1,17 +1,17 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
-from sqlalchemy.orm import Session
-from typing import Annotated
-from database import SessionLocal
-from pydantic import BaseModel, Field
-from models import Logs, Roles, Settings
 import datetime
-from routers.admin import get_current_user
+from typing import Annotated
 
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Depends, Request
 from fastapi.templating import Jinja2Templates
-
+from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
 from starlette import status
 from starlette.responses import RedirectResponse
+
+from database import SessionLocal
+from models import Logs, Roles, Settings
+from routers.admin import get_current_user
+
 router = APIRouter(
     prefix="/logging",
     tags=["logging"],

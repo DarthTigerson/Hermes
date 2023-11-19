@@ -279,7 +279,12 @@
         var reportType = document.getElementById('reportType').value;
         var startDate = document.getElementById('startDate').value + 'T00:00:00';
         var endDate = document.getElementById('endDate').value + 'T23:59:59';
-        var url = "/reporting/download_csv/"+reportType+"/"+startDate+"/"+endDate;
+        var manager = document.getElementById('managerSearch').value;
+        var departmentValue = document.getElementById('departmentList').value;
+        var countryValue = document.getElementById('countryList').value;
+        var siteValue = document.getElementById('siteList').value;
+        var employmentValue = document.getElementById('employmentList').value;
+        var url = "/reporting/download_csv/" + reportType + "?start_date=" + startDate + "&end_date=" + endDate + "&manager=" + manager + "&departmentValue=" + departmentValue + "&countryValue=" + countryValue + "&siteValue=" + siteValue + "&employmentValue=" + employmentValue;
         window.location.href = url;
     });
     document.getElementById('reportType').addEventListener('change', function() {

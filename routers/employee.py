@@ -407,7 +407,7 @@ async def offboard_employee(request: Request, employee_id: int, db: Session = De
     return RedirectResponse(url="/employee", status_code=status.HTTP_302_FOUND)
 
 @router.get("/reboard_employee/{employee_id}")
-async def reboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):
+async def reboard_employee(request: Request, employee_id: int, db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:

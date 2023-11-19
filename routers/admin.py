@@ -59,7 +59,7 @@ def verify_password(plain_password, hashed_password):
     return bcrypt_context.verify(plain_password, hashed_password)
 
 
-def authenticate_user(username: str, password: str, db):
+def authenticate_user(username: str, password: str, db) -> bool or Users:
     user = db.query(Users)\
         .filter(Users.username == username)\
         .first()

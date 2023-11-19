@@ -348,8 +348,6 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
-    
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     employee = db.query(models.Employees).filter(models.Employees.id == employee_id).first()
     departments = db.query(models.Departments).order_by(models.Departments.name).all()

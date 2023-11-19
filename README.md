@@ -44,7 +44,8 @@ you need to link a directory from your host system to the container.
 ## Run prebuilt image
 
 1. Pull the image from Dockerhub: TODO
-2. Run the docker image and set the forwarding web port: `docker run -d -v <DB_FOLDER>:/hermes/db -p <YOUR_PORT>:8000 <DOCKER_IMAGE>`
+2. Run the docker image and set the forwarding web port: `docker run -d -v <DB_FOLDER>:/hermes/db -p <YOUR_PORT>:8000 w3edd/hermes:latest`
+3. Create and run a container from the image: `docker run --mount type=bind,source=<DB_FILE_PATH>,target=/hermes/db -p 8000:8000 w3edd/hermes:latest`
 
 ## Usage
 

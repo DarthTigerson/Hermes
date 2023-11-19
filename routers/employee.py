@@ -362,7 +362,7 @@ async def user_exists(request: Request, employee_id: str, db: Session = Depends(
     return templates.TemplateResponse("empoyee-exists.html", {"request": request, "employee": employee, "departments": departments, "sites": sites, "employments": employments, "role_state": role_state, "logged_in_user": user, "nav": 'employee', "settings": settings})
 
 @router.get("/offboard_employee/{employee_id}")
-async def offboard_employee(request: Request, employee_id: int, db: Session =Depends(get_db)):
+async def offboard_employee(request: Request, employee_id: int, db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:

@@ -1,21 +1,21 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form, UploadFile, File, Header
-from sqlalchemy.orm import Session, aliased
+from datetime import datetime
+from io import BytesIO
 from typing import Annotated, Optional
+
+from fastapi import APIRouter, Depends, Request, Form, UploadFile, File
+from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.templating import Jinja2Templates
+from sqlalchemy import desc
+from sqlalchemy.orm import Session, aliased
+from starlette import status
+from starlette.responses import RedirectResponse
+
+import gzip
+import models
 from database import SessionLocal
-from pydantic import BaseModel, Field
 from routers.admin import get_current_user
 from routers.logging import create_log, Log
 from routers.messaging import slack_send_message, email_send_message
-from datetime import datetime
-from sqlalchemy import desc
-import models, gzip
-from io import BytesIO
-
-from fastapi.responses import HTMLResponse, StreamingResponse, JSONResponse
-from fastapi.templating import Jinja2Templates
-
-from starlette import status
-from starlette.responses import RedirectResponse
 
 router = APIRouter(
     prefix="/employee",

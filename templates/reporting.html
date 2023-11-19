@@ -46,7 +46,7 @@
                 <select class="form-control" name="country_list" id="countryList">
                     <option value="0">Select Country</option>
                     {% for country in countries %}
-                        <option value="{{country.id}}">{{country.name}}</option>
+                        <option value="{{country.id}}" {% if countryValue == country.id%} selected {% endif %}>{{country.name}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -235,6 +235,7 @@
         var endDate = document.getElementById('endDate').value + 'T23:59:59';
         var managerSearch = document.getElementById('managerSearch').value;
         var departmentValue = document.getElementById('departmentList').value;
+        var countryValue = document.getElementById('countryList').value;
         console.log('reportType:', reportType);  // Debugging line
         console.log('managerSearch:', managerSearch);  // Debugging line
         if (reportType == '1' || reportType == '2') 
@@ -252,6 +253,14 @@
         else if (reportType == '5')
         {
             var url = "/reporting/?report_type=" + reportType + "&departmentValue=" + departmentValue;
+        }
+        else if (reportType == '6' || reportType == '7')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&countryValue=" + countryValue;
+        }
+        else
+        {
+            var url = "/reporting/?report_type=0";
         }
         window.location.href = url;
     });

@@ -34,7 +34,7 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
-async def get_reporting(request: Request, report_type: Optional[int] = 0, start_date: Optional[datetime] = date.today() - timedelta(days=30), end_date: Optional[datetime] = date.today(), manager: Optional[str] = None, departmentValue: Optional[int] = None, db: Session = Depends(get_db)):
+async def get_reporting(request: Request, report_type: Optional[int] = 0, start_date: Optional[datetime] = date.today() - timedelta(days=30), end_date: Optional[datetime] = date.today(), manager: Optional[str] = None, departmentValue: Optional[int] = None, countryValue: Optional[int] = None, db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
@@ -74,6 +74,16 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
             .filter(models.Employees.employment_status_id == 0)\
             .filter(models.Employees.department_id == departmentValue)\
             .all()
+    elif report_type == 6:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.country_of_origin_id == countryValue)\
+            .all()
+    elif report_type == 7:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.working_country_id == countryValue)\
+            .all()
     else:
         report_data = None
 
@@ -81,6 +91,8 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
         manager = ''
     if departmentValue == None:
         departmentValue = 0
+    if countryValue == None:
+        countryValue = 0
     
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
@@ -95,7 +107,7 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
     
-    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings, "manager": manager, "departmentValue": departmentValue})
+    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings, "manager": manager, "departmentValue": departmentValue, "countryValue": countryValue})
 
 @router.get("/download_csv/{report_type}/{start_date}/{end_date}")
 async def download_csv(request: Request, report_type: int, start_date: datetime, end_date: datetime, db: Session = Depends(get_db)):

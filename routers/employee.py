@@ -390,7 +390,7 @@ async def offboard_employee(request: Request, employee_id: int, db: Session = De
     employment_type = db.query(models.Employment).filter(models.Employment.id == employee_model.employment_type_id).first()
     site = db.query(models.Sites).filter(models.Sites.id == employee_model.site_id).first()
     hr_department = db.query(models.Teams).filter(models.Teams.id == employee_model.hr_team_id).first()
-    if hr_department != None:
+    if hr_department is not None:
         hr_department = hr_department.name
     else:
         hr_department = "N/A"

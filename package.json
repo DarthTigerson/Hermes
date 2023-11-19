@@ -6,7 +6,9 @@
   "directories": {
     "test": "test"
   },
-  "scripts": {},
+  "scripts": {
+    "cypress:open":"cypress open"
+  },
   "author": "Thomas Bonnici",
   "license": "MIT",
   "devDependencies": {

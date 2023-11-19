@@ -30,14 +30,14 @@
             </div>
             <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Manager</label>
-                <input type="text" class="form-control" name="manager_search" id="managerSearch" required>
+                <input type="text" class="form-control" name="manager_search" id="managerSearch" value="{{manager}}" required>
             </div>
             <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Department</label>
                 <select class="form-control" name="department_list" id="departmentList">
                     <option value="0">Select Department</option>
                     {% for department in departments %}
-                        <option value="{{department.id}}">{{department.name}}</option>
+                        <option value="{{department.id}}" {% if departmentValue == department.id%} selected {% endif %}>{{department.name}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -233,6 +233,10 @@
         var reportType = document.getElementById('reportType').value;
         var startDate = document.getElementById('startDate').value + 'T00:00:00';
         var endDate = document.getElementById('endDate').value + 'T23:59:59';
+        var managerSearch = document.getElementById('managerSearch').value;
+        var departmentValue = document.getElementById('departmentList').value;
+        console.log('reportType:', reportType);  // Debugging line
+        console.log('managerSearch:', managerSearch);  // Debugging line
         if (reportType == '1' || reportType == '2') 
         {
             var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
@@ -240,6 +244,14 @@
         else if (reportType == '3')
         {
             var url = "/reporting/?report_type=" + reportType;
+        }
+        else if (reportType == '4')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&manager=" + managerSearch;
+        }
+        else if (reportType == '5')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&departmentValue=" + departmentValue;
         }
         window.location.href = url;
     });

@@ -205,22 +205,22 @@
         window.location.href = url;
     });
     document.getElementById('reportType').addEventListener('change', function() {
-        if (this.value == '3') {
-            document.getElementById('startDate').parentElement.style.display = 'none';
-            document.getElementById('endDate').parentElement.style.display = 'none';
-        } else {
+        if (this.value == '1' || this.value == '2') {
             document.getElementById('startDate').parentElement.style.display = 'inline-block';
             document.getElementById('endDate').parentElement.style.display = 'inline-block';
+        } else {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
         }
     });
     function checkReportType() {
         var reportType = document.getElementById('reportType');
-        if (reportType.value == '3') {
-            document.getElementById('startDate').parentElement.style.display = 'none';
-            document.getElementById('endDate').parentElement.style.display = 'none';
-        } else {
+        if (reportType.value == '1' || reportType.value == '2') {
             document.getElementById('startDate').parentElement.style.display = 'inline-block';
             document.getElementById('endDate').parentElement.style.display = 'inline-block';
+        } else {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
         }
     }
 

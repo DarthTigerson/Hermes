@@ -28,6 +28,19 @@
                 <label style="margin-left: 10px;">End Date</label>
                 <input type="date" class="form-control" name="end_date" id="endDate" value="{{header_value.end_date.strftime('%Y-%m-%d')}}" required>
             </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Manager</label>
+                <input type="text" class="form-control" name="manager_search" id="managerSearch" required>
+            </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Department</label>
+                <select class="form-control" name="department_list" id="departmentList">
+                    <option value="0">Select Department</option>
+                    {% for department in departments %}
+                        <option value="{{department.id}}">{{department.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div style="width: 300px; display: inline-block; margin-top: 30px; text-align: right;" class="form-group float-right">
                 <a id="generateCsv" type="button" style="color: white; padding-right: 10px;" href="/reporting/download_csv/?report_type=report_type?start_date=start_date?end_date=end_date'"><img src="/static/img/csv.png" alt="csv_download" width="38px"></a>
                 <a id="generateReport" type="button" class="btn" style="color: white; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" href="">Generate Report</a>
@@ -212,12 +225,40 @@
         window.location.href = url;
     });
     document.getElementById('reportType').addEventListener('change', function() {
-        if (this.value == '1' || this.value == '2') {
+        if (this.value == '1' || this.value == '2') 
+        {
             document.getElementById('startDate').parentElement.style.display = 'inline-block';
             document.getElementById('endDate').parentElement.style.display = 'inline-block';
-        } else {
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '3')
+        {
             document.getElementById('startDate').parentElement.style.display = 'none';
             document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '4')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'inline-block';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '5')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'inline-block';
+        }
+        else
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
         }
     });
     function checkReportType() {

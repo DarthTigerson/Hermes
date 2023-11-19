@@ -60,11 +60,11 @@
                 </select>
             </div>
             <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
-                <label style="margin-left: 10px;">Employment Type</label>
+                <label style="margin-left: 10px;">Contract Type</label>
                 <select class="form-control" name="employment_list" id="employmentList">
-                    <option value="0">Select Employment Type</option>
-                    {% for employment_type in employment_types %}
-                        <option value="{{employment_type.id}}">{{employment_type.name}}</option>
+                    <option value="0">Select Contract Type</option>
+                    {% for employment_contract in employment_contracts %}
+                        <option value="{{employment_contract.id}}" {% if employmentValue == employment_contract.id%} selected {% endif %}>{{employment_contract.name}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -237,6 +237,7 @@
         var departmentValue = document.getElementById('departmentList').value;
         var countryValue = document.getElementById('countryList').value;
         var siteValue = document.getElementById('siteList').value;
+        var employmentValue = document.getElementById('employmentList').value;
         console.log('reportType:', reportType);  // Debugging line
         console.log('managerSearch:', managerSearch);  // Debugging line
         if (reportType == '1' || reportType == '2') 
@@ -262,6 +263,10 @@
         else if (reportType == '8')
         {
             var url = "/reporting/?report_type=" + reportType + "&siteValue=" + siteValue;
+        }
+        else if (reportType == '9')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&employmentValue=" + employmentValue;
         }
         else
         {

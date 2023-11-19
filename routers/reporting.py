@@ -34,7 +34,7 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/")
-async def get_reporting(request: Request, report_type: Optional[int] = 0, start_date: Optional[datetime] = date.today() - timedelta(days=30), end_date: Optional[datetime] = date.today(), db: Session = Depends(get_db)):
+async def get_reporting(request: Request, report_type: Optional[int] = 0, start_date: Optional[datetime] = date.today() - timedelta(days=30), end_date: Optional[datetime] = date.today(), manager: Optional[str] = None, departmentValue: Optional[int] = None, countryValue: Optional[int] = None, siteValue: Optional[int] = None, employmentValue: Optional[int] = None, db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
@@ -54,18 +54,59 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 0)\
             .all()
-
-        # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.start_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
     elif report_type == 2:
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 1)\
             .all()
-
-        # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.end_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
+    elif report_type == 3:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .all()
+    elif report_type == 4:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.direct_manager.like(manager))\
+            .all()
+    elif report_type == 5:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.department_id == departmentValue)\
+            .all()
+    elif report_type == 6:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.country_of_origin_id == countryValue)\
+            .all()
+    elif report_type == 7:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.working_country_id == countryValue)\
+            .all()
+    elif report_type == 8:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.site_id == siteValue)\
+            .all()
+    elif report_type == 9:
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.employment_contract_id == employmentValue)\
+            .all()
     else:
         report_data = None
+
+    if manager == None:
+        manager = ''
+    if departmentValue == None:
+        departmentValue = 0
+    if countryValue == None:
+        countryValue = 0
+    if siteValue == None:
+        siteValue = 0
+    if employmentValue == None:
+        employmentValue = 0
     
     role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
     
@@ -80,10 +121,10 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
     
-    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings})
+    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings, "manager": manager, "departmentValue": departmentValue, "countryValue": countryValue, "siteValue": siteValue, "employmentValue": employmentValue})
 
-@router.get("/download_csv/{report_type}/{start_date}/{end_date}")
-async def download_csv(request: Request, report_type: int, start_date: datetime, end_date: datetime, db: Session = Depends(get_db)):
+@router.get("/download_csv/{report_type}")
+async def download_csv(request: Request, report_type: int, start_date: Optional[datetime] = None, end_date: Optional[datetime] = None, manager: Optional[str] = None, departmentValue: Optional[int] = None, countryValue:Optional[int] = None, siteValue: Optional[int] = None, employmentValue: Optional[int] = None, db: Session = Depends(get_db)):
 
     user = await get_current_user(request)
     if user is None:
@@ -101,27 +142,76 @@ async def download_csv(request: Request, report_type: int, start_date: datetime,
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
-    # Convert start_date and end_date to strings in the 'YYYY-MM-DD' format
-    start_date_str = start_date.strftime('%Y-%m-%d')
-    end_date_str = end_date.strftime('%Y-%m-%d')
     now_date_time_str = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
     if report_type == 1:
+        start_date_str = start_date.strftime('%Y-%m-%d')
+        end_date_str = end_date.strftime('%Y-%m-%d')
         file_name = f"Onboarded_Report_{now_date_time_str}"
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 0)\
             .all()
-
-        # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.start_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
     elif report_type == 2:
+        start_date_str = start_date.strftime('%Y-%m-%d')
+        end_date_str = end_date.strftime('%Y-%m-%d')
         file_name = f"Offboarded_Report_{now_date_time_str}"
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 1)\
             .all()
-
-        # Filter the data in Python
         report_data = [employee for employee in report_data if start_date_str <= datetime.strptime(employee.end_date, '%Y-%m-%d').strftime('%Y-%m-%d') <= end_date_str]
+    elif report_type == 3:
+        file_name = f"All_Current_Employees_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .all()
+    elif report_type == 4:
+        temp_file_name = manager.replace(' ', '_')
+        file_name = f"Direct_Manager_{temp_file_name}_Report_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.direct_manager.like(manager))\
+            .all()
+    elif report_type == 5:
+        department_name = db.query(models.Departments).filter(models.Departments.id == departmentValue).first().name
+        temp_file_name = department_name.replace(' ', '_')
+        file_name = f"Department_{temp_file_name}_Report_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.department_id == departmentValue)\
+            .all()
+    elif report_type == 6:
+        country_name = db.query(models.Country).filter(models.Country.id == countryValue).first().name
+        temp_file_name = country_name.replace(' ', '_')
+        file_name = f"Country_of_Origin_{temp_file_name}_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.country_of_origin_id == countryValue)\
+            .all()
+    elif report_type == 7:
+        country_name = db.query(models.Country).filter(models.Country.id == countryValue).first().name
+        temp_file_name = country_name.replace(' ', '_')
+        file_name = f"Working_Country_{temp_file_name}_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.working_country_id == countryValue)\
+            .all()
+    elif report_type == 8:
+        site_name = db.query(models.Sites).filter(models.Sites.id == siteValue).first().name
+        temp_file_name = site_name.replace(' ', '_')
+        file_name = f"Site_{temp_file_name}_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.site_id == siteValue)\
+            .all()
+    elif report_type == 9:
+        contract_name = db.query(models.Contracts).filter(models.Contracts.id == employmentValue).first().name
+        temp_file_name = contract_name.replace(' ', '_')
+        file_name = f"Contract_{temp_file_name}_{now_date_time_str}"
+        report_data = db.query(models.Employees)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .filter(models.Employees.employment_contract_id == employmentValue)\
+            .all()
     else:
         return None
 

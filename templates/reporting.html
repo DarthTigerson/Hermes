@@ -9,8 +9,15 @@
                 <label style="margin-left: 10px;">Report Type</label>
                 <select class="form-control" id="reportType" name="report_type">
                     <option value="0" {% if header_value.report_type == 0%} selected="selected" {% endif %}>Select Report Type</option>
-                    <option value="1" {% if header_value.report_type == 1%} selected="selected" {% endif %}>Onboarded Employees</option>
-                    <option value="2" {% if header_value.report_type == 2%} selected="selected" {% endif %}>Offboarded Employees</option>
+                    <option value="1" {% if header_value.report_type == 1%} selected="selected" {% endif %}>Onboardings</option>
+                    <option value="2" {% if header_value.report_type == 2%} selected="selected" {% endif %}>Offboardings</option>
+                    <option value="3" {% if header_value.report_type == 3%} selected="selected" {% endif %}>All Current Employees</option>
+                    <option value="4" {% if header_value.report_type == 4%} selected="selected" {% endif %}>By Manager</option>
+                    <option value="5" {% if header_value.report_type == 5%} selected="selected" {% endif %}>By Department</option>
+                    <option value="6" {% if header_value.report_type == 6%} selected="selected" {% endif %}>By Country</option>
+                    <option value="7" {% if header_value.report_type == 7%} selected="selected" {% endif %}>By Working Country</option>
+                    <option value="8" {% if header_value.report_type == 8%} selected="selected" {% endif %}>By Site</option>
+                    <option value="9" {% if header_value.report_type == 9%} selected="selected" {% endif %}>By Contract Type</option>
                 </select>
             </div>
             <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
@@ -21,9 +28,49 @@
                 <label style="margin-left: 10px;">End Date</label>
                 <input type="date" class="form-control" name="end_date" id="endDate" value="{{header_value.end_date.strftime('%Y-%m-%d')}}" required>
             </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Manager</label>
+                <input type="text" class="form-control" name="manager_search" id="managerSearch" value="{{manager}}" required>
+            </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Department</label>
+                <select class="form-control" name="department_list" id="departmentList">
+                    <option value="0">Select Department</option>
+                    {% for department in departments %}
+                        <option value="{{department.id}}" {% if departmentValue == department.id%} selected {% endif %}>{{department.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Country</label>
+                <select class="form-control" name="country_list" id="countryList">
+                    <option value="0">Select Country</option>
+                    {% for country in countries %}
+                        <option value="{{country.id}}" {% if countryValue == country.id%} selected {% endif %}>{{country.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Site</label>
+                <select class="form-control" name="site_list" id="siteList">
+                    <option value="0">Select Site</option>
+                    {% for site in sites %}
+                        <option value="{{site.id}}" {% if siteValue == site.id%} selected {% endif %}>{{site.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Contract Type</label>
+                <select class="form-control" name="employment_list" id="employmentList">
+                    <option value="0">Select Contract Type</option>
+                    {% for employment_contract in employment_contracts %}
+                        <option value="{{employment_contract.id}}" {% if employmentValue == employment_contract.id%} selected {% endif %}>{{employment_contract.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div style="width: 300px; display: inline-block; margin-top: 30px; text-align: right;" class="form-group float-right">
                 <a id="generateCsv" type="button" style="color: white; padding-right: 10px;" href="/reporting/download_csv/?report_type=report_type?start_date=start_date?end_date=end_date'"><img src="/static/img/csv.png" alt="csv_download" width="38px"></a>
-                <a id="generateReport" type="button" class="btn" style="color: white; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" href="/reporting/?report_type=report_type?start_date=start_date?end_date=end_date">Generate Report</a>
+                <a id="generateReport" type="button" class="btn" style="color: white; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" href="">Generate Report</a>
             </div>
         </div>
         <div class="card-body" style="overflow:auto;">
@@ -182,19 +229,213 @@
 
 <script>
     document.getElementById('generateReport').addEventListener('click', function(event) {
-    event.preventDefault();
-    var reportType = document.getElementById('reportType').value;
-    var startDate = document.getElementById('startDate').value + 'T00:00:00';
-    var endDate = document.getElementById('endDate').value + 'T23:59:59';
-    var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
-    window.location.href = url;
-});
+        event.preventDefault();
+        var reportType = document.getElementById('reportType').value;
+        var startDate = document.getElementById('startDate').value + 'T00:00:00';
+        var endDate = document.getElementById('endDate').value + 'T23:59:59';
+        var managerSearch = document.getElementById('managerSearch').value;
+        var departmentValue = document.getElementById('departmentList').value;
+        var countryValue = document.getElementById('countryList').value;
+        var siteValue = document.getElementById('siteList').value;
+        var employmentValue = document.getElementById('employmentList').value;
+        console.log('reportType:', reportType);  // Debugging line
+        console.log('managerSearch:', managerSearch);  // Debugging line
+        if (reportType == '1' || reportType == '2') 
+        {
+            var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
+        }
+        else if (reportType == '3')
+        {
+            var url = "/reporting/?report_type=" + reportType;
+        }
+        else if (reportType == '4')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&manager=" + managerSearch;
+        }
+        else if (reportType == '5')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&departmentValue=" + departmentValue;
+        }
+        else if (reportType == '6' || reportType == '7')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&countryValue=" + countryValue;
+        }
+        else if (reportType == '8')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&siteValue=" + siteValue;
+        }
+        else if (reportType == '9')
+        {
+            var url = "/reporting/?report_type=" + reportType + "&employmentValue=" + employmentValue;
+        }
+        else
+        {
+            var url = "/reporting/?report_type=0";
+        }
+        window.location.href = url;
+    });
     document.getElementById('generateCsv').addEventListener('click', function(event) {
-    event.preventDefault();
-    var reportType = document.getElementById('reportType').value;
-    var startDate = document.getElementById('startDate').value + 'T00:00:00';
-    var endDate = document.getElementById('endDate').value + 'T23:59:59';
-    var url = "/reporting/download_csv/"+reportType+"/"+startDate+"/"+endDate;
-    window.location.href = url;
-});
+        event.preventDefault();
+        var reportType = document.getElementById('reportType').value;
+        var startDate = document.getElementById('startDate').value + 'T00:00:00';
+        var endDate = document.getElementById('endDate').value + 'T23:59:59';
+        var manager = document.getElementById('managerSearch').value;
+        var departmentValue = document.getElementById('departmentList').value;
+        var countryValue = document.getElementById('countryList').value;
+        var siteValue = document.getElementById('siteList').value;
+        var employmentValue = document.getElementById('employmentList').value;
+        var url = "/reporting/download_csv/" + reportType + "?start_date=" + startDate + "&end_date=" + endDate + "&manager=" + manager + "&departmentValue=" + departmentValue + "&countryValue=" + countryValue + "&siteValue=" + siteValue + "&employmentValue=" + employmentValue;
+        window.location.href = url;
+    });
+    document.getElementById('reportType').addEventListener('change', function() {
+        if (this.value == '1' || this.value == '2') 
+        {
+            document.getElementById('startDate').parentElement.style.display = 'inline-block';
+            document.getElementById('endDate').parentElement.style.display = 'inline-block';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '4')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'inline-block';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '5')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'inline-block';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '6' || this.value == '7')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'inline-block';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '8')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'inline-block';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '9')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'inline-block';
+        }
+        else
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+    });
+    function checkReportType() {
+        var reportType = document.getElementById('reportType');
+        if (reportType.value == '1' || reportType.value == '2') 
+        {
+            document.getElementById('startDate').parentElement.style.display = 'inline-block';
+            document.getElementById('endDate').parentElement.style.display = 'inline-block';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        } 
+        else if (reportType.value == '4')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'inline-block';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (reportType.value == '5')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'inline-block';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (reportType.value == '6' || reportType.value == '7')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'inline-block';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (reportType.value == '8')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'inline-block';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (reportType.value == '9')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'inline-block';
+        }
+        else
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+    }
+
+    // Call the function when the page loads
+    window.onload = checkReportType;
+
+    // Call the function when the select value changes
+    document.getElementById('reportType').addEventListener('change', checkReportType);
 </script>

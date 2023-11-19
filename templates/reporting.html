@@ -30,7 +30,7 @@
             </div>
             <div style="width: 300px; display: inline-block; margin-top: 30px; text-align: right;" class="form-group float-right">
                 <a id="generateCsv" type="button" style="color: white; padding-right: 10px;" href="/reporting/download_csv/?report_type=report_type?start_date=start_date?end_date=end_date'"><img src="/static/img/csv.png" alt="csv_download" width="38px"></a>
-                <a id="generateReport" type="button" class="btn" style="color: white; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" href="/reporting/?report_type=report_type?start_date=start_date?end_date=end_date">Generate Report</a>
+                <a id="generateReport" type="button" class="btn" style="color: white; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" href="">Generate Report</a>
             </div>
         </div>
         <div class="card-body" style="overflow:auto;">
@@ -193,7 +193,14 @@
         var reportType = document.getElementById('reportType').value;
         var startDate = document.getElementById('startDate').value + 'T00:00:00';
         var endDate = document.getElementById('endDate').value + 'T23:59:59';
-        var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
+        if (reportType == '1' || reportType == '2') 
+        {
+            var url = "/reporting/?report_type=" + reportType + "&start_date=" + startDate + "&end_date=" + endDate;
+        }
+        else if (reportType == '3')
+        {
+            var url = "/reporting/?report_type=" + reportType;
+        }
         window.location.href = url;
     });
     document.getElementById('generateCsv').addEventListener('click', function(event) {

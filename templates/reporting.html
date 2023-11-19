@@ -50,6 +50,24 @@
                     {% endfor %}
                 </select>
             </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Site</label>
+                <select class="form-control" name="site_list" id="siteList">
+                    <option value="0">Select Site</option>
+                    {% for site in sites %}
+                        <option value="{{site.id}}">{{site.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+                <label style="margin-left: 10px;">Employment Type</label>
+                <select class="form-control" name="employment_list" id="employmentList">
+                    <option value="0">Select Employment Type</option>
+                    {% for employment_type in employment_types %}
+                        <option value="{{employment_type.id}}">{{employment_type.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <div style="width: 300px; display: inline-block; margin-top: 30px; text-align: right;" class="form-group float-right">
                 <a id="generateCsv" type="button" style="color: white; padding-right: 10px;" href="/reporting/download_csv/?report_type=report_type?start_date=start_date?end_date=end_date'"><img src="/static/img/csv.png" alt="csv_download" width="38px"></a>
                 <a id="generateReport" type="button" class="btn" style="color: white; background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}" href="">Generate Report</a>
@@ -241,6 +259,8 @@
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
         }
         else if (this.value == '3')
         {
@@ -249,6 +269,8 @@
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
         }
         else if (this.value == '4')
         {
@@ -257,6 +279,8 @@
             document.getElementById('managerSearch').parentElement.style.display = 'inline-block';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
         }
         else if (this.value == '5')
         {
@@ -265,6 +289,8 @@
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'inline-block';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
         }
         else if (this.value == '6' || this.value == '7')
         {
@@ -273,6 +299,28 @@
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'inline-block';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '8')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'inline-block';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
+        }
+        else if (this.value == '9')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'inline-block';
         }
         else
         {
@@ -281,6 +329,8 @@
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'none';
         }
     });
     function checkReportType() {
@@ -292,6 +342,7 @@
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
         } 
         else if (reportType.value == '3')
         {
@@ -300,30 +351,53 @@
             document.getElementById('managerSearch').parentElement.style.display = 'inline-block';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
         }
-        else if (this.value == '4')
+        else if (reportType.value == '4')
         {
             document.getElementById('startDate').parentElement.style.display = 'none';
             document.getElementById('endDate').parentElement.style.display = 'none';
             document.getElementById('managerSearch').parentElement.style.display = 'inline-block';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
         }
-        else if (this.value == '5')
+        else if (reportType.value == '5')
         {
             document.getElementById('startDate').parentElement.style.display = 'none';
             document.getElementById('endDate').parentElement.style.display = 'none';
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'inline-block';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
         }
-        else if (this.value == '6' || this.value == '7')
+        else if (reportType.value == '6' || reportType.value == '7')
         {
             document.getElementById('startDate').parentElement.style.display = 'none';
             document.getElementById('endDate').parentElement.style.display = 'none';
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'inline-block';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+        }
+        else if (reportType.value == '8')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'inline-block';
+        }
+        else if (reportType.value == '9')
+        {
+            document.getElementById('startDate').parentElement.style.display = 'none';
+            document.getElementById('endDate').parentElement.style.display = 'none';
+            document.getElementById('managerSearch').parentElement.style.display = 'none';
+            document.getElementById('departmentList').parentElement.style.display = 'none';
+            document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
+            document.getElementById('employmentList').parentElement.style.display = 'inline-block';
         }
         else
         {
@@ -332,6 +406,7 @@
             document.getElementById('managerSearch').parentElement.style.display = 'none';
             document.getElementById('departmentList').parentElement.style.display = 'none';
             document.getElementById('countryList').parentElement.style.display = 'none';
+            document.getElementById('siteList').parentElement.style.display = 'none';
         }
     }
 

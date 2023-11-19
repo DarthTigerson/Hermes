@@ -396,9 +396,9 @@ async def offboard_employee(request: Request, employee_id: int, db: Session = De
         hr_department = "N/A"
     department = db.query(models.Departments).filter(models.Departments.id == employee_model.department_id).first()
 
-    if settings.slack_webhook_channel != None and settings.email_offboarded_employee == True:
+    if settings.slack_webhook_channel is not None and settings.email_offboarded_employee:
         await slack_send_message(message=f"Employee offboarded: {employee_model.full_name} ({employee_model.email})", db=db)
-    if settings.email_list != None and settings.email_offboarded_employee == True:
+    if settings.email_list is not None and settings.email_offboarded_employee:
         await email_send_message(subject=f"Employee Offboarding: {employee_model.full_name}", message=f"Hermes\nOffboarding notification for: {employee_model.full_name}\n\nThis email is to notify you of the following employee leaving our organization:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nlease disable all accesses provided on the specified above date (unless otherwise instructed) and contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Offboarded the employee with the email {employee_model.email}.")

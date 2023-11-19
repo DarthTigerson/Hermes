@@ -18,8 +18,8 @@ jobs:
       - name: Login on Dockerhub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.EDSON_DOCKERHUB_ID }}
-          password: ${{ secrets.EDSON_DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_ID }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Configure QEMU
         uses: docker/setup-qemu-action@v1
@@ -31,6 +31,6 @@ jobs:
         uses: docker/build-push-action@v4.0.0
         with:
           context: .
-          tags: w3edd/hermes:${{ github.event.inputs.tag }},w3edd/hermes:latest
+          tags: ${{ secrets.DOCKERHUB_ID }}/hermes:${{ github.event.inputs.tag }}, ${{ secrets.DOCKERHUB_TOKEN }}/hermes:latest
           platforms: linux/amd64,linux/arm64
           push: true

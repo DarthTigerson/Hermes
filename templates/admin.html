@@ -15,19 +15,24 @@
                         <table class="table table-hover text-center">
                             <thead>
                                 <tr>
+                                    <th scope="col" style="width: 30px;">Profile</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Surname</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">HR Team</th>
                                     {% if role_state.admin == 1 %}
-                                    <th scope="col">Edit</th>
+                                    <th scope="col" style="width: 30px;">Edit</th>
                                     {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for user in users %}
                                 <tr>
+                                    {% if user.users_profile == None %}
+                                        <td><img src="/static/img/boy.png" style="width: 30px; height: 30px; border-radius: 50%;"></td>
+                                    {% else %}
+                                    {% endif %}
                                     <td>{{user.username}}</td>
                                     <td>{{user.first_name}}</td>
                                     <td>{{user.last_name}}</td>

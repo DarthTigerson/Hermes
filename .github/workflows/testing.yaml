@@ -22,7 +22,8 @@ jobs:
       - name: Start server
         run: |
           chmod +x ./run.sh
-          ./run.sh
+          ./run.sh &
+          sleep 5
         shell: bash
 
       - name: Run Cypress

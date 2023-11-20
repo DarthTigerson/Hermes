@@ -22,16 +22,17 @@
                                     <th scope="col">Role</th>
                                     <th scope="col">HR Team</th>
                                     {% if role_state.admin == 1 %}
-                                    <th scope="col" style="width: 30px;">Edit</th>
+                                    <th scope="col" style="width: ;">Edit</th>
                                     {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for user in users %}
                                 <tr>
-                                    {% if user.users_profile == None %}
+                                    {% if user.username == "hermes" %}
+                                        <td><img src="/static/img/logo.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == None %}
                                         <td><img src="/static/img/boy.png" style="width: 30px; height: 30px; border-radius: 50%;"></td>
-                                    {% else %}
                                     {% endif %}
                                     <td>{{user.username}}</td>
                                     <td>{{user.first_name}}</td>

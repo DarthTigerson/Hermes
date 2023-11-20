@@ -30,6 +30,6 @@ describe('Manage admins', () => {
 
     cy.get(':nth-child(1) > :nth-child(6) > .btn').click()
     cy.get('.btn-danger').click()
-    cy.url().should("include", "/admin/");
+    cy.url().should("include", "/admins/");
   });
 });

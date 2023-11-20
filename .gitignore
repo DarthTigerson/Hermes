@@ -7,3 +7,4 @@
 *pyproject.toml
 node_modules
 venv
+db

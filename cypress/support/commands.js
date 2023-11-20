@@ -23,3 +23,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("login", (username, password) => {
+  cy.session(username, () => {
+    cy.visit("http://0.0.0.0:8000/admin/login")
+    cy.get('form > :nth-child(1) > .form-control').type(username)
+    cy.get(':nth-child(2) > .form-control').type(password)
+    cy.get('.btn').click();
+    cy.url().should("include", "/");
+  }, {
+    validate: () => {
+      cy.getCookie("access_token").should("exist")
+    }
+  });
+});

@@ -192,7 +192,7 @@ def create_settings_table():
 def full_run():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    if len(sys.argv) > 1 and sys.argv[1] == "--overwrite":
+    if len(sys.argv) > 1 and "--overwrite" in sys.argv:
         db_run_status = "y"
     else:
         db_path = "./db/hermes.db"

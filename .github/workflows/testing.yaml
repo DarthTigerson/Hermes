@@ -2,6 +2,7 @@ name: "🤖🧪E2E Testing"
 on:
   workflow_dispatch:
     inputs:
+
   pull_request:
     branches:
       - '*'

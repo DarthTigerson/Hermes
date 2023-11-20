@@ -1,22 +1,17 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form, Response
-from sqlalchemy.orm import Session
-from typing import Annotated, Optional
-from database import SessionLocal, engine
-from pydantic import BaseModel, Field
-from models import Settings, Base
-from datetime import datetime, timedelta
-from jose import jwt, JWTError
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from passlib.context import CryptContext
-import requests
 import smtplib
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from typing import Annotated
 
-from starlette import status
-from starlette.responses import RedirectResponse
+import requests
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.templating import Jinja2Templates
+from passlib.context import CryptContext
+from sqlalchemy.orm import Session
+
+from database import SessionLocal, engine
+from models import Settings, Base
 
 SECRET_KEY = "KlgH6AzYDeZeGwD288to79I3vTHT8wp7"
 ALGORITHM = "HS256"

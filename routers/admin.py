@@ -1,19 +1,19 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form, Response
-from sqlalchemy.orm import Session
-from typing import Annotated, Optional
-from database import SessionLocal, engine
-from pydantic import BaseModel, Field
-from models import Users, Roles, Teams, Base, Settings
-from routers.messaging import slack_send_message
 from datetime import datetime, timedelta
-from jose import jwt, JWTError
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from passlib.context import CryptContext
+from typing import Annotated, Optional
 
+from fastapi import APIRouter, Depends, Request, Form, Response
+from fastapi.responses import HTMLResponse
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi.templating import Jinja2Templates
+from jose import jwt, JWTError
+from passlib.context import CryptContext
+from sqlalchemy.orm import Session
 from starlette import status
 from starlette.responses import RedirectResponse
+
+from database import SessionLocal, engine
+from models import Users, Roles, Teams, Base, Settings
+from routers.messaging import slack_send_message
 
 SECRET_KEY = "KlgH6AzYDeZeGwD288to79I3vTHT8wp7"
 ALGORITHM = "HS256"
@@ -59,7 +59,7 @@ def verify_password(plain_password, hashed_password):
     return bcrypt_context.verify(plain_password, hashed_password)
 
 
-def authenticate_user(username: str, password: str, db):
+def authenticate_user(username: str, password: str, db) -> bool or Users:
     user = db.query(Users)\
         .filter(Users.username == username)\
         .first()
@@ -186,7 +186,7 @@ async def create_role(request: Request, name: str = Form(...), description: str 
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     role_model = Roles()
 
     role_model.name = name
@@ -221,9 +221,9 @@ async def edit_role(request: Request, role_id: int, db: Session = Depends(get_db
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     role = db.query(Roles).filter(Roles.id == role_id).first()
-    
+
     return templates.TemplateResponse("edit-role.html", {"request": request, "role": role, "logged_in_user": user, "role_state": role_state, "settings": settings})
 
 @router.post("/edit_role/{role_id}", response_class=HTMLResponse)
@@ -238,7 +238,7 @@ async def edit_role(request: Request, role_id: int, name: str = Form(...), descr
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     role = db.query(Roles).filter(Roles.id == role_id).first()
 
     role.name = name
@@ -272,7 +272,7 @@ async def add_team(request: Request, db: Session = Depends(get_db)):
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     return templates.TemplateResponse("add-team.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings})
 
 @router.post("/add_team", response_class=HTMLResponse)
@@ -287,7 +287,7 @@ async def create_team(request: Request, name: str = Form(...), description: str 
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     team_model = Teams()
 
     team_model.name = name
@@ -311,9 +311,9 @@ async def edit_team(request: Request, team_id: int, db: Session = Depends(get_db
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     team = db.query(Teams).filter(Teams.id == team_id).first()
-    
+
     return templates.TemplateResponse("edit-team.html", {"request": request, "team": team, "logged_in_user": user, "role_state": role_state, "settings": settings})
 
 @router.post("/edit_team/{team_id}", response_class=HTMLResponse)
@@ -328,7 +328,7 @@ async def update_team(request: Request, team_id: int, name: str = Form(...), des
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     team = db.query(Teams).filter(Teams.id == team_id).first()
 
     team.name = name
@@ -352,7 +352,7 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
 
@@ -370,7 +370,7 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     user_model = Users()
 
     user_model.username = username
@@ -384,7 +384,7 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     db.commit()
 
     payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
-    
+
     if payroll_data_access.payroll == True:
         await slack_send_message(f"<!channel> User {username} has been created by {user['username']} with Payroll Access", db=db)
 
@@ -403,11 +403,11 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     user = db.query(Users).filter(Users.id == user_id).first()
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
-    
+
     return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state, "settings": settings})
 
 @router.post("/edit_user/{user_id}", response_class=HTMLResponse)
@@ -422,7 +422,7 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    
+
     user = db.query(Users).filter(Users.id == user_id).first()
 
     user.username = username
@@ -443,7 +443,7 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 
 @router.get("/delete_user/{user_id}")
 async def delete_user(request: Request, user_id: int, db: Session = Depends(get_db)):
-        
+
     user = await get_current_user(request)
 
     if user is None:
@@ -463,12 +463,12 @@ async def delete_user(request: Request, user_id: int, db: Session = Depends(get_
 
 @router.get("/reset_password/{user_id}")
 async def reset_password_page(request: Request, user_id: int, db: Session = Depends(get_db)):
-        
+
     user = await get_current_user(request)
 
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    
+
     settings = db.query(Settings).order_by(Settings.id.desc()).first()
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
@@ -481,12 +481,12 @@ async def reset_password_page(request: Request, user_id: int, db: Session = Depe
 
 @router.post("/reset_password/{user_id}", response_class=HTMLResponse)
 async def reset_password(request: Request, user_id: int, password: str = Form(...), db: Session = Depends(get_db)):
-            
+
     user = await get_current_user(request)
 
     if user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
-    
+
     role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
 
     if role_state.admin == False:

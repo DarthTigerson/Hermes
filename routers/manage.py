@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Request, Form
-from sqlalchemy.orm import Session
 from typing import Annotated
-from database import SessionLocal
-from pydantic import BaseModel, Field
-from models import Departments, Sites, Contracts, Employers, Employment, Country, Currency, PayFrequency, Roles, Settings
-from routers.admin import get_current_user
-from routers.logging import create_log, Log
+
+from fastapi import APIRouter, Depends, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-
+from sqlalchemy.orm import Session
 from starlette import status
 from starlette.responses import RedirectResponse
+
+from database import SessionLocal
+from models import Departments, Sites, Contracts, Employers, Employment, Country, Currency, PayFrequency, Roles, \
+    Settings
+from routers.admin import get_current_user
+from routers.logging import create_log, Log
 
 router = APIRouter(
     prefix="/manage",

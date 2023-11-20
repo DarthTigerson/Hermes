@@ -106,8 +106,9 @@ async def get_employee_details(request: Request, employee_id: int, db: Session =
     employers = db.query(models.Employers).order_by(models.Employers.name).all()
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
+    employee_contracts = db.query(models.Employee_Contracts).order_by(desc(models.Employee_Contracts.id)).filter(models.Employee_Contracts.employee_id == employee_id).all()
     
-    return templates.TemplateResponse("employee-details.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings})
+    return templates.TemplateResponse("employee-details.html", {"request": request, "employee_data": employee_data, "departments": departments, "sites": sites , "countries": countries, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequencies": salary_pay_frequency, "logged_in_user": user, "role_state": role_state, "nav": 'employee', "settings": settings, "employee_contracts": employee_contracts})
 
 @router.get("/add_employee")
 async def add_employee(request: Request, db: Session = Depends(get_db)):

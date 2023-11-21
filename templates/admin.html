@@ -32,7 +32,9 @@
                                     {% if user.username == "hermes" %}
                                         <td><img src="/static/img/logo.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
                                     {% elif user.users_profile == None %}
-                                        <td><img src="/static/img/boy.png" style="width: 30px; height: 30px; border-radius: 50%;"></td>
+                                        <td><img src="/static/img/dionysius.png" style="width: 30px; height: 30px; border-radius: 50%;"></td>
+                                    {% else %}
+                                        <td><img src="data:image/png;base64,{{user.users_profile}}" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
                                     {% endif %}
                                     <td>{{user.username}}</td>
                                     <td>{{user.first_name}}</td>

@@ -27,7 +27,8 @@ You can install the [project locally](#local-installation), and run it on your o
 1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
 2. Install the dependencies: `pip install -r requirements.txt`
 3. Create a `.env` file and set the environment variables (see `.env.example` for an example)
-4. Run the application: `uvicorn main:app --reload`
+4. Give executable permissions to the launcher script: `chmod +x run.sh`
+5. Run the application: `./run.sh`
 
 ## Build Docker image
 
@@ -38,14 +39,24 @@ you need to link an empty directory from your host system to the container.
 
 1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
 2. Build the image from the Dockerfile `docker build --tag <YOUR_TAG> .`
-3. Create and run a container from the image: `docker run --mount type=bind,source=<DB_FILE_PATH>,target=/hermes/db -p 8000:8000 <YOUR_TAG>`
+3. Create and run a container from the image:  
+`docker run --mount type=bind,source=<DB_FILE_PATH>,target=/hermes/db -p 8000:8000 <YOUR_TAG>`  
+
+[Learn more](https://docs.docker.com/engine/reference/commandline/run/) on running docker containers.
 
 ## Run prebuilt image
 
 1. Pull the image from Dockerhub: `docker pull w3edd/hermes:latest`
-2. Run the docker image and set the forwarding web port: `docker run -d -v <DB_FOLDER>:/hermes/db -p <YOUR_PORT>:8000 w3edd/hermes:latest`
+2. Run the docker image and set the forwarding web port:  
+`docker run --mount type=bind,source=<DB_FILE_PATH>,target=/hermes/db -p 8000:8000 w3edd/hermes:latest`  
+
+[Learn more](https://docs.docker.com/engine/reference/commandline/run/) on running docker containers.
 
 ## Usage
+
+> [!NOTE]  
+> When not running on a container, on the first run, you need to create an admin user by running the `python startup.py` script.    
+> The default username and password for the admin user is `hermes` and `hermes`, respectively.
 
 1. Open your web browser and go to `http://localhost:8000`
 2. Use the navigation menu to access the different features of the application
@@ -54,9 +65,6 @@ you need to link an empty directory from your host system to the container.
 5. To delete an employee, go to the employee details page and click the "Delete" button. Confirm the deletion when prompted.
 6. To assign a role to an employee, go to the employee details page and select a role from the dropdown menu. Click "Save" to assign the role.
 7. To create a test admin account, click the "Create Test Admin" button and follow the prompts.
-
-**Note:** When not running on a container, on the first run, you need to create an admin user by running the `python startup.py` script.  
-The default username and password for the admin user is `hermes` and `hermes`, respectively.
 
 ## Contributing
 

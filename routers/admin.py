@@ -15,6 +15,8 @@ from database import SessionLocal, engine
 from models import Users, Roles, Teams, Base, Settings
 from routers.messaging import slack_send_message
 
+import base64
+
 SECRET_KEY = "KlgH6AzYDeZeGwD288to79I3vTHT8wp7"
 ALGORITHM = "HS256"
 
@@ -359,8 +361,8 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams, "logged_in_user": user, "role_state": role_state, "settings": settings})
 
 @router.post("/add_user", response_class=HTMLResponse)
-async def create_user(request: Request, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(None), password: str = Form(...), db: Session = Depends(get_db)):
-
+async def create_user(request: Request, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(None), password: str = Form(...), profile_image: str = Form(None), db: Session = Depends(get_db)):
+    
     user = await get_current_user(request)
 
     if user is None:
@@ -370,7 +372,28 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
+        
+    if profile_image != '0':
+        if profile_image == '1':
+            image_path = "static/img/aphrodite.png"
+        elif profile_image == '2':
+            image_path = "static/img/artemis.png"
+        elif profile_image == '3':
+            image_path = "static/img/athena.png"
+        elif profile_image == '4':
+            image_path = "static/img/hades.png"
+        elif profile_image == '5':
+            image_path = "static/img/hera.png"
+        elif profile_image == '6':
+            image_path = "static/img/hestia.png"
+        elif profile_image == '7':
+            image_path = "static/img/poseidon.png"
+        elif profile_image == '8':
+            image_path = "static/img/zeus.png"
 
+        with open(image_path, "rb") as f:
+            image_data = f.read()
+    
     user_model = Users()
 
     user_model.username = username
@@ -379,6 +402,7 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     user_model.role_id = role_id
     user_model.team_id = team_id
     user_model.password = get_password_hash(password)
+    user_model.users_profile = base64.b64encode(image_data).decode('utf-8')
 
     db.add(user_model)
     db.commit()

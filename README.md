@@ -2,7 +2,7 @@
 
 Hermes is a FastAPI powered employee management web application.  
 It allows you to manage your employees, their roles, and their onboarding/offboarding status.
-![Capture of Hermes](/static/img/capture.gif)
+![Capture of Hermes](static/img/capture.gif)
 
 ## Features
 
@@ -20,7 +20,7 @@ It allows you to manage your employees, their roles, and their onboarding/offboa
 
 # Installation
 
-You can install the [project locally](#local-installation), and run it on your own machine, or you could run it in a [docker container](#run-docker-image).
+You can install the [project locally](#local-installation), and run it as you see fit, or you could run it in a [docker container](#run-docker-image).
 
 ## Local installation
 
@@ -55,16 +55,22 @@ you need to link an empty directory from your host system to the container.
 ## Usage
 
 > [!NOTE]  
-> When not running on a container, on the first run, you need to create an admin user by running the `python startup.py` script.    
-> The default username and password for the admin user is `hermes` and `hermes`, respectively.
+> If running manually, on the first run, you need to set the database by running the `python startup.py` script.  
+> The default username and password for the admin user are `hermes` and `hermes`, respectively.
 
-1. Open your web browser and go to `http://localhost:8000`
-2. Use the navigation menu to access the different features of the application
-3. To add a new employee, click the "Add Employee" button and fill out the form. Click "Save" to add the employee.
-4. To edit an existing employee, go to the employee details page and click the "Edit" button. Make the necessary changes and click "Save" to update the employee.
-5. To delete an employee, go to the employee details page and click the "Delete" button. Confirm the deletion when prompted.
-6. To assign a role to an employee, go to the employee details page and select a role from the dropdown menu. Click "Save" to assign the role.
-7. To create a test admin account, click the "Create Test Admin" button and follow the prompts.
+1. To start the server, execute the `run.sh` script. You can optionally, run `uvicorn` manually instead: `uvicorn main:app --reload`
+2. Open your web browser and go to `http://localhost:8000`
+3. Use the navigation menu to access the different features of the application
+4. To add a new employee, click the "Add Employee" button and fill out the form. Click "Save" to add the employee.
+5. To edit an existing employee, go to the employee details page and click the "Edit" button. Make the necessary changes and click "Save" to update the employee.
+6. To delete an employee, go to the employee details page and click the "Delete" button. Confirm the deletion when prompted.
+7. To assign a role to an employee, go to the employee details page and select a role from the dropdown menu. Click "Save" to assign the role.
+8. To create a test admin account, click the "Create Test Admin" button and follow the prompts.
+
+> [!NOTE]
+> When running `uvicorn` manually, you need to set the ip address and port where the service will be running.  
+> For example: `uvicorn main:app --reload --host 0.0.0.0 --port 8000`  
+> To make the service available for your network, you have to set the host to `0.0.0.0`
 
 ## Contributing
 

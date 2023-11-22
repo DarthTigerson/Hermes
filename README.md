@@ -30,6 +30,19 @@ You can install the [project locally](#local-installation), and run it as you se
 4. Give executable permissions to the launcher script: `chmod +x run.sh`
 5. Run the application: `./run.sh`
 
+## Run on production mode (with HTTPS)
+
+To run this over HTTPS, you will need your cert files.
+You can read more about that [here](https://letsencrypt.org/).
+
+1. Clone the repository: `git clone https://github.com/DarthTigerson/Hermes.git`
+2. Install the dependencies: `pip install -r requirements.txt`
+3. Create a `.env` file and set the environment variables (see `.env.example` for an example)
+4. Give executable permissions to the launcher script: `chmod +x run.sh`
+5. Execute the `run.sh` script with the following parameters: `run.sh <KEYFILE_PATH> <CERTFILE_PATH>`
+
+This way, Hermes will be running, available to your network, on port 443, with HTTPS.
+
 ## Build Docker image
 
 It is possible to build your own docker image from the `Dockerfile` in this repository.  

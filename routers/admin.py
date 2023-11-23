@@ -417,7 +417,7 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
     return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "profile_load": profile_load})
 
 @router.post("/edit_user/{user_id}", response_class=HTMLResponse)
-async def update_user(request: Request, user_id: int, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), db: Session = Depends(get_db)):
+async def update_user(request: Request, user_id: int, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), profile_image: str = Form(None), db: Session = Depends(get_db)):
 
     logged_in_user = await get_current_user(request)
 
@@ -436,6 +436,7 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
     user.last_name = last_name
     user.role_id = role_id
     user.team_id = team_id
+    user.users_profile = profile_image
 
     db.add(user)
     db.commit()

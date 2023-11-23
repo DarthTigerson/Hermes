@@ -54,6 +54,7 @@
                         Hello {{logged_in_user.username}}  
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/#"><img src="/static/img/account.png" width="19px" style="padding-bottom: 4px; padding-right: 4px;"> Profile</a>
                         {% if role_state.admin == 1 %}
                         <a class="dropdown-item" href="/admin"><img src="/static/img/admin.png" width="19px" style="padding-bottom: 4px; padding-right: 4px;"> Admin</a>
                         {% endif %}

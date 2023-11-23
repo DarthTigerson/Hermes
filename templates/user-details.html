@@ -1,0 +1,52 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: center;" class="card-header">
+                <h4>{{user.first_name}} {{user.last_name}}</h4>
+            </div>
+            <div class="card-body">
+                {% include 'profile-pictures.html' %}
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Username</label>
+                    <span class="label-value">{{user.username}}</span>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Name</label>
+                    <span class="label-value">{{user.first_name}}</span>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Surname</label>
+                    <span class="label-value">{{user.last_name}}</span>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    <label>Role</label>
+                    <select class="form-control" name="role_id">
+                        {% for role in roles %}
+                            {% if role.id == user.role_id %}
+                                <span class="label-value">{{role.name}}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="label-value">No Role</span>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div style="width: 30%; display: inline-block;" class="form-group">
+                    {% for team in teams %}
+                        {% if team.id == user.team_id %}
+                            <label>Team</label>
+                            <span class="label-value">{{team.name}}</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div style="padding-bottom: 60px;"></div>
+        <div id="color_override" class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            <button type="submit" class="btn" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}">Update User</button>
+            <button type="button" class="btn" style="background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}" onclick="window.location.href='/admin/reset_password/{{user.id}}'">Reset Password</button>
+            <td><button onclick="if (confirm('Are you sure you want to delete {{user.username}}?')) { window.location.href='/admin/delete_user/{{user.id}}'; }" type="button" class="btn btn-danger" style="background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}}">Delete User</button></td>
+        </div>
+    </form>
+</div>

@@ -358,11 +358,9 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
 
-    profile_load = {
-        "users_profile": '0'
-    }
+    profile_load = '0'
 
-    return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "user": profile_load})
+    return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "profile_load": profile_load})
 
 @router.post("/add_user", response_class=HTMLResponse)
 async def create_user(request: Request, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(None), password: str = Form(...), profile_image: str = Form(None), db: Session = Depends(get_db)):
@@ -414,8 +412,9 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
     user = db.query(Users).filter(Users.id == user_id).first()
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
+    profile_load = user.users_profile
 
-    return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings})
+    return templates.TemplateResponse("edit-user.html", {"request": request, "user": user, "roles": roles, "teams": teams, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "profile_load": profile_load})
 
 @router.post("/edit_user/{user_id}", response_class=HTMLResponse)
 async def update_user(request: Request, user_id: int, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), db: Session = Depends(get_db)):

@@ -428,7 +428,7 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
     settings = db.query(Settings).order_by(Settings.id.desc()).first()
-    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+    role_state = db.query(Roles).filter(Roles.id == logged_in_user['role_id']).first()
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
@@ -442,12 +442,12 @@ async def edit_user(request: Request, user_id: int, db: Session = Depends(get_db
 @router.post("/edit_user/{user_id}", response_class=HTMLResponse)
 async def update_user(request: Request, user_id: int, username: str = Form(...), first_name: str = Form(...), last_name: str = Form(...), role_id: int = Form(...), team_id: int = Form(...), db: Session = Depends(get_db)):
 
-    user = await get_current_user(request)
+    logged_in_user = await get_current_user(request)
 
-    if user is None:
+    if logged_in_user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+    role_state = db.query(Roles).filter(Roles.id == logged_in_user['role_id']).first()
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
@@ -473,12 +473,12 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 @router.get("/delete_user/{user_id}")
 async def delete_user(request: Request, user_id: int, db: Session = Depends(get_db)):
 
-    user = await get_current_user(request)
+    logged_in_user = await get_current_user(request)
 
-    if user is None:
+    if logged_in_user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
-    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+    role_state = db.query(Roles).filter(Roles.id == logged_in_user['role_id']).first()
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)

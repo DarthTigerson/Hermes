@@ -376,28 +376,6 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
 
     if role_state.admin == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-        
-    if profile_image == '1':
-        image_path = "static/img/aphrodite.png"
-    elif profile_image == '2':
-        image_path = "static/img/artemis.png"
-    elif profile_image == '3':
-        image_path = "static/img/athena.png"
-    elif profile_image == '4':
-        image_path = "static/img/hades.png"
-    elif profile_image == '5':
-        image_path = "static/img/hera.png"
-    elif profile_image == '6':
-        image_path = "static/img/hestia.png"
-    elif profile_image == '7':
-        image_path = "static/img/poseidon.png"
-    elif profile_image == '8':
-        image_path = "static/img/zeus.png"
-    else:
-        image_path = "static/img/dionysius.png"
-
-    with open(image_path, "rb") as f:
-        image_data = f.read()
     
     user_model = Users()
 
@@ -407,7 +385,7 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     user_model.role_id = role_id
     user_model.team_id = team_id
     user_model.password = get_password_hash(password)
-    user_model.users_profile = base64.b64encode(image_data).decode('utf-8')
+    user_model.users_profile = profile_image
 
     db.add(user_model)
     db.commit()

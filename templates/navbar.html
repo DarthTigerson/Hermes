@@ -30,7 +30,28 @@
                 {% if logged_in_user %}
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="/static/img/boy.png" alt="Loging image" height="18" style="padding-right: 0px;"> Hello {{logged_in_user.username}}  
+                        {% if logged_in_user.users_profile == '1' %}
+                            <img src="/static/img/aphrodite.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.users_profile == '2' %}
+                            <img src="/static/img/artemis.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.users_profile == '3' %}
+                            <img src="/static/img/athena.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.users_profile == '4' %}
+                            <img src="/static/img/hades.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.users_profile == '5' %}
+                            <img src="/static/img/hera.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.users_profile == '6' %}
+                            <img src="/static/img/hestia.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.users_profile == '7' %}
+                            <img src="/static/img/poseidon.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.users_profile == '8' %}
+                            <img src="/static/img/zeus.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.username == 'hermes' %}
+                            <img src="/static/img/logo.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% else %}
+                            <img src="/static/img/dionysius.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% endif %}
+                        Hello {{logged_in_user.username}}  
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         {% if role_state.admin == 1 %}

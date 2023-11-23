@@ -462,7 +462,7 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
     payroll_data_access = db.query(Roles).filter(Roles.id == role_id).first()
 
     if payroll_data_access.payroll == True:
-        await slack_send_message(f"<!channel> User {username} has been modified by {user['username']} to have access to Payroll Access", db=db)
+        await slack_send_message(f"<!channel> User {username} has been modified by {user.username} to have access to Payroll Access", db=db)
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 

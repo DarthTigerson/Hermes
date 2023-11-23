@@ -9,49 +9,49 @@
     </div>
     <div style="display: flex; justify-content: center; margin: auto;">
         <div>
-            <input type="radio" id="Aphrodite" name="profile_image" value="1" checked>
+            <input type="radio" id="Aphrodite" name="profile_image" value="1" {% if profile_load == '1' or profile_load == '0' %} checked {% endif %}>
             <label for="Aphrodite" style="padding: 5px;">
                 <img src="/static/img/aphrodite.png" alt="Aphrodite" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>
         </div>
         <div>
-            <input type="radio" id="Artemis" name="profile_image" value="2">
+            <input type="radio" id="Artemis" name="profile_image" value="2" {% if profile_load == '2' %} checked {% endif %}>
             <label for="Artemis" style="padding: 5px;">
                 <img src="/static/img/artemis.png" alt="Artemis" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>
         </div>
         <div>
-            <input type="radio" id="Athena" name="profile_image" value="3">
+            <input type="radio" id="Athena" name="profile_image" value="3" {% if profile_load == '3' %} checked {% endif %}>
             <label for="Athena" style="padding: 5px;">
                 <img src="/static/img/athena.png" alt="Athena" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>
         </div>
         <div>
-            <input type="radio" id="Hades" name="profile_image" value="4">
+            <input type="radio" id="Hades" name="profile_image" value="4" {% if profile_load == '4' %} checked {% endif %}>
             <label for="Hades" style="padding: 5px;">
                 <img src="/static/img/hades.png" alt="Hades" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>
         </div>
         <div>
-            <input type="radio" id="Hera" name="profile_image" value="5">
+            <input type="radio" id="Hera" name="profile_image" value="5" {% if profile_load == '5' %} checked {% endif %}>
             <label for="Hera" style="padding: 5px;">
                 <img src="/static/img/hera.png" alt="Hera" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>
         </div>
         <div>
-            <input type="radio" id="Hestia" name="profile_image" value="6">
+            <input type="radio" id="Hestia" name="profile_image" value="6" {% if profile_load == '6' %} checked {% endif %}>
             <label for="Hestia" style="padding: 5px;">
                 <img src="/static/img/hestia.png" alt="Hestia" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>
         </div>
         <div>
-            <input type="radio" id="Poseidon" name="profile_image" value="7">
+            <input type="radio" id="Poseidon" name="profile_image" value="7" {% if profile_load == '7' %} checked {% endif %}>
             <label for="Poseidon" style="padding: 5px;">
                 <img src="/static/img/poseidon.png" alt="Poseidon" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>
         </div>
         <div>
-            <input type="radio" id="Zeus" name="profile_image" value="8">
+            <input type="radio" id="Zeus" name="profile_image" value="8" {% if profile_load == '8' %} checked {% endif %}>
             <label for="Zeus" style="padding: 5px;">
                 <img src="/static/img/zeus.png" alt="Zeus" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
             </label>

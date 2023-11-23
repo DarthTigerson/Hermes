@@ -449,6 +449,21 @@ async def update_user(request: Request, user_id: int, username: str = Form(...),
 
     return RedirectResponse(url="/admin", status_code=status.HTTP_302_FOUND)
 
+@router.get("/user_details/")
+async def user_details(request: Request, db: Session = Depends(get_db)):
+        
+        logged_in_user = await get_current_user(request)
+    
+        if logged_in_user is None:
+            return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+        
+        settings = db.query(Settings).order_by(Settings.id.desc()).first()
+        role_state = db.query(Roles).filter(Roles.id == logged_in_user['role_id']).first()
+        user = db.query(Users).filter(Users.id == logged_in_user['id']).first()
+        user_profile = user.users_profile
+    
+        return templates.TemplateResponse("user-details.html", {"request": request, "user": user, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "user_profile": user_profile})
+
 @router.get("/delete_user/{user_id}")
 async def delete_user(request: Request, user_id: int, db: Session = Depends(get_db)):
 

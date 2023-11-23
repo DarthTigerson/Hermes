@@ -7,15 +7,7 @@
                 <h4>Update {{user.first_name}}</h4>
             </div>
             <div class="card-body">
-                <div style="width: 100%; display: inline-block; text-align: center;" class="form-group">
-                    {% if user.username == "hermes" %}
-                        <td><img src="/static/img/logo.png" style="width: 200px; height: 200px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
-                    {% elif user.users_profile == None %}
-                        <td><img src="/static/img/dionysius.png" style="width: 200px; height: 200px; border-radius: 50%;"></td>
-                    {% else %}
-                        <td><img src="data:image/png;base64,{{user.users_profile}}" style="width: 200px; height: 200px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
-                    {% endif %}
-                </div>
+                {% include 'profile-pictures.html' %}
                 <div style="width: 30%; display: inline-block;" class="form-group">
                     <label>Username</label>
                     <input type="text" class="form-control" name="username" value="{{user.username}}" required>

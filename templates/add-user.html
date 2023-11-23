@@ -65,18 +65,3 @@
         </div>
     </form>
 </div>
-
-<script>
-window.onload = function() {
-    var radios = document.getElementsByName('profile_image');
-    for (var i = 0; i < radios.length; i++) {
-        radios[i].onchange = function() {
-            document.getElementById('main_image').src = document.querySelector('label[for="' + this.id + '"] img').src;
-        }
-        // If the radio button is initially selected, update the main image
-        if (radios[i].checked) {
-            document.getElementById('main_image').src = document.querySelector('label[for="' + radios[i].id + '"] img').src;
-        }
-    }
-}
-</script>

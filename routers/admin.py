@@ -383,7 +383,8 @@ async def create_user(request: Request, username: str = Form(...), first_name: s
     user_model.role_id = role_id
     user_model.team_id = team_id
     user_model.password = get_password_hash(password)
-    user_model.users_profile = profile_image
+    if username != 'hermes':
+        user_model.users_profile = profile_image
 
     db.add(user_model)
     db.commit()

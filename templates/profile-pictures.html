@@ -1,9 +1,13 @@
-<div style="width: 100%; display: inline-block;" class="form-group">
-    <label>Profile Picture</label>
-    <div style="display: flex; justify-content: flex-start;">
+<div class="form-group">
+    <div style="text-align: left;">
+        <label>Profile Picture</label>
+    </div>
+    <div style="display: flex; justify-content: center; margin: auto;">
         <div style="padding: 10px; padding-right: 50px;">
-            <img src="/static/img/aphrodite.png" alt="Aphrodite" width="200px" style="border-radius: 200%; background-color: {{settings.primary_color}};">
+            <img id="main_image" src="/static/img/aphrodite.png" alt="Aphrodite" width="200px" style="border-radius: 200%; background-color: {{settings.primary_color}};">
         </div>
+    </div>
+    <div style="display: flex; justify-content: center; margin: auto;">
         <div>
             <input type="radio" id="Aphrodite" name="profile_image" value="1" checked>
             <label for="Aphrodite" style="padding: 5px;">
@@ -54,3 +58,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.onload = function() {
+        var radios = document.getElementsByName('profile_image');
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].onchange = function() {
+                document.getElementById('main_image').src = document.querySelector('label[for="' + this.id + '"] img').src;
+            }
+        }
+    }
+    </script>

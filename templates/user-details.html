@@ -8,21 +8,21 @@
             </div>
             <div class="card-body">
                 {% include 'profile-pictures.html' %}
-                <div style="width: 30%; display: inline-block;" class="form-group">
-                    <label>Username</label>
-                    <span class="label-value">{{user.username}}</span>
-                </div>
-                <div style="width: 30%; display: inline-block;" class="form-group">
-                    <label>Name</label>
-                    <span class="label-value">{{user.first_name}}</span>
-                </div>
-                <div style="width: 30%; display: inline-block;" class="form-group">
-                    <label>Surname</label>
-                    <span class="label-value">{{user.last_name}}</span>
-                </div>
-                <div style="width: 30%; display: inline-block;" class="form-group">
-                    <label>Role</label>
-                    <select class="form-control" name="role_id">
+                <div style="display: flex; justify-content: center; flex-wrap: wrap;"> <!-- Updated this line -->
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label>Username</label>
+                        <span class="label-value">{{user.username}}</span>
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label>Name</label>
+                        <span class="label-value">{{user.first_name}}</span>
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label>Surname</label>
+                        <span class="label-value">{{user.last_name}}</span>
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label>Role</label>
                         {% for role in roles %}
                             {% if role.id == user.role_id %}
                                 <span class="label-value">{{role.name}}</span>
@@ -30,15 +30,15 @@
                         {% else %}
                             <span class="label-value">No Role</span>
                         {% endfor %}
-                    </select>
-                </div>
-                <div style="width: 30%; display: inline-block;" class="form-group">
-                    {% for team in teams %}
-                        {% if team.id == user.team_id %}
-                            <label>Team</label>
-                            <span class="label-value">{{team.name}}</span>
-                        {% endif %}
-                    {% endfor %}
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        {% for team in teams %}
+                            {% if team.id == user.team_id %}
+                                <label>HR Team</label>
+                                <span class="label-value">{{team.name}}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

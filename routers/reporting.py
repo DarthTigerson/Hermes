@@ -31,9 +31,10 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @router.get("/")
 async def get_reporting(request: Request, report_type: Optional[int] = 0, start_date: Optional[datetime] = date.today() - timedelta(days=30), end_date: Optional[datetime] = date.today(), manager: Optional[str] = None, departmentValue: Optional[int] = None, countryValue: Optional[int] = None, siteValue: Optional[int] = None, employmentValue: Optional[int] = None, db: Session = Depends(get_db)):
 
-    user = await get_current_user(request)
-    if user is None:
+    logged_in_user = await get_current_user(request)
+    if logged_in_user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
+    nav_profile_load = db.query(models.Users.users_profile).filter(models.Users.id == logged_in_user['id']).scalar()
     
     header_value = {
         "report_type": report_type,
@@ -116,7 +117,7 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
     hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
     salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
     
-    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings, "manager": manager, "departmentValue": departmentValue, "countryValue": countryValue, "siteValue": siteValue, "employmentValue": employmentValue})
+    return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": logged_in_user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings, "manager": manager, "departmentValue": departmentValue, "countryValue": countryValue, "siteValue": siteValue, "employmentValue": employmentValue, "nav_profile_load": nav_profile_load})
 
 @router.get("/download_csv/{report_type}")
 async def download_csv(request: Request, report_type: int, start_date: Optional[datetime] = None, end_date: Optional[datetime] = None, manager: Optional[str] = None, departmentValue: Optional[int] = None, countryValue:Optional[int] = None, siteValue: Optional[int] = None, employmentValue: Optional[int] = None, db: Session = Depends(get_db)):

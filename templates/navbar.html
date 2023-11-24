@@ -30,21 +30,21 @@
                 {% if logged_in_user %}
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if logged_in_user.users_profile == '1' %}
+                        {% if nav_profile_load == '1' %}
                             <img src="/static/img/aphrodite.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
-                        {% elif logged_in_user.users_profile == '2' %}
+                        {% elif nav_profile_load == '2' %}
                             <img src="/static/img/artemis.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
-                        {% elif logged_in_user.users_profile == '3' %}
+                        {% elif nav_profile_load == '3' %}
                             <img src="/static/img/athena.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
-                        {% elif logged_in_user.users_profile == '4' %}
+                        {% elif nav_profile_load == '4' %}
                             <img src="/static/img/hades.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
-                        {% elif logged_in_user.users_profile == '5' %}
+                        {% elif nav_profile_load == '5' %}
                             <img src="/static/img/hera.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
-                        {% elif logged_in_user.users_profile == '6' %}
+                        {% elif nav_profile_load == '6' %}
                             <img src="/static/img/hestia.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
-                        {% elif logged_in_user.users_profile == '7' %}
+                        {% elif nav_profile_load == '7' %}
                             <img src="/static/img/poseidon.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
-                        {% elif logged_in_user.users_profile == '8' %}
+                        {% elif nav_profile_load == '8' %}
                             <img src="/static/img/zeus.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
                         {% elif logged_in_user.username == 'hermes' %}
                             <img src="/static/img/logo.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">

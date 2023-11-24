@@ -104,7 +104,7 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
     if employmentValue == None:
         employmentValue = 0
     
-    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+    role_state = db.query(models.Roles).filter(models.Roles.id == logged_in_user['role_id']).first()
     
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
     countries = db.query(models.Country).order_by(models.Country.name).all()

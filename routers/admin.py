@@ -459,10 +459,12 @@ async def user_details(request: Request, db: Session = Depends(get_db)):
         
         settings = db.query(Settings).order_by(Settings.id.desc()).first()
         role_state = db.query(Roles).filter(Roles.id == logged_in_user['role_id']).first()
+        roles = db.query(Roles).order_by(Roles.name).all()
+        teams = db.query(Teams).order_by(Teams.name).all()
         user = db.query(Users).filter(Users.id == logged_in_user['id']).first()
         user_profile = user.users_profile
     
-        return templates.TemplateResponse("user-details.html", {"request": request, "user": user, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "user_profile": user_profile})
+        return templates.TemplateResponse("user-details.html", {"request": request, "user": user, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "roles": roles, "teams": teams, "user_profile": user_profile})
 
 @router.get("/delete_user/{user_id}")
 async def delete_user(request: Request, user_id: int, db: Session = Depends(get_db)):

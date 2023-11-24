@@ -363,7 +363,7 @@ async def add_user(request: Request, db: Session = Depends(get_db)):
 
     roles = db.query(Roles).order_by(Roles.name).all()
     teams = db.query(Teams).order_by(Teams.name).all()
-    profile_load = 0
+    profile_load = "1"
 
     return templates.TemplateResponse("add-user.html", {"request": request, "roles": roles, "teams": teams, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "profile_load": profile_load, "nav_profile_load": nav_profile_load})
 

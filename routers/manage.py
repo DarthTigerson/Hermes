@@ -74,7 +74,7 @@ async def add_department(request: Request, db: Session = Depends(get_db)):
     log = Log(action="Info",user=logged_in_user['username'],description=f"Viewed the add department page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("add-department.html", {"request": request, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings, "nav_profile_load": nav_profile_load})
+    return templates.TemplateResponse("add-department.html", {"request": request, "logged_in_user": logged_in_user, "role_state": role_state, "nav": 'manage', "settings": settings, "nav_profile_load": nav_profile_load})
 
 @router.post("/add_department", response_class=HTMLResponse)
 async def create_department(request: Request, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):
@@ -350,7 +350,7 @@ async def edit_contract(request: Request, contract_id: int, db: Session = Depend
     log = Log(action="Info",user=logged_in_user['username'],description=f"Viewed the edit contract page for {contract.name}.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("edit-contract.html", {"request": request, "contract": contract, "logged_in_user": user, "role_state": role_state, "nav": 'manage', "settings": settings, "nav_profile_load": nav_profile_load})
+    return templates.TemplateResponse("edit-contract.html", {"request": request, "contract": contract, "logged_in_user": logged_in_user, "role_state": role_state, "nav": 'manage', "settings": settings, "nav_profile_load": nav_profile_load})
 
 @router.post("/edit_contract/{contract_id}", response_class=HTMLResponse)
 async def update_contract(request: Request, contract_id: int, name: str = Form(...), description: str = Form(None), db: Session = Depends(get_db)):

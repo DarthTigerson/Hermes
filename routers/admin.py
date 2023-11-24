@@ -468,9 +468,10 @@ async def user_details(request: Request, db: Session = Depends(get_db)):
         roles = db.query(Roles).order_by(Roles.name).all()
         teams = db.query(Teams).order_by(Teams.name).all()
         user = db.query(Users).filter(Users.id == logged_in_user['id']).first()
-        nav_profile_load = user.users_profile
+        profile_load = user.users_profile
+        nav_profile_load = db.query(Users.users_profile).filter(Users.id == logged_in_user['id']).scalar()
     
-        return templates.TemplateResponse("user-details.html", {"request": request, "user": user, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "roles": roles, "teams": teams, "nav_profile_load": nav_profile_load})
+        return templates.TemplateResponse("user-details.html", {"request": request, "user": user, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "roles": roles, "teams": teams, "profile_load": profile_load, "nav_profile_load": nav_profile_load})
 
 @router.post("/user_details/", response_class=HTMLResponse)
 async def change_picture(request: Request, profile_image: str = Form(None), db: Session = Depends(get_db)):

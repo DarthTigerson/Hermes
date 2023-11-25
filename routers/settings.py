@@ -32,12 +32,13 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @router.get("/")
 async def get_settings(request: Request, page=None, db: Session = Depends(get_db)):
 
-    user = await get_current_user(request)
-    if user is None:
+    logged_in_user = await get_current_user(request)
+    if logged_in_user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
     # settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
-    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+    role_state = db.query(Roles).filter(Roles.id == logged_in_user['role_id']).first()
+    nav_profile_load = db.query(models.Users.users_profile).filter(models.Users.id == logged_in_user['id']).scalar()
 
     if role_state.settings == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
@@ -47,7 +48,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     if page is None:
         return RedirectResponse(url="/settings/?page=trigger_points", status_code=status.HTTP_302_FOUND)
 
-    return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": user, "role_state": role_state, "settings": settings, "page": page, "settings": settings})
+    return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "page": page, "settings": settings, "nav_profile_load": nav_profile_load})
 
 @router.post("/", response_class=HTMLResponse)
 async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None), primary_button_color: str = Form(None), primary_button_hover_color: str = Form(None), secondary_button_color: str = Form(None), secondary_button_hover_color: str = Form(None), info_button_color: str = Form(None), info_button_hover_color: str = Form(None), critical_button_color: str = Form(None), critical_button_hover_color: str = Form(None)):

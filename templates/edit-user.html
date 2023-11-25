@@ -4,9 +4,13 @@
     <form method="post">
         <div class="card">
             <div style="text-align: center;" class="card-header">
-                <h4>Update User</h4>
+                <h4>Update {{user.first_name}}</h4>
             </div>
             <div class="card-body">
+                <div style="text-align: left;">
+                    <label>Profile Picture</label>
+                </div>
+                {% include 'profile-pictures.html' %}
                 <div style="width: 30%; display: inline-block;" class="form-group">
                     <label>Username</label>
                     <input type="text" class="form-control" name="username" value="{{user.username}}" required>

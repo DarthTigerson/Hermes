@@ -15,19 +15,59 @@
                         <table class="table table-hover text-center">
                             <thead>
                                 <tr>
+                                    <th scope="col" style="width: 30px;">Profile</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Surname</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">HR Team</th>
                                     {% if role_state.admin == 1 %}
-                                    <th scope="col">Edit</th>
+                                    <th scope="col" style="width: 20px;">Edit</th>
                                     {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for user in users %}
                                 <tr>
+                                    {% if user.users_profile == '1' %}
+                                        <td><img src="/static/img/aphrodite.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '2' %}
+                                        <td><img src="/static/img/artemis.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '3' %}
+                                        <td><img src="/static/img/athena.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '4' %}
+                                        <td><img src="/static/img/hades.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '5' %}
+                                        <td><img src="/static/img/hera.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '6' %}
+                                        <td><img src="/static/img/hestia.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '7' %}
+                                        <td><img src="/static/img/poseidon.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '8' %}
+                                        <td><img src="/static/img/zeus.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '9' %}
+                                        <td><img src="/static/img/hephaestus.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '10' %}
+                                        <td><img src="/static/img/demeter.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '11' %}
+                                        <td><img src="/static/img/achilles.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '12' %}
+                                        <td><img src="/static/img/woman.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '13' %}
+                                        <td><img src="/static/img/man.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '14' %}
+                                        <td><img src="/static/img/faun.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '15' %}
+                                        <td><img src="/static/img/pegasus.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '16' %}
+                                        <td><img src="/static/img/apple-of-discord.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.users_profile == '17' %}
+                                        <td><img src="/static/img/coin.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% elif user.username == 'hermes' %}
+                                        <td><img src="/static/img/logo.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% else %}
+                                        <td><img src="/static/img/dionysius.png" style="width: 30px; height: 30px; border-radius: 50%; background-color: {{settings.primary_color}};"></td>
+                                    {% endif %}
                                     <td>{{user.username}}</td>
                                     <td>{{user.first_name}}</td>
                                     <td>{{user.last_name}}</td>
@@ -70,7 +110,7 @@
                                 <tr>
                                     <th scope="col">Name</th>
                                     {% if role_state.admin == 1 %}
-                                    <th scope="col">Edit</th>
+                                    <th scope="col" style="width: 20px;">Edit</th>
                                     {% endif %}
                                 
                                 </tr>
@@ -112,7 +152,7 @@
                         <th scope="col">Global Settings</th>
                         <th scope="col">API Reporting</th>
                         {% if role_state.admin == 1 %}
-                        <th scope="col">Edit</th>
+                        <th scope="col" style="width: 20px;">Edit</th>
                         {% endif %}
                     </tr>
                 </thead>

@@ -1,0 +1,61 @@
+{% include 'layout.html' %}
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div style="text-align: center;" class="card-header">
+                <h4>{{user.first_name}} {{user.last_name}}</h4>
+            </div>
+            <div class="card-body">
+                {% include 'profile-pictures.html' %}
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; text-align: center;">
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label style="font-weight: bold;">Username</label>
+                        <span class="label-value">{{user.username}}</span>
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label style="font-weight: bold;">Name</label>
+                        <span class="label-value">{{user.first_name}}</span>
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label style="font-weight: bold;">Surname</label>
+                        <span class="label-value">{{user.last_name}}</span>
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label style="font-weight: bold;">Role</label>
+                        {% for role in roles %}
+                            {% if role.id == user.role_id %}
+                                <span class="label-value">{{role.name}}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="label-value">No Role</span>
+                        {% endfor %}
+                    </div>
+                    <div style="width: 120px; margin: 1em;" class="form-group">
+                        <label style="font-weight: bold;">HR Team</label>
+                        {% for team in teams %}
+                            {% if team.id == user.team_id %}
+                                <span class="label-value">{{team.name}}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="padding-bottom: 60px;"></div>
+        <div id="color_override" class="fixed-bottom text-center" style="background-color: white; padding: 5px;">
+            <button type="submit" class="btn" style="background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}};">Change Picture</button>
+            <button type="button" class="btn" style="background-color: {{settings.critical_color}}; color: {{settings.critical_color_hover}};" onclick="window.location.href='/admin/reset_password/{{user.id}}'">Reset Password</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .label-title {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .label-value {
+        font-style: italic;
+    }
+</style>

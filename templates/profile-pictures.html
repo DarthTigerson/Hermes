@@ -1,0 +1,150 @@
+<div class="form-group">
+    <div style="display: flex; justify-content: center; margin: auto;">
+        <div style="padding: 10px;">
+            <img id="main_image" src="/static/img/aphrodite.png" alt="Aphrodite" width="200px" style="border-radius: 200%; background-color: {{settings.primary_color}};">
+        </div>
+    </div>
+    <div style="display: flex; justify-content: center; margin: auto;">
+        <div>
+            <input type="radio" id="Aphrodite" name="profile_image" value="1" {% if profile_load == '1' or profile_load == '0' %} checked {% endif %}>
+            <label for="Aphrodite" style="padding: 5px;">
+                <img src="/static/img/aphrodite.png" alt="Aphrodite" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Artemis" name="profile_image" value="2" {% if profile_load == '2' %} checked {% endif %}>
+            <label for="Artemis" style="padding: 5px;">
+                <img src="/static/img/artemis.png" alt="Artemis" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Athena" name="profile_image" value="3" {% if profile_load == '3' %} checked {% endif %}>
+            <label for="Athena" style="padding: 5px;">
+                <img src="/static/img/athena.png" alt="Athena" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Hades" name="profile_image" value="4" {% if profile_load == '4' %} checked {% endif %}>
+            <label for="Hades" style="padding: 5px;">
+                <img src="/static/img/hades.png" alt="Hades" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Hera" name="profile_image" value="5" {% if profile_load == '5' %} checked {% endif %}>
+            <label for="Hera" style="padding: 5px;">
+                <img src="/static/img/hera.png" alt="Hera" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Hestia" name="profile_image" value="6" {% if profile_load == '6' %} checked {% endif %}>
+            <label for="Hestia" style="padding: 5px;">
+                <img src="/static/img/hestia.png" alt="Hestia" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Poseidon" name="profile_image" value="7" {% if profile_load == '7' %} checked {% endif %}>
+            <label for="Poseidon" style="padding: 5px;">
+                <img src="/static/img/poseidon.png" alt="Poseidon" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Zeus" name="profile_image" value="8" {% if profile_load == '8' %} checked {% endif %}>
+            <label for="Zeus" style="padding: 5px;">
+                <img src="/static/img/zeus.png" alt="Zeus" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Hephaestus" name="profile_image" value="9" {% if profile_load == '9' %} checked {% endif %}>
+            <label for="Hephaestus" style="padding: 5px;">
+                <img src="/static/img/hephaestus.png" alt="Hephaestus" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Demeter" name="profile_image" value="10" {% if profile_load == '10' %} checked {% endif %}>
+            <label for="Demeter" style="padding: 5px;">
+                <img src="/static/img/demeter.png" alt="Demeter" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Achilles" name="profile_image" value="11" {% if profile_load == '11' %} checked {% endif %}>
+            <label for="Achilles" style="padding: 5px;">
+                <img src="/static/img/achilles.png" alt="Achilles" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Woman" name="profile_image" value="12" {% if profile_load == '12' %} checked {% endif %}>
+            <label for="Woman" style="padding: 5px;">
+                <img src="/static/img/woman.png" alt="Woman" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Man" name="profile_image" value="13" {% if profile_load == '13' %} checked {% endif %}>
+            <label for="Man" style="padding: 5px;">
+                <img src="/static/img/man.png" alt="Man" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Faun" name="profile_image" value="14" {% if profile_load == '14' %} checked {% endif %}>
+            <label for="Faun" style="padding: 5px;">
+                <img src="/static/img/faun.png" alt="Faun" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Pegasus" name="profile_image" value="15" {% if profile_load == '15' %} checked {% endif %}>
+            <label for="Pegasus" style="padding: 5px;">
+                <img src="/static/img/pegasus.png" alt="Pegasus" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Apple_of_Discord" name="profile_image" value="16" {% if profile_load == '16' %} checked {% endif %}>
+            <label for="Apple_of_Discord" style="padding: 5px;">
+                <img src="/static/img/apple-of-discord.png" alt="Apple of Discord" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="Coin" name="profile_image" value="17" {% if profile_load == '17' %} checked {% endif %}>
+            <label for="Coin" style="padding: 5px;">
+                <img src="/static/img/coin.png" alt="Coin" width="50px" style="border-radius: 50%; background-color: {{settings.primary_color}};">
+            </label>
+        </div>
+    </div>
+</div>
+
+<style>
+    input[type="radio"] {
+        display: none;
+    }
+
+    input[type="radio"]:checked + label {
+        background-color: {{settings.secondary_color}};
+    }
+
+    label {
+        border-radius: 10px;
+        display: inline-block;
+        width: 100%;
+    }
+</style>
+
+<script>
+    window.onload = function() {
+        var radios = document.getElementsByName('profile_image');
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].onchange = function() {
+                document.getElementById('main_image').src = document.querySelector('label[for="' + this.id + '"] img').src;
+            }
+        }
+    }
+    window.onload = function() {
+        var radios = document.getElementsByName('profile_image');
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].onchange = function() {
+                document.getElementById('main_image').src = document.querySelector('label[for="' + this.id + '"] img').src;
+            }
+            // If the radio button is initially selected, update the main image
+            if (radios[i].checked) {
+                document.getElementById('main_image').src = document.querySelector('label[for="' + radios[i].id + '"] img').src;
+            }
+        }
+    }
+</script>

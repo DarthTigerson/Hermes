@@ -30,9 +30,49 @@
                 {% if logged_in_user %}
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="/static/img/boy.png" alt="Loging image" height="18" style="padding-right: 0px;"> Hello {{logged_in_user.username}}  
+                        {% if nav_profile_load == '1' %}
+                            <img src="/static/img/aphrodite.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load == '2' %}
+                            <img src="/static/img/artemis.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load == '3' %}
+                            <img src="/static/img/athena.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load == '4' %}
+                            <img src="/static/img/hades.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load == '5' %}
+                            <img src="/static/img/hera.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load == '6' %}
+                            <img src="/static/img/hestia.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load == '7' %}
+                            <img src="/static/img/poseidon.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load == '8' %}
+                            <img src="/static/img/zeus.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '9' %}
+                            <img src="/static/img/hephaestus.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '10' %}
+                            <img src="/static/img/demeter.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '11' %}
+                            <img src="/static/img/achilles.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '12' %}
+                            <img src="/static/img/woman.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '13' %}
+                            <img src="/static/img/man.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '14' %}
+                            <img src="/static/img/faun.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '15' %}
+                            <img src="/static/img/pegasus.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '16' %}
+                            <img src="/static/img/apple-of-discord.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif nav_profile_load== '17' %}
+                            <img src="/static/img/coin.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% elif logged_in_user.username == 'hermes' %}
+                            <img src="/static/img/logo.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% else %}
+                            <img src="/static/img/dionysius.png" style="width: 25px; height: 25px; border-radius: 50%; background-color: {{settings.primary_color}};">
+                        {% endif %}
+                        Hello {{logged_in_user.username}}  
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/admin/user_details"><img src="/static/img/account.png" width="19px" style="padding-bottom: 4px; padding-right: 4px;"> Profile</a>
                         {% if role_state.admin == 1 %}
                         <a class="dropdown-item" href="/admin"><img src="/static/img/admin.png" width="19px" style="padding-bottom: 4px; padding-right: 4px;"> Admin</a>
                         {% endif %}

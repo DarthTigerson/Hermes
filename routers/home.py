@@ -31,8 +31,8 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @router.get("/")
 async def test(request: Request, db: Session = Depends(get_db)):
 
-    user = await get_current_user(request)
-    if user is None:
+    logged_in_user = await get_current_user(request)
+    if logged_in_user is None:
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
     
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
@@ -49,9 +49,10 @@ async def test(request: Request, db: Session = Depends(get_db)):
     end_date = datetime.date.today() + datetime.timedelta(days=8)
     upcoming_offboardings = db.query(models.Employees).filter(models.Employees.employment_status_id == 0).filter(models.Employees.end_date > datetime.date.today()).filter(models.Employees.end_date <= end_date).all()
 
-    role_state = db.query(models.Roles).filter(models.Roles.id == user['role_id']).first()
+    role_state = db.query(models.Roles).filter(models.Roles.id == logged_in_user['role_id']).first()
+    nav_profile_load = db.query(models.Users.users_profile).filter(models.Users.id == logged_in_user['id']).scalar()
 
-    log = Log(action="Info",user=user['username'],description="Viewed the home page.")
+    log = Log(action="Info",user=logged_in_user['username'],description="Viewed the home page.")
     await create_log(request=request, log=log, db=db)
 
-    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "total_users": total_users, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "contracts": contracts, "missed_offboardings": missed_offboardings, "upcoming_offboardings": upcoming_offboardings, "todays_birthdays": todays_birthdays, "logged_in_user": user, "role_state": role_state, "nav": 'home', "settings": settings})
+    return templates.TemplateResponse("home.html", {"request": request, "total_employees": total_employees, "total_offboarded_employees": total_offboarded_employees, "total_users": total_users, "todays_offboardings": todays_offboardings, "departments": departments, "sites": sites, "contracts": contracts, "missed_offboardings": missed_offboardings, "upcoming_offboardings": upcoming_offboardings, "todays_birthdays": todays_birthdays, "logged_in_user": logged_in_user, "role_state": role_state, "nav": 'home', "settings": settings, "nav_profile_load": nav_profile_load})

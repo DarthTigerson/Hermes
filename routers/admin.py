@@ -517,7 +517,7 @@ async def reset_password_page(request: Request, user_id: int, db: Session = Depe
         return RedirectResponse(url="/admin/login", status_code=status.HTTP_302_FOUND)
 
     settings = db.query(Settings).order_by(Settings.id.desc()).first()
-    role_state = db.query(Roles).filter(Roles.id == user['role_id']).first()
+    role_state = db.query(Roles).filter(Roles.id == logged_in_user['role_id']).first()
     nav_profile_load = db.query(Users.users_profile).filter(Users.id == logged_in_user['id']).scalar()
 
     if role_state.admin == False:

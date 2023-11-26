@@ -43,6 +43,18 @@
                     </a>
                 </div>
                 <div style="display: inline-block; text-align: left;" class="form-group">
+                    <a href="/settings/?page=email_templates" class="btn"
+                    style="
+                    {% if page == 'email_templates' %}
+                        background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                    {% else %}
+                        background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                    {% endif %}
+                    ;">
+                    <img src="/static/img/mockup.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">E-mail Templates
+                    </a>
+                </div>
+                <div style="display: inline-block; text-align: left;" class="form-group">
                     <a href="/settings/?page=color_palettes" class="btn"
                     style="
                     {% if page == 'color_palettes' %}
@@ -376,6 +388,9 @@
                             </li>
                             <li>
                                 <a href="https://www.flaticon.com/free-icons/ancient" title="ancient icons">Ancient icons created by Freepik - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/theme" title="theme icons">Theme icons created by monkik - Flaticon</a>
                             </li>
                         </ul>
                     </div>

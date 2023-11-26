@@ -20,19 +20,19 @@
                     <option value="9" {% if header_value.report_type == 9%} selected="selected" {% endif %}>By Contract Type</option>
                 </select>
             </div>
-            <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
+            <div style="width: 160px; display: none; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Start Date</label>
                 <input type="date" class="form-control" name="start_date" id="startDate" value="{{header_value.start_date.strftime('%Y-%m-%d')}}" required>
             </div>
-            <div style="width: 160px; display: inline-block; text-align: left;" class="form-group">
+            <div style="width: 160px; display: none; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">End Date</label>
                 <input type="date" class="form-control" name="end_date" id="endDate" value="{{header_value.end_date.strftime('%Y-%m-%d')}}" required>
             </div>
-            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+            <div style="width: 300px; display: none; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Manager</label>
                 <input type="text" class="form-control" name="manager_search" id="managerSearch" value="{{manager}}" required>
             </div>
-            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+            <div style="width: 300px; display: none; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Department</label>
                 <select class="form-control" name="department_list" id="departmentList">
                     <option value="0">Select Department</option>
@@ -41,7 +41,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+            <div style="width: 300px; display: none; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Country</label>
                 <select class="form-control" name="country_list" id="countryList">
                     <option value="0">Select Country</option>
@@ -50,7 +50,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+            <div style="width: 300px; display: none text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Site</label>
                 <select class="form-control" name="site_list" id="siteList">
                     <option value="0">Select Site</option>
@@ -59,7 +59,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div style="width: 300px; display: inline-block; text-align: left;" class="form-group">
+            <div style="width: 300px; display: none; text-align: left;" class="form-group">
                 <label style="margin-left: 10px;">Contract Type</label>
                 <select class="form-control" name="employment_list" id="employmentList">
                     <option value="0">Select Contract Type</option>
@@ -288,8 +288,12 @@
         window.location.href = url;
     });
     document.getElementById('reportType').addEventListener('change', function() {
+        var reportType = document.getElementById('reportType').value;
+        var url = "/reporting/?report_type=" + reportType 
+
         if (this.value == '1' || this.value == '2') 
         {
+
             document.getElementById('startDate').parentElement.style.display = 'inline-block';
             document.getElementById('endDate').parentElement.style.display = 'inline-block';
             document.getElementById('managerSearch').parentElement.style.display = 'none';
@@ -307,6 +311,7 @@
             document.getElementById('countryList').parentElement.style.display = 'none';
             document.getElementById('siteList').parentElement.style.display = 'none';
             document.getElementById('employmentList').parentElement.style.display = 'none';
+            var url = "/reporting/?report_type=" + reportType + "&manager=";
         }
         else if (this.value == '5')
         {
@@ -358,6 +363,8 @@
             document.getElementById('siteList').parentElement.style.display = 'none';
             document.getElementById('employmentList').parentElement.style.display = 'none';
         }
+
+        window.location.href = url;
     });
     function checkReportType() {
         var reportType = document.getElementById('reportType');

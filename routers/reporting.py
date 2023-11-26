@@ -41,6 +41,17 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
         "start_date": start_date,
         "end_date": end_date
     }
+    
+    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
+    countries = db.query(models.Country).order_by(models.Country.name).all()
+    sites = db.query(models.Sites).order_by(models.Sites.name).all()
+    departments = db.query(models.Departments).order_by(models.Departments.name).all()
+    currencies = db.query(models.Currency).order_by(models.Currency.name).all()
+    employment_contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
+    employment_types = db.query(models.Employment).order_by(models.Employment.name).all()
+    employers = db.query(models.Employers).order_by(models.Employers.name).all()
+    hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
+    salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
 
     # Convert start_date and end_date to strings in the 'YYYY-MM-DD' format
     start_date_str = start_date.strftime('%Y-%m-%d')
@@ -70,25 +81,55 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
             .filter(models.Employees.employment_status_id == 0)\
             .filter(models.Employees.department_id == departmentValue)\
             .all()
+        departments = db.query(models.Departments)\
+            .join(models.Employees, models.Departments.id == models.Employees.department_id)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .group_by(models.Departments.id)\
+            .order_by(models.Departments.name)\
+            .all()
     elif report_type == 6:
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 0)\
             .filter(models.Employees.country_of_origin_id == countryValue)\
+            .all()
+        countries = db.query(models.Country)\
+            .join(models.Employees, models.Country.id == models.Employees.country_of_origin_id)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .group_by(models.Country.id)\
+            .order_by(models.Country.name)\
             .all()
     elif report_type == 7:
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 0)\
             .filter(models.Employees.working_country_id == countryValue)\
             .all()
+        countries = db.query(models.Country)\
+            .join(models.Employees, models.Country.id == models.Employees.working_country_id)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .group_by(models.Country.id)\
+            .order_by(models.Country.name)\
+            .all()
     elif report_type == 8:
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 0)\
             .filter(models.Employees.site_id == siteValue)\
             .all()
+        sites = db.query(models.Sites)\
+            .join(models.Employees, models.Sites.id == models.Employees.site_id)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .group_by(models.Sites.id)\
+            .order_by(models.Sites.name)\
+            .all()
     elif report_type == 9:
         report_data = db.query(models.Employees)\
             .filter(models.Employees.employment_status_id == 0)\
             .filter(models.Employees.employment_contract_id == employmentValue)\
+            .all()
+        employment_contracts = db.query(models.Contracts)\
+            .join(models.Employees, models.Contracts.id == models.Employees.employment_contract_id)\
+            .filter(models.Employees.employment_status_id == 0)\
+            .group_by(models.Contracts.id)\
+            .order_by(models.Contracts.name)\
             .all()
     else:
         report_data = None
@@ -105,17 +146,6 @@ async def get_reporting(request: Request, report_type: Optional[int] = 0, start_
         employmentValue = 0
     
     role_state = db.query(models.Roles).filter(models.Roles.id == logged_in_user['role_id']).first()
-    
-    settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
-    countries = db.query(models.Country).order_by(models.Country.name).all()
-    sites = db.query(models.Sites).order_by(models.Sites.name).all()
-    departments = db.query(models.Departments).order_by(models.Departments.name).all()
-    currencies = db.query(models.Currency).order_by(models.Currency.name).all()
-    employment_contracts = db.query(models.Contracts).order_by(models.Contracts.name).all()
-    employment_types = db.query(models.Employment).order_by(models.Employment.name).all()
-    employers = db.query(models.Employers).order_by(models.Employers.name).all()
-    hr_teams = db.query(models.Teams).order_by(models.Teams.name).all()
-    salary_pay_frequency = db.query(models.PayFrequency).order_by(models.PayFrequency.name).all()
     
     return templates.TemplateResponse("reporting.html", {"request": request, "logged_in_user": logged_in_user, "role_state": role_state, "nav": 'reporting', "header_value": header_value, "report_data": report_data, "countries": countries, "sites": sites, "departments": departments, "currencies": currencies, "employment_contracts": employment_contracts, "employment_types": employment_types, "employers": employers, "hr_teams": hr_teams, "salary_pay_frequency": salary_pay_frequency, "settings": settings, "manager": manager, "departmentValue": departmentValue, "countryValue": countryValue, "siteValue": siteValue, "employmentValue": employmentValue, "nav_profile_load": nav_profile_load})
 

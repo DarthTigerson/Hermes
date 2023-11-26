@@ -174,3 +174,15 @@ class Employee_Contracts(Base):
     contract_name = Column(String(250))
     notes = Column(String(250))
     contract_file = Column(String)
+
+class Email_Templates(Base):
+    __tablename__ = 'email_templates'
+    id = Column(Integer, primary_key=True, index=True)
+    onboarding_subject = Column(String(250))
+    onboarding_body = Column(String)
+    employee_updates_subject = Column(String(250))
+    employee_updates_body = Column(String)
+    offboarding_subject = Column(String(250))
+    offboarding_body = Column(String)
+    welcome_email_subject = Column(String(250))
+    welcome_email_body = Column(String)

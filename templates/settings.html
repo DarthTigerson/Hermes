@@ -165,7 +165,7 @@
                 {% if page == 'email_templates' %}
                 <div class="card-body" style="overflow-y: auto; display: flex;">
                     <div style="flex: 20%; border-right: 1px solid {{settings.primary_color_hover}};">
-                        <p>Internal</p>
+                        <h4>Internal</h4>
                         <div style="display: inline-block; text-align: left;" class="form-group">
                             <a href="#" class="btn"
                             style=" width: 250px;
@@ -199,7 +199,7 @@
                             ;">Offboarding Email
                             </a>
                         </div>
-                        <p style="padding-top: 5px;">Employee</p>
+                        <h4 style="padding-top: 5px;">Employee</h4>
                         <div style="display: inline-block; text-align: left;" class="form-group">
                             <a href="#" class="btn"
                             style=" width: 250px;
@@ -215,7 +215,14 @@
                     <div style="flex: 80%; border-left: 1px solid {{settings.primary_color_hover}}; height: 550px; padding-left: 10px;">
                         <h3 name="email_template_name">Template Email name</h3>
                         <input type="text" class="form-control" name="email_template_subject" value="This is the email template subject line." style="margin-bottom: 10px;">
-                        <textarea class="form-control" rows="19" cols="50">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
+                        <div style="display: flex; height: 100%;">
+                            <div style="flex: 50%;">
+                                <textarea id="emailContent" class="form-control" rows="19" cols="50" oninput="updatePreview()">Lorem ipsum dolor sit amet...</textarea>
+                            </div>
+                            <div id="preview" style="flex: 50%; border-left: 1px solid black; padding-left: 10px;">
+                                <!-- HTML preview will be displayed here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endif %}
@@ -591,4 +598,8 @@
             logo.classList.remove('animate-logo');
         }
     });
+    function updatePreview() {
+        var content = document.getElementById('emailContent').value;
+        document.getElementById('preview').innerHTML = content;
+    }
 </script>

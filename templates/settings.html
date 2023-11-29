@@ -162,6 +162,62 @@
                     </table>
                 </div> 
                 {% endif %}
+                {% if page == 'email_templates' %}
+                <div class="card-body" style="overflow-y: auto; display: flex;">
+                    <div style="flex: 20%; border-right: 1px solid {{settings.primary_color_hover}};">
+                        <p>Internal</p>
+                        <div style="display: inline-block; text-align: left;" class="form-group">
+                            <a href="#" class="btn"
+                            style=" width: 250px;
+                            {% if page == 'onboarding_template' %}
+                                background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                            {% else %}
+                                background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                            {% endif %}
+                            ;">Onboarding Email
+                            </a>
+                        </div>
+                        <div style="display: inline-block; text-align: left;" class="form-group">
+                            <a href="#" class="btn"
+                            style=" width: 250px;
+                            {% if page == 'employee_update_template' %}
+                                background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                            {% else %}
+                                background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                            {% endif %}
+                            ;">Employee Update Email
+                            </a>
+                        </div>
+                        <div style="display: inline-block; text-align: left;" class="form-group">
+                            <a href="#" class="btn"
+                            style=" width: 250px;
+                            {% if page == 'offboarding_template' %}
+                                background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                            {% else %}
+                                background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                            {% endif %}
+                            ;">Offboarding Email
+                            </a>
+                        </div>
+                        <p style="padding-top: 5px;">Employee</p>
+                        <div style="display: inline-block; text-align: left;" class="form-group">
+                            <a href="#" class="btn"
+                            style=" width: 250px;
+                            {% if page == 'welcome_template' %}
+                                background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
+                            {% else %}
+                                background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
+                            {% endif %}
+                            ;">Welcome Employee Email
+                            </a>
+                        </div>
+                    </div>
+                    <div style="flex: 80%; border-left: 1px solid {{settings.primary_color_hover}}; height: 550px; padding-left: 10px;">
+                        <h3>Template</h3>
+                        <textarea name="email_template" id="email_template" cols="30" rows="10" style="width: 100%; height: 90%; resize: none;">This is the email template display section.</textarea>
+                    </div>
+                </div>
+                {% endif %}
                 {% if page == 'color_palettes' %}
                 <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
                     <div style="flex: 1; margin-right: 100px;">
@@ -531,7 +587,7 @@
             clickCount = 0; // reset the count
             logo.classList.add('animate-logo');
         } else {
-          logo.classList.remove('animate-logo');
+            logo.classList.remove('animate-logo');
         }
     });
 </script>

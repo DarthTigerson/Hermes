@@ -213,8 +213,9 @@
                         </div>
                     </div>
                     <div style="flex: 80%; border-left: 1px solid {{settings.primary_color_hover}}; height: 550px; padding-left: 10px;">
-                        <h3>Template</h3>
-                        <textarea name="email_template" id="email_template" cols="30" rows="10" style="width: 100%; height: 90%; resize: none;">This is the email template display section.</textarea>
+                        <h3 name="email_template_name">Template Email name</h3>
+                        <input type="text" class="form-control" name="email_template_subject" value="This is the email template subject line." style="margin-bottom: 10px;">
+                        <textarea class="form-control" rows="19" cols="50">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
                     </div>
                 </div>
                 {% endif %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Offboarding Notification: {{user.full_name}}</title>
+</head>
+<body>
+    <h1><img src="https://cdn-icons-png.flaticon.com/512/4793/4793084.png" alt="Hermes logo" height="40" style="padding-right: 10px;">Hermes</h1>
+    <h2>Offboarding Notification: {{user.full_name}}</h2>
+    <p>This email is to notify you of an update for the following employee:</p>
+    <br>
+    <p>Full name: {{employee_model.full_name}}</p>
+    <p>Start date: {{employee_model.start_date}}</p>
+    <p>End date: {{employee_model.end_date}}</p>
+    <p>Personal email: {{employee_model.personal_email}}</p>
+    <p>Email: {{employee_model.company_email}}</p>
+    <p>Job title: {{employee_model.job_title}}</p>
+    <p>Current Employer: {{current_employer.name}}</p>
+    <p>Reports to: {{employee_model.direct_manager}}</p>
+    <p>Employment contract: {{employment_contract.name}}</p>
+    <p>Employment type: {{employment_type.name}}</p>
+    <p>Site: {{site.name}}</p>
+    <p>HR Department: {{hr_department}}</p>
+    <p>Business Unit: {{employee_model.business_unit}}</p>
+    <p>Business Vertical: {{employee_model.business_verticle}}</p>
+    <p>Brand Code: {{employee_model.brand_code}}</p>
+    <p>Product Code: {{employee_model.product_code}}</p>
+    <p>Department: {{department.name}}</p>
+</body>
+</html>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    h1 {
+        color: #333;
+    }
+    p {
+        color: #666;
+    }
+</style>

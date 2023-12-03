@@ -220,7 +220,7 @@
                                 <textarea id="emailContent" class="form-control" rows="21" cols="50" oninput="updatePreview()">{{email_templates.onboarding_body}}</textarea>
                             </div>
                             <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto;">
-                                <!-- HTML preview will be displayed here -->
+                                {{email_templates.onboarding_body|safe}}
                             </div>
                         </div>
                     </div>
@@ -603,6 +603,4 @@
         var content = document.getElementById('emailContent').value;
         document.getElementById('preview').innerHTML = content;
     }
-
-    document.addEventListener('DOMContentLoaded', updatePreview);
 </script>

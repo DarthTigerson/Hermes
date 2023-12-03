@@ -163,9 +163,9 @@
                 </div> 
                 {% endif %}
                 {% if page == 'email_templates' %}
-                <div class="card-body" style="overflow-y: auto; display: flex;">
+                <div class="card-body" style="overflow-y: auto; display: flex; padding-top: 0;">
                     <div style="flex: 20%; border-right: 1px solid {{settings.primary_color_hover}};">
-                        <h4>Internal</h4>
+                        <h4 style="margin-top: 0;">Internal</h4>
                         <div style="display: inline-block; text-align: left;" class="form-group">
                             <a href="#" class="btn"
                             style=" width: 250px;
@@ -212,8 +212,8 @@
                             </a>
                         </div>
                     </div>
-                    <div style="flex: 80%; border-left: 1px solid {{settings.primary_color_hover}}; height: 100%; padding-left: 10px;">
-                        <h3 name="email_template_name">Template Email name</h3>
+                    <div style="flex: 80%; border-left: 1px solid #a9a9a9 !important; height: 100%; padding-left: 10px;">
+                        <h3 name="email_template_name" style="margin-top: 0;">Template Email name</h3>
                         <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.onboarding_subject}}" style="margin-bottom: 10px;">
                         <div style="display: flex; height: 100%; background-color: white;">
                             <div style="flex: 50%; overflow-y: auto;">

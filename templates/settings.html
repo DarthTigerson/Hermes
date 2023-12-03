@@ -212,14 +212,14 @@
                             </a>
                         </div>
                     </div>
-                    <div style="flex: 80%; border-left: 1px solid {{settings.primary_color_hover}}; height: 550px; padding-left: 10px;">
+                    <div style="flex: 80%; border-left: 1px solid {{settings.primary_color_hover}}; height: 100%; padding-left: 10px;">
                         <h3 name="email_template_name">Template Email name</h3>
                         <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.onboarding_subject}}" style="margin-bottom: 10px;">
-                        <div style="display: flex; height: 100%;">
+                        <div style="display: flex; height: 100%; background-color: white;">
                             <div style="flex: 50%;">
                                 <textarea id="emailContent" class="form-control" rows="19" cols="50" oninput="updatePreview()">{{email_templates.onboarding_body}}</textarea>
                             </div>
-                            <div id="preview" style="flex: 50%; border-left: 1px solid black; padding-left: 10px; text-align: left; align-items: flex-start;">
+                            <div id="preview" style="flex: 50%; border-left: 1px; padding-left: 10px; text-align: left; align-items: flex-start;">
                                 <!-- HTML preview will be displayed here -->
                             </div>
                         </div>

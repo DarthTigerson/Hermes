@@ -217,9 +217,9 @@
                         <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.onboarding_subject}}" style="margin-bottom: 10px;">
                         <div style="display: flex; height: 100%; background-color: white;">
                             <div style="flex: 50%; overflow-y: auto;">
-                                <textarea id="emailContent" class="form-control" rows="21" cols="50" oninput="updatePreview()">{{email_templates.onboarding_body}}</textarea>
+                                <textarea id="emailContent" class="form-control" rows="23" cols="50" oninput="updatePreview()" style="font-size: 0.9em;">{{email_templates.onboarding_body}}</textarea>
                             </div>
-                            <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto;">
+                            <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto; font-size: 0.9em;">
                                 {{email_templates.onboarding_body|safe}}
                             </div>
                         </div>

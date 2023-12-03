@@ -216,10 +216,10 @@
                         <h3 name="email_template_name">Template Email name</h3>
                         <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.onboarding_subject}}" style="margin-bottom: 10px;">
                         <div style="display: flex; height: 100%; background-color: white;">
-                            <div style="flex: 50%;">
-                                <textarea id="emailContent" class="form-control" rows="19" cols="50" oninput="updatePreview()">{{email_templates.onboarding_body}}</textarea>
+                            <div style="flex: 50%; overflow-y: auto;">
+                                <textarea id="emailContent" class="form-control" rows="21" cols="50" oninput="updatePreview()">{{email_templates.onboarding_body}}</textarea>
                             </div>
-                            <div id="preview" style="flex: 50%; border-left: 1px; padding-left: 10px; text-align: left; align-items: flex-start;">
+                            <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto;">
                                 <!-- HTML preview will be displayed here -->
                             </div>
                         </div>
@@ -598,8 +598,11 @@
             logo.classList.remove('animate-logo');
         }
     });
+
     function updatePreview() {
         var content = document.getElementById('emailContent').value;
         document.getElementById('preview').innerHTML = content;
     }
+
+    document.addEventListener('DOMContentLoaded', updatePreview);
 </script>

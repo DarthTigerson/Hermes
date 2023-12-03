@@ -51,7 +51,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "page": page, "settings": settings, "nav_profile_load": nav_profile_load, "email_templates": email_templates})
 
 @router.post("/", response_class=HTMLResponse)
-async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None), primary_button_color: str = Form(None), primary_button_hover_color: str = Form(None), secondary_button_color: str = Form(None), secondary_button_hover_color: str = Form(None), info_button_color: str = Form(None), info_button_hover_color: str = Form(None), critical_button_color: str = Form(None), critical_button_hover_color: str = Form(None)):
+async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None), primary_button_color: str = Form(None), primary_button_hover_color: str = Form(None), secondary_button_color: str = Form(None), secondary_button_hover_color: str = Form(None), info_button_color: str = Form(None), info_button_hover_color: str = Form(None), critical_button_color: str = Form(None), critical_button_hover_color: str = Form(None),  email_template_subject: str = Form(None), emailContent: str = Form(None)):
     
     user = await get_current_user(request)
 
@@ -107,17 +107,17 @@ async def post_settings(request: Request, page: str, db: Session = Depends(get_d
         email_templates = db.query(models.Email_Templates).order_by(models.Email_Templates.id.desc()).first()
 
         if page == 'email_templates1':
-            email_templates.onboarding_subject = request.form.get('onboarding_subject')
-            email_templates.onboarding_body = request.form.get('onboarding_body')
+            email_templates.onboarding_subject = email_template_subject
+            email_templates.onboarding_body = emailContent
         elif page == 'email_templates2':
-            email_templates.onboarding_subject = request.form.get('employee_updates_subject')
-            email_templates.onboarding_body = request.form.get('employee_updates_body')
+            email_templates.employee_updates_subject = email_template_subject
+            email_templates.employee_updates_body = emailContent
         elif page == 'email_templates3':
-            email_templates.onboarding_subject = request.form.get('offboarding_subject')
-            email_templates.onboarding_body = request.form.get('offboarding_body')
+            email_templates.offboarding_subject = email_template_subject
+            email_templates.offboarding_body = emailContent
         elif page == 'email_templates4':
-            email_templates.onboarding_subject = request.form.get('welcome_email_subject')
-            email_templates.onboarding_body = request.form.get('welcome_email_body')
+            email_templates.welcome_email_subject = email_template_subject
+            email_templates.welcome_email_body = emailContent
 
         db.add(email_templates)
         db.commit()

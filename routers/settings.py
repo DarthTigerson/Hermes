@@ -63,45 +63,64 @@ async def post_settings(request: Request, page: str, db: Session = Depends(get_d
     if role_state.settings == False:
         return RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     
-    settings = db.query(Settings).order_by(Settings.id.desc()).first()
+    if page == 'trigger_points' or page == 'slack_settings' or page == 'email_settings' or page == 'color_palettes':
+        settings = db.query(Settings).order_by(Settings.id.desc()).first()
 
-    if page == 'trigger_points':
-        settings.email_new_employee = trigger_onboarded_employee
-        settings.email_updated_employee = trigger_updated_employee
-        settings.email_offboarded_employee = trigger_offboarded_employee
-    elif page == 'slack_settings':
-        if slack_webhook == '' or slack_webhook == 'None' or slack_webhook is None:
-            settings.slack_webhook_channel = None
-        else:
-            settings.slack_webhook_channel = slack_webhook
-    elif page == 'email_settings':
-        settings.email_list = email_list
-        settings.email_smtp_server = email_smtp_server
-        settings.email_smtp_port = email_smtp_port
-        settings.email_smtp_username = email_smtp_username
-        if email_smtp_password == '' and settings is None:
-            settings.email_smtp_password = None
-        elif email_smtp_password != '' and settings is None:
-            settings.email_smtp_password = email_smtp_password
-        elif email_smtp_password == '' and settings is not None:
-            settings.email_smtp_password = settings.email_smtp_password
-        elif email_smtp_password != '' and settings is not None:
-            settings.email_smtp_password = email_smtp_password
-    elif page == 'color_palettes':
-        settings.navigation_bar_color = navigation_bar_color
-        settings.primary_color = primary_button_color
-        settings.primary_color_hover = primary_button_hover_color
-        settings.secondary_color = secondary_button_color
-        settings.secondary_color_hover = secondary_button_hover_color
-        settings.info_color = info_button_color
-        settings.info_color_hover = info_button_hover_color
-        settings.critical_color = critical_button_color
-        settings.critical_color_hover = critical_button_hover_color
-    settings.daily_user_reports = False
-    settings.monthly_user_reports = False
+        if page == 'trigger_points':
+            settings.email_new_employee = trigger_onboarded_employee
+            settings.email_updated_employee = trigger_updated_employee
+            settings.email_offboarded_employee = trigger_offboarded_employee
+        elif page == 'slack_settings':
+            if slack_webhook == '' or slack_webhook == 'None' or slack_webhook is None:
+                settings.slack_webhook_channel = None
+            else:
+                settings.slack_webhook_channel = slack_webhook
+        elif page == 'email_settings':
+            settings.email_list = email_list
+            settings.email_smtp_server = email_smtp_server
+            settings.email_smtp_port = email_smtp_port
+            settings.email_smtp_username = email_smtp_username
+            if email_smtp_password == '' and settings is None:
+                settings.email_smtp_password = None
+            elif email_smtp_password != '' and settings is None:
+                settings.email_smtp_password = email_smtp_password
+            elif email_smtp_password == '' and settings is not None:
+                settings.email_smtp_password = settings.email_smtp_password
+            elif email_smtp_password != '' and settings is not None:
+                settings.email_smtp_password = email_smtp_password
+        elif page == 'color_palettes':
+            settings.navigation_bar_color = navigation_bar_color
+            settings.primary_color = primary_button_color
+            settings.primary_color_hover = primary_button_hover_color
+            settings.secondary_color = secondary_button_color
+            settings.secondary_color_hover = secondary_button_hover_color
+            settings.info_color = info_button_color
+            settings.info_color_hover = info_button_hover_color
+            settings.critical_color = critical_button_color
+            settings.critical_color_hover = critical_button_hover_color
+        settings.daily_user_reports = False
+        settings.monthly_user_reports = False
 
-    db.add(settings)
-    db.commit()
+        db.add(settings)
+        db.commit()
+    else:
+        email_templates = db.query(models.Email_Templates).order_by(models.Email_Templates.id.desc()).first()
+
+        if page == 'email_templates1':
+            email_templates.onboarding_subject = request.form.get('onboarding_subject')
+            email_templates.onboarding_body = request.form.get('onboarding_body')
+        elif page == 'email_templates2':
+            email_templates.onboarding_subject = request.form.get('employee_updates_subject')
+            email_templates.onboarding_body = request.form.get('employee_updates_body')
+        elif page == 'email_templates3':
+            email_templates.onboarding_subject = request.form.get('offboarding_subject')
+            email_templates.onboarding_body = request.form.get('offboarding_body')
+        elif page == 'email_templates4':
+            email_templates.onboarding_subject = request.form.get('welcome_email_subject')
+            email_templates.onboarding_body = request.form.get('welcome_email_body')
+
+        db.add(email_templates)
+        db.commit()
 
     return RedirectResponse(url="/settings", status_code=status.HTTP_302_FOUND)
 

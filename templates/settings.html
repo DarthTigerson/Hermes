@@ -43,9 +43,9 @@
                     </a>
                 </div>
                 <div style="display: inline-block; text-align: left;" class="form-group">
-                    <a href="/settings/?page=email_templates" class="btn"
+                    <a href="/settings/?page=email_templates1" class="btn"
                     style="
-                    {% if page == 'email_templates' %}
+                    {% if page == 'email_templates1' or page == 'email_templates2' or page == 'email_templates3' or page == 'email_templates4' %}
                         background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
                     {% else %}
                         background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
@@ -162,14 +162,14 @@
                     </table>
                 </div> 
                 {% endif %}
-                {% if page == 'email_templates' %}
+                {% if page == 'email_templates1' or page == 'email_templates2' or page == 'email_templates3' or page == 'email_templates4' %}
                 <div class="card-body" style="overflow-y: auto; display: flex; padding-top: 0;">
                     <div style="flex: 20%; border-right: 1px solid {{settings.primary_color_hover}};">
                         <h4 style="margin-top: 0;">Internal</h4>
                         <div style="display: inline-block; text-align: left;" class="form-group">
-                            <a href="#" class="btn"
+                            <a href="/settings/?page=email_templates1" class="btn"
                             style=" width: 250px;
-                            {% if page == 'onboarding_template' %}
+                            {% if page == 'email_templates1' %}
                                 background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
                             {% else %}
                                 background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
@@ -178,9 +178,9 @@
                             </a>
                         </div>
                         <div style="display: inline-block; text-align: left;" class="form-group">
-                            <a href="#" class="btn"
+                            <a href="/settings/?page=email_templates2" class="btn"
                             style=" width: 250px;
-                            {% if page == 'employee_update_template' %}
+                            {% if page == 'email_templates2' %}
                                 background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
                             {% else %}
                                 background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
@@ -189,9 +189,9 @@
                             </a>
                         </div>
                         <div style="display: inline-block; text-align: left;" class="form-group">
-                            <a href="#" class="btn"
+                            <a href="/settings/?page=email_templates3" class="btn"
                             style=" width: 250px;
-                            {% if page == 'offboarding_template' %}
+                            {% if page == 'email_templates3' %}
                                 background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
                             {% else %}
                                 background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
@@ -201,9 +201,9 @@
                         </div>
                         <h4 style="padding-top: 5px;">Employee</h4>
                         <div style="display: inline-block; text-align: left;" class="form-group">
-                            <a href="#" class="btn"
+                            <a href="/settings/?page=email_templates4" class="btn"
                             style=" width: 250px;
-                            {% if page == 'welcome_template' %}
+                            {% if page == 'email_templates4' %}
                                 background-color: {{settings.primary_color}}; color: {{settings.primary_color_hover}}
                             {% else %}
                                 background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
@@ -213,16 +213,51 @@
                         </div>
                     </div>
                     <div style="flex: 80%; border-left: 1px solid #a9a9a9 !important; height: 100%; padding-left: 10px;">
-                        <h3 name="email_template_name" style="margin-top: 0;">Template Email name</h3>
-                        <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.onboarding_subject}}" style="margin-bottom: 10px;">
-                        <div style="display: flex; height: 100%; background-color: white;">
-                            <div style="flex: 50%; overflow-y: auto;">
-                                <textarea id="emailContent" class="form-control" rows="23" cols="50" oninput="updatePreview()" style="font-size: 0.9em;">{{email_templates.onboarding_body}}</textarea>
+                        {% if page == 'email_templates1' %}
+                            <h3 name="email_template_name" style="margin-top: 0;">Onboarding Email</h3>
+                            <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.onboarding_subject}}" style="margin-bottom: 10px;">
+                            <div style="display: flex; height: 100%; background-color: white;">
+                                <div style="flex: 50%; overflow-y: auto;">
+                                    <textarea id="emailContent" class="form-control" rows="23" cols="50" oninput="updatePreview()" style="font-size: 0.9em;">{{email_templates.onboarding_body}}</textarea>
+                                </div>
+                                <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto; font-size: 0.9em;">
+                                    {{email_templates.onboarding_body|safe}}
+                                </div>
                             </div>
-                            <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto; font-size: 0.9em;">
-                                {{email_templates.onboarding_body|safe}}
+                        {% elif page == 'email_templates2' %}
+                            <h3 name="email_template_name" style="margin-top: 0;">Employee Update Email</h3>
+                            <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.employee_updates_subject}}" style="margin-bottom: 10px;">
+                            <div style="display: flex; height: 100%; background-color: white;">
+                                <div style="flex: 50%; overflow-y: auto;">
+                                    <textarea id="emailContent" class="form-control" rows="23" cols="50" oninput="updatePreview()" style="font-size: 0.9em;">{{email_templates.employee_updates_body}}</textarea>
+                                </div>
+                                <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto; font-size: 0.9em;">
+                                    {{email_templates.employee_updates_body|safe}}
+                                </div>
                             </div>
-                        </div>
+                        {% elif page == 'email_templates3' %}
+                            <h3 name="email_template_name" style="margin-top: 0;">Offboarding Email</h3>
+                            <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.offboarding_subject}}" style="margin-bottom: 10px;">
+                            <div style="display: flex; height: 100%; background-color: white;">
+                                <div style="flex: 50%; overflow-y: auto;">
+                                    <textarea id="emailContent" class="form-control" rows="23" cols="50" oninput="updatePreview()" style="font-size: 0.9em;">{{email_templates.offboarding_body}}</textarea>
+                                </div>
+                                <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto; font-size: 0.9em;">
+                                    {{email_templates.offboarding_body|safe}}
+                                </div>
+                            </div>
+                        {% elif page == 'email_templates4' %}
+                            <h3 name="email_template_name" style="margin-top: 0;">Welcome Employee Email</h3>
+                            <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.welcome_email_subject}}" style="margin-bottom: 10px;">
+                            <div style="display: flex; height: 100%; background-color: white;">
+                                <div style="flex: 50%; overflow-y: auto;">
+                                    <textarea id="emailContent" class="form-control" rows="23" cols="50" oninput="updatePreview()" style="font-size: 0.9em;">{{email_templates.welcome_email_body}}</textarea>
+                                </div>
+                                <div id="preview" style="flex: 50%; padding-left: 10px; text-align: left; height: 500px; overflow-y: auto; font-size: 0.9em;">
+                                    {{email_templates.welcome_email_body|safe}}
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endif %}

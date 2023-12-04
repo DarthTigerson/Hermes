@@ -19,13 +19,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade():
-    op.alter_column('your_table_name', 'email_new_employee', new_column_name='trigger_new_employee')
-    op.alter_column('your_table_name', 'email_updated_employee', new_column_name='trigger_updated_employee')
-    op.alter_column('your_table_name', 'email_offboarded_employee', new_column_name='trigger_offboarded_employee')
     op.add_column('your_table_name', sa.Column('trigger_welcome_email', sa.Boolean, default=False))
 
 def downgrade():
-    op.alter_column('your_table_name', 'trigger_new_employee', new_column_name='email_new_employee')
-    op.alter_column('your_table_name', 'trigger_updated_employee', new_column_name='trigger_updated_employee')
-    op.alter_column('your_table_name', 'trigger_offboarded_employee', new_column_name='trigger_offboarded_employee')
     op.drop_column('your_table_name', 'trigger_welcome_email')

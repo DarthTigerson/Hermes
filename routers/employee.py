@@ -455,7 +455,7 @@ async def reboard_employee(request: Request, employee_id: int, db: Session = Dep
         await slack_send_message(message=f"Employee Re-Onboarded: {employee_model.full_name} ({employee_model.email})", db=db)
     if settings.email_list is not None and settings.email_offboarded_employee:
         #await email_send_message(subject=f"Re-Onboarding: {employee_model.full_name}", message=f"Hermes\nEmployee Re-Onboarding: {employee_model.full_name}\n\nThis email is to notify you of the following Re-Onboarding:\n\nFull name: {employee_model.full_name}\nStart date: {employee_model.start_date}\nPersonal email: {employee_model.personal_email}\nEmail: {employee_model.company_email}\nJob title: {employee_model.job_title}\nCurrent Employer: {current_employer.name}\nReports to: {employee_model.direct_manager}\nEmployment contract: {employment_contract.name}\nEmployment type: {employment_type.name}\nSite: {site.name}\nHR Department: {hr_department}\nBusiness Unit: {employee_model.business_unit}\n Business Vertical: {employee_model.business_verticle}\nBrand Code: {employee_model.brand_code}\nProduct Code: {employee_model.product_code}\nDepartment: {department.name}\n\nPlease contact the HR Department if you have further questions.\n\nThanks & Regards,\nHR Team.", db=db)
-        await email_send_template(template=3, employee_id=employee_model.id, db=db)
+        await email_send_template(template=1, employee_id=employee_model.id, db=db)
 
 
     log = Log(action="Info",user=logged_in_user['username'],description=f"Reboarded the employee with the email {employee_model.email}.")

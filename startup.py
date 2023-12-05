@@ -195,10 +195,10 @@ def create_email_templates():
         # Delete all existing email templates
         db.query(models.Email_Templates).delete()
 
-        onboarding_subject = "New Onboarding Notification: {{user.full_name}}"
-        update_subject = "Employee Update Notification: {{user.full_name}}"
-        offboarding_subject = "Employee Offboarding Notification: {{user.full_name}}"
-        welcome_subject = "Welcome: {{user.full_name}}"
+        onboarding_subject = "New Onboarding Notification: {full_name}"
+        update_subject = "Employee Update Notification: {full_name}"
+        offboarding_subject = "Employee Offboarding Notification: {full_name}"
+        welcome_subject = "Welcome: {full_name}"
 
         with open('static/data/onboarding_email_template.html', 'r') as f:
             onboarding_body = f.read()

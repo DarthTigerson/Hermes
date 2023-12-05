@@ -121,26 +121,3 @@ async def email_send_template(template: int, employee_id: int, db: Session = Dep
             server.quit()
         else:
             return "No Email SMTP Server set"
-
-    
-    
-@router.post("/send_email/{message}/{subject}")
-async def email_send_message(message: str, subject: str, db: Session = Depends(get_db)):
-    settings = db.query(Settings).order_by(Settings.id.desc()).first()
-
-    if settings is not None:
-        if settings.email_smtp_server is not None:
-            msg = MIMEMultipart()
-            msg['From'] = settings.email_smtp_username
-            msg['To'] = settings.email_list
-            msg['Subject'] = subject
-            msg.attach(MIMEText(message, 'plain'))
-
-            server = smtplib.SMTP(settings.email_smtp_server, settings.email_smtp_port)
-            server.starttls()
-            server.login(settings.email_smtp_username, settings.email_smtp_password)
-            text = msg.as_string()
-            server.sendmail(settings.email_smtp_password, settings.email_list, text)
-            server.quit()
-        else:
-            return "No Email SMTP Server set"

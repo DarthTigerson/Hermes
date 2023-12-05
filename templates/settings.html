@@ -27,7 +27,7 @@
                         background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}
                     {% endif %}
                     ;">
-                    <img src="/static/img/slack.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Slack Settings
+                    <img src="/static/img/connection.png" alt="Slack" style="width: 25px; height: 25px; margin-right: 10px;">Webhooks
                     </a>
                 </div>
                 <div style="display: inline-block; text-align: left;" class="form-group">
@@ -95,34 +95,50 @@
                 <br>
                 {% if page == 'trigger_points' %}
                 <div class="card-body" style="overflow-y: auto;">
+                    <h4 style="text-align: left; padding-left: 30px;">Internal</h4>
                     <table class="table text-center table-hover">
                         <tr onclick="document.querySelector('input[name=trigger_onboarded_employee]').checked = !document.querySelector('input[name=trigger_onboarded_employee]').checked;">
                             <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_onboarded_employee" {% if settings.email_new_employee %}checked{% endif %}></td>
                             <td style="text-align: left; width: 20%;">Onboarding trigger</td>
-                            <td style="text-align: left; padding-left: 25px;">Send an e-mail/slack message when a new employee is onboarded onto Hermes.</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an E-mail/slack message when a new employee is onboarded onto Hermes.</td>
                         </tr>
                         <tr onclick="document.querySelector('input[name=trigger_updated_employee]').checked = !document.querySelector('input[name=trigger_updated_employee]').checked;">
                             <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_updated_employee" {% if settings.email_updated_employee %}checked{% endif %}></td>
                             <td style="text-align: left; width: 20%">Updated Employee trigger</td>
-                            <td style="text-align: left; padding-left: 25px;">Send an e-mail/slack message when a employee is updated onto Hermes.</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an E-mail/slack message when a employee is updated onto Hermes.</td>
                         </tr>
                         <tr onclick="document.querySelector('input[name=trigger_offboarded_employee]').checked = !document.querySelector('input[name=trigger_offboarded_employee]').checked;">
                             <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_offboarded_employee" {% if settings.email_offboarded_employee %}checked{% endif %}></td>
                             <td style="text-align: left; width: 20%">Offboarded Employee trigger</td>
-                            <td style="text-align: left; padding-left: 25px;">Send an e-mail/slack message when a employee is offboarded from Hermes.</td>
+                            <td style="text-align: left; padding-left: 25px;">Send an E-mail/slack message when a employee is offboarded from Hermes.</td>
+                        </tr>
+                    </table>
+                    <h4 style="text-align: left; padding-left: 30px;">Employee</h4>
+                    <table class="table text-center table-hover">
+                        <tr onclick="document.querySelector('input[name=trigger_welcome_email]').checked = !document.querySelector('input[name=trigger_welcome_email]').checked;">
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_welcome_email" {% if settings.trigger_welcome_email %}checked{% endif %} disabled></td>
+                            <td style="color: gray; text-align: left; width: 20%">Employee Welcome Email trigger</td>
+                            <td style="color: gray; text-align: left; padding-left: 25px;">Send a welcome E-mail to the employee in the personal E-mail provided with a welcome message.</td>
                         </tr>
                     </table>
                 </div>
                 {% endif %}
                 {% if page == 'slack_settings' %}
                 <div class="card-body" style="overflow-y: auto;">
+                    <h3 style="text-align: left; padding-left: 30px;"><img src="/static/img/slack.png" alt="slack" height="30px">  Slack Webhooks</h3>
                     <table class="table text-center table-hover">
                         <tr>
-                            <td style="text-align: right; width: 10%; vertical-align: middle;">Webhook</td>
+                            <td style="text-align: right; width: 10%; vertical-align: middle;">General</td>
                             <td>
                                 <input type="text" class="form-control" name="slack_webhook" {% if settings.slack_webhook_channel != None %} value="{{settings.slack_webhook_channel}} {% endif %}">
                             </td>
                         </tr> 
+                        <tr>
+                            <td style="text-align: right; width: 10%; vertical-align: middle; color: grey;">Security</td>
+                            <td>
+                                <input type="text" class="form-control" name="slack_webhook_security" {% if settings.slack_webhook_security != None %} value="{{settings.slack_webhook_security}} {% endif %}" disabled>
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 {% endif %}
@@ -212,7 +228,7 @@
                             </a>
                         </div>
                     </div>
-                    <div style="flex: 80%; border-left: 1px solid #a9a9a9 !important; height: 100%; padding-left: 10px;">
+                    <div style="flex: 80%; border-left: 1px solid #ffffff !important; height: 100%; padding-left: 10px;">
                         {% if page == 'email_templates1' %}
                             <h3 name="email_template_name" style="margin-top: 0;">Onboarding E-mail Template</h3>
                             <input type="text" class="form-control" name="email_template_subject" value="{{email_templates.onboarding_subject}}" style="margin-bottom: 10px;">
@@ -264,7 +280,7 @@
                 {% if page == 'color_palettes' %}
                 <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
                     <div style="flex: 1; margin-right: 100px;">
-                        <h3>Logo</h3>
+                        <h4>Logo</h4>
                         <img id="logo" src="data:image/png;base64,{{settings.company_logo}}" alt="Company logo" height="100" style="margin-bottom: 10px;">
                         <p style="font-size: 18px; color: #888; margin-bottom: 10px;">Current Logo</p>
                         <input type="file" id="logoUpload" accept=".png" style="display: none;">
@@ -273,13 +289,13 @@
                             <a href="/settings/reset_company_logo" class="btn" style="font-size: 18px; background-color: {{settings.secondary_color}}; color: {{settings.secondary_color_hover}}">Reset Logo</a>
                         </div>
                         <div style="margin-top: 40px;">
-                            <h3>Navbar Color <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;"></h3>                        
+                            <h4>Navbar Color <input type="color" id="navbarColor" name="navigation_bar_color" value="{{settings.navigation_bar_color}}" style="width: 40px; height: 40px; margin-bottom: 10px;"></h4>                        
                         </div>
                     </div>
                     <br>
                     <div style="flex: 2;">
                         <div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px;">
-                            <h3>Button Colors</h3>
+                            <h4>Button Colors</h4>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
                             <div style="display: flex; justify-content: flex-start;">
@@ -490,6 +506,9 @@
                             </li>
                             <li>
                                 <a href="https://www.flaticon.com/free-icons/theme" title="theme icons">Theme icons created by monkik - Flaticon</a>
+                            </li>
+                            <li>
+                                <a href="https://www.flaticon.com/free-icons/webhook" title="webhook icons">Webhook icons created by Factoricons - Flaticon</a>
                             </li>
                         </ul>
                     </div>

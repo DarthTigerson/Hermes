@@ -51,7 +51,7 @@ async def get_settings(request: Request, page=None, db: Session = Depends(get_db
     return templates.TemplateResponse("settings.html", {"request": request, "logged_in_user": logged_in_user, "role_state": role_state, "settings": settings, "page": page, "settings": settings, "nav_profile_load": nav_profile_load, "email_templates": email_templates})
 
 @router.post("/", response_class=HTMLResponse)
-async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None), primary_button_color: str = Form(None), primary_button_hover_color: str = Form(None), secondary_button_color: str = Form(None), secondary_button_hover_color: str = Form(None), info_button_color: str = Form(None), info_button_hover_color: str = Form(None), critical_button_color: str = Form(None), critical_button_hover_color: str = Form(None),  email_template_subject: str = Form(None), emailContent: str = Form(None)):
+async def post_settings(request: Request, page: str, db: Session = Depends(get_db), trigger_onboarded_employee: bool = Form(False), trigger_updated_employee: bool = Form(False), trigger_offboarded_employee: bool = Form(False), trigger_welcome_email: bool = Form(False), slack_webhook: str = Form(None), email_list: str = Form(None), email_smtp_server: str = Form(None), email_smtp_port: int = Form(587), email_smtp_username: str = Form(None), email_smtp_password: str = Form(None), navigation_bar_color: str = Form(None), primary_button_color: str = Form(None), primary_button_hover_color: str = Form(None), secondary_button_color: str = Form(None), secondary_button_hover_color: str = Form(None), info_button_color: str = Form(None), info_button_hover_color: str = Form(None), critical_button_color: str = Form(None), critical_button_hover_color: str = Form(None),  email_template_subject: str = Form(None), emailContent: str = Form(None)):
     
     user = await get_current_user(request)
 
@@ -70,6 +70,7 @@ async def post_settings(request: Request, page: str, db: Session = Depends(get_d
             settings.email_new_employee = trigger_onboarded_employee
             settings.email_updated_employee = trigger_updated_employee
             settings.email_offboarded_employee = trigger_offboarded_employee
+            settings.trigger_welcome_email = trigger_welcome_email
         elif page == 'slack_settings':
             if slack_webhook == '' or slack_webhook == 'None' or slack_webhook is None:
                 settings.slack_webhook_channel = None

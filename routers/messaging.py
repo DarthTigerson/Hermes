@@ -62,18 +62,19 @@ async def email_send_template(template: int, employee_id: int, db: Session = Dep
     if settings is not None:
         if settings.email_smtp_server is not None:
             msg = MIMEMultipart()
-            msg['From'] = settings.email_smtp_username
-            msg['To'] = settings.email_list
-            if settings.email_new_employee is not False and template == 1:
+            if template == 1:
+                msg['To'] = settings.email_list
                 mail_subject = email_templates.onboarding_subject
                 message_body = email_templates.onboarding_body
-            elif settings.email_updated_employee is not False and template == 2:
+            elif template == 2:
+                msg['To'] = settings.email_list
                 mail_subject  = email_templates.employee_updates_subject
                 message_body = email_templates.employee_updates_body
-            elif settings.email_offboarded_employee is not False and template == 3:
+            elif template == 3:
+                msg['To'] = settings.email_list
                 mail_subject  = email_templates.offboarding_subject
                 message_body = email_templates.offboarding_body
-            elif settings.trigger_welcome_email is not False and template == 4:
+            elif template == 4:
                 msg['To'] = employee.personal_email
                 mail_subject = email_templates.welcome_email_subject
                 message_body = email_templates.welcome_email_body
@@ -116,6 +117,7 @@ async def email_send_template(template: int, employee_id: int, db: Session = Dep
             message_body = message_body.replace("{product_code}", employee.product_code)
             message_body = message_body.replace("{department}", department.name)
 
+            msg['From'] = settings.email_smtp_username
             msg['Subject'] = mail_subject
             msg.attach(MIMEText(message_body, 'html'))
             server = smtplib.SMTP(settings.email_smtp_server, settings.email_smtp_port)

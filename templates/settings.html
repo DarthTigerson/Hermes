@@ -116,9 +116,9 @@
                     <h4 style="text-align: left; padding-left: 30px;">Employee</h4>
                     <table class="table text-center table-hover">
                         <tr onclick="document.querySelector('input[name=trigger_welcome_email]').checked = !document.querySelector('input[name=trigger_welcome_email]').checked;">
-                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_welcome_email" {% if settings.trigger_welcome_email %}checked{% endif %} disabled></td>
-                            <td style="color: gray; text-align: left; width: 20%">Employee Welcome Email trigger</td>
-                            <td style="color: gray; text-align: left; padding-left: 25px;">Send a welcome E-mail to the employee in the personal E-mail provided with a welcome message.</td>
+                            <td style="padding-left: 20px;"><input type="checkbox" class="form-group" name="trigger_welcome_email" {% if settings.trigger_welcome_email %}checked{% endif %}></td>
+                            <td style="text-align: left; width: 20%">Employee Welcome Email trigger</td>
+                            <td style="text-align: left; padding-left: 25px;">Send a welcome E-mail to the employee in the personal E-mail provided with a welcome message.</td>
                         </tr>
                     </table>
                 </div>

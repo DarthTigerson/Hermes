@@ -128,17 +128,11 @@
                     <h4 style="text-align: left; padding-left: 30px;"><img src="/static/img/slack.png" alt="slack" height="30px">  Slack Webhooks</h4>
                     <table class="table text-center table-hover">
                         <tr>
-                            <td style="text-align: right; width: 10%; vertical-align: middle;">General</td>
+                            <td style="text-align: right; width: 15%; vertical-align: middle;">General Channel</td>
                             <td>
                                 <input type="text" class="form-control" name="slack_webhook" {% if settings.slack_webhook_channel != None %} value="{{settings.slack_webhook_channel}} {% endif %}">
                             </td>
                         </tr> 
-                        <tr>
-                            <td style="text-align: right; width: 10%; vertical-align: middle; color: grey;">Security</td>
-                            <td>
-                                <input type="text" class="form-control" name="slack_webhook_security" {% if settings.slack_webhook_security != None %} value="{{settings.slack_webhook_security}} {% endif %}" disabled>
-                            </td>
-                        </tr>
                     </table>
                 </div>
                 {% endif %}

@@ -80,7 +80,6 @@ async def email_send_template(template: int, employee_id: int, db: Session = Dep
 
             # Convert employee.start_date and employee.end_date to datetime objects
             start_date = datetime.strptime(employee.start_date, "%Y-%m-%d")
-            end_date = datetime.strptime(employee.end_date, "%Y-%m-%d")
             current_employer = db.query(Employers).filter(Employers.id == employee.employer_id).first()
             employment_contract = db.query(Contracts).filter(Contracts.id == employee.employment_contract_id).first()
             employment_type = db.query(Employment).filter(Employment.id == employee.employment_type_id).first()
@@ -92,12 +91,17 @@ async def email_send_template(template: int, employee_id: int, db: Session = Dep
                 hr_teams_name = "No Team Assigned"
             else:
                 hr_teams_name = hr_teams.name
+            if employee.end_date is None:
+                end_date = "Not set"
+            else:
+                end_date = datetime.strptime(employee.end_date, "%Y-%m-%d")
+                end_date = end_date.strftime("%d/%m/%Y")
 
             #TAG replacements
             mail_subject = mail_subject.replace("{full_name}", employee.full_name)
             message_body = message_body.replace("{full_name}", employee.full_name)
             message_body = message_body.replace("{start_date}", start_date.strftime("%d/%m/%Y"))
-            message_body = message_body.replace("{end_date}", end_date.strftime("%d/%m/%Y"))
+            message_body = message_body.replace("{end_date}", end_date)
             message_body = message_body.replace("{company_email}", employee.email)
             message_body = message_body.replace("{job_title}", employee.job_title)
             message_body = message_body.replace("{current_employer}", current_employer.name)

@@ -205,16 +205,11 @@ async def create_employee(request: Request, email: str = Form(None), first_name:
     db.commit()
 
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
-    current_employer = db.query(models.Employers).filter(models.Employers.id == employer_id).first()
-    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employment_contract_id).first()
-    employment_type = db.query(models.Employment).filter(models.Employment.id == employment_type_id).first()
-    site = db.query(models.Sites).filter(models.Sites.id == site_id).first()
     hr_department = db.query(models.Teams).filter(models.Teams.id == hr_team_id).first()
     if hr_department != None:
         hr_department = hr_department.name
     else:
         hr_department = "N/A"
-    department = db.query(models.Departments).filter(models.Departments.id == department_id).first()
     
     if settings.slack_webhook_channel != None and settings.email_new_employee == True:
         await slack_send_message(message=f"New employee added: {employee_model.full_name} ({employee_model.email})", db=db)
@@ -327,16 +322,11 @@ async def update_employee(request: Request, employee_id: int, email: str = Form(
     db.commit()
 
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
-    current_employer = db.query(models.Employers).filter(models.Employers.id == employer_id).first()
-    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employment_contract_id).first()
-    employment_type = db.query(models.Employment).filter(models.Employment.id == employment_type_id).first()
-    site = db.query(models.Sites).filter(models.Sites.id == site_id).first()
     hr_department = db.query(models.Teams).filter(models.Teams.id == hr_team_id).first()
     if hr_department != None:
         hr_department = hr_department.name
     else:
         hr_department = "N/A"
-    department = db.query(models.Departments).filter(models.Departments.id == department_id).first()
 
     if settings.slack_webhook_channel != None and settings.email_updated_employee == True:
         await slack_send_message(message=f"Employee updated: {employee_model.full_name} ({employee_model.email})", db=db)
@@ -393,16 +383,11 @@ async def offboard_employee(request: Request, employee_id: int, db: Session = De
     db.commit()
 
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
-    current_employer = db.query(models.Employers).filter(models.Employers.id == employee_model.employer_id).first()
-    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employee_model.employment_contract_id).first()
-    employment_type = db.query(models.Employment).filter(models.Employment.id == employee_model.employment_type_id).first()
-    site = db.query(models.Sites).filter(models.Sites.id == employee_model.site_id).first()
     hr_department = db.query(models.Teams).filter(models.Teams.id == employee_model.hr_team_id).first()
     if hr_department is not None:
         hr_department = hr_department.name
     else:
         hr_department = "N/A"
-    department = db.query(models.Departments).filter(models.Departments.id == employee_model.department_id).first()
 
     if settings.slack_webhook_channel is not None and settings.email_offboarded_employee:
         await slack_send_message(message=f"Employee offboarded: {employee_model.full_name} ({employee_model.email})", db=db)
@@ -437,16 +422,11 @@ async def reboard_employee(request: Request, employee_id: int, db: Session = Dep
     db.commit()
 
     settings = db.query(models.Settings).order_by(models.Settings.id.desc()).first()
-    current_employer = db.query(models.Employers).filter(models.Employers.id == employee_model.employer_id).first()
-    employment_contract = db.query(models.Contracts).filter(models.Contracts.id == employee_model.employment_contract_id).first()
-    employment_type = db.query(models.Employment).filter(models.Employment.id == employee_model.employment_type_id).first()
-    site = db.query(models.Sites).filter(models.Sites.id == employee_model.site_id).first()
     hr_department = db.query(models.Teams).filter(models.Teams.id == employee_model.hr_team_id).first()
     if hr_department is not None:
         hr_department = hr_department.name
     else:
         hr_department = "N/A"
-    department = db.query(models.Departments).filter(models.Departments.id == employee_model.department_id).first()
 
     if settings.slack_webhook_channel is not None and settings.email_updated_employee:
         await slack_send_message(message=f"Employee Re-Onboarded: {employee_model.full_name} ({employee_model.email})", db=db)

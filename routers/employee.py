@@ -215,7 +215,7 @@ async def create_employee(request: Request, email: str = Form(None), first_name:
         await slack_send_message(message=f"New employee added: {employee_model.full_name} ({employee_model.email})", db=db)
     if settings.email_list != None and settings.email_new_employee == True:
         await email_send_template(template=1, employee_id=employee_model.id, db=db)
-    if setting.trigger_welcome_email != None and settings.trigger_welcome_email == True:
+    if settings.trigger_welcome_email != None and settings.trigger_welcome_email == True:
         await email_send_template(template=4, employee_id=employee_model.id, db=db)
 
     log = Log(action="Info",user=user['username'],description=f"Added a new employee with the email {email}.")

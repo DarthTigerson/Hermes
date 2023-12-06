@@ -74,6 +74,7 @@ async def email_send_template(template: int, employee_id: int, db: Session = Dep
                 mail_subject  = email_templates.offboarding_subject
                 message_body = email_templates.offboarding_body
             elif settings.trigger_welcome_email is not False and template == 4:
+                msg['To'] = employee.personal_email
                 mail_subject = email_templates.welcome_email_subject
                 message_body = email_templates.welcome_email_body
 

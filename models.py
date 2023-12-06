@@ -143,7 +143,8 @@ class Settings(Base):
     id = Column(Integer, primary_key=True, index=True)
     email_new_employee = Column(Boolean, default=False)
     email_updated_employee = Column(Boolean, default=False)
-    email_offboarded_employee = Column(Integer, default=5)
+    email_offboarded_employee = Column(Integer, default=False)
+    trigger_welcome_email = Column(Boolean, default=False)
     email_list = Column(String(200), default=None)
     email_smtp_server = Column(String(200), default=None)
     email_smtp_port = Column(Integer, default=587)
@@ -174,3 +175,15 @@ class Employee_Contracts(Base):
     contract_name = Column(String(250))
     notes = Column(String(250))
     contract_file = Column(String)
+
+class Email_Templates(Base):
+    __tablename__ = 'email_templates'
+    id = Column(Integer, primary_key=True, index=True)
+    onboarding_subject = Column(String(250))
+    onboarding_body = Column(String)
+    employee_updates_subject = Column(String(250))
+    employee_updates_body = Column(String)
+    offboarding_subject = Column(String(250))
+    offboarding_body = Column(String)
+    welcome_email_subject = Column(String(250))
+    welcome_email_body = Column(String)

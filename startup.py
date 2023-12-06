@@ -189,6 +189,40 @@ def create_settings_table():
     finally:
         db.close()
 
+def create_email_templates():
+    db = SessionLocal()
+    try:
+        # Delete all existing email templates
+        db.query(models.Email_Templates).delete()
+
+        onboarding_subject = "New Onboarding Notification: {full_name}"
+        update_subject = "Employee Update Notification: {full_name}"
+        offboarding_subject = "Employee Offboarding Notification: {full_name}"
+        welcome_subject = "Welcome: {full_name}"
+
+        with open('static/data/onboarding_email_template.html', 'r') as f:
+            onboarding_body = f.read()
+
+        with open('static/data/update_email_template.html', 'r') as f:
+            update_body = f.read()
+
+        with open('static/data/offboarding_email_template.html', 'r') as f:
+            offboarding_body = f.read()
+
+        with open('static/data/welcome_email_template.html', 'r') as f:
+            welcome_body = f.read()
+
+        email_templates = models.Email_Templates(id=1, onboarding_subject=onboarding_subject, onboarding_body=onboarding_body, employee_updates_subject=update_subject, employee_updates_body=update_body, offboarding_subject=offboarding_subject, offboarding_body=offboarding_body, welcome_email_subject=welcome_subject, welcome_email_body=welcome_body)
+        db.add(email_templates)
+        db.commit()
+
+        print("Email templates created successfully.")
+    except Exception as e:
+        print(f"Error creating email templates: {e}")
+    finally:
+        db.close()
+        
+
 def full_run():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -213,6 +247,7 @@ def full_run():
         create_all_employers()
         create_all_pay_frequencies()
         create_settings_table()
+        create_email_templates()
         #openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 730
 
         print("\nSetup complete.\nYou can launch Hermes with the following command: `uvicorn main:app --reload`")

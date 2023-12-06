@@ -19,7 +19,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade():
-    op.add_column('your_table_name', sa.Column('trigger_welcome_email', sa.Boolean, default=False))
+    op.add_column('settings', sa.Column('trigger_welcome_email', sa.Boolean, default=False))
 
 def downgrade():
-    op.drop_column('your_table_name', 'trigger_welcome_email')
+    op.drop_column('settings', 'trigger_welcome_email')
